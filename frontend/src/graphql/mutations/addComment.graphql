@@ -1,0 +1,9 @@
+mutation AddComment($courseInitials: String!, $content: String!) {
+  addComment(data: { courseInitials: $courseInitials, content: $content }) {
+    initials
+    comments {
+      id
+      content
+    }
+  }
+}

@@ -1,0 +1,14 @@
+query Course($initials: String!) {
+  course(initials: $initials) {
+    initials
+    title
+    description
+    professor
+    comments {
+      id
+      content
+      createdAt
+      score
+    }
+  }
+}

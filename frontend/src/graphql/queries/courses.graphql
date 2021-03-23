@@ -1,0 +1,8 @@
+query Courses {
+  courses {
+    initials
+    title
+    description
+    professor
+  }
+}

@@ -5,6 +5,7 @@ import { buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";
 import { Course } from "./entities/Course";
 import { CourseComment } from "./entities/CourseComment";
+import { CommentResolver } from "./resolvers/CommentResolver";
 import { CourseResolver } from "./resolvers/CourseResolver";
 
 const main = async () => {
@@ -29,7 +30,7 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [CourseResolver],
+      resolvers: [CourseResolver, CommentResolver],
     }),
   });
 

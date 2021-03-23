@@ -9,7 +9,6 @@ import { v4 as uuidv4 } from "uuid";
 export class CourseResolver {
   @Query(() => [Course])
   async courses(): Promise<Course[]> {
-    console.log("in courses");
     return await getConnection()
       .getRepository(Course)
       .createQueryBuilder("course")
@@ -19,7 +18,6 @@ export class CourseResolver {
 
   @Query(() => Course)
   async course(@Arg("initials") initials: string): Promise<Course | undefined> {
-    console.log("in course");
     return await getConnection()
       .getRepository(Course)
       .createQueryBuilder("course")
