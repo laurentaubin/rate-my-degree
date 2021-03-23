@@ -21,6 +21,7 @@
   "dependencies": {
     "apollo-server-express": "^2.21.2",
     "class-validator": "^0.13.1",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "graphql": "^15.5.0",
     "pg": "^8.5.1",
