@@ -17,9 +17,12 @@ const Course = () => {
   const [cookies, setCookie] = useCookies(["user-vote"]);
 
   const [, addComment] = useAddCommentMutation();
+
   const [{ data, fetching, error }] = useCourseQuery({
     variables: {
       initials: pid,
+      attribute: "score",
+      order: "DESC",
     },
   });
 

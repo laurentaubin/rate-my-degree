@@ -1,5 +1,5 @@
-query Course($initials: String!) {
-  course(initials: $initials) {
+query Course($initials: String!, $attribute: String!, $order: String!) {
+  course(data: { initials: $initials, sortBy: { attribute: $attribute, order: $order } }) {
     initials
     title
     description

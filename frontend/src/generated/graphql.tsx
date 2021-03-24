@@ -22,7 +22,7 @@ export type Query = {
 
 
 export type QueryCourseArgs = {
-  initials: Scalars['String'];
+  data: CourseInput;
 };
 
 export type Course = {
@@ -42,6 +42,16 @@ export type CourseComment = {
   course: Course;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
+};
+
+export type CourseInput = {
+  initials: Scalars['String'];
+  sortBy: SortBy;
+};
+
+export type SortBy = {
+  attribute: Scalars['String'];
+  order: Scalars['String'];
 };
 
 export type Mutation = {
@@ -133,6 +143,8 @@ export type VoteMutation = (
 
 export type CourseQueryVariables = Exact<{
   initials: Scalars['String'];
+  attribute: Scalars['String'];
+  order: Scalars['String'];
 }>;
 
 
@@ -204,8 +216,10 @@ export function useVoteMutation() {
   return Urql.useMutation<VoteMutation, VoteMutationVariables>(VoteDocument);
 };
 export const CourseDocument = gql`
-    query Course($initials: String!) {
-  course(initials: $initials) {
+    query Course($initials: String!, $attribute: String!, $order: String!) {
+  course(
+    data: {initials: $initials, sortBy: {attribute: $attribute, order: $order}}
+  ) {
     initials
     title
     description

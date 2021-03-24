@@ -4,6 +4,7 @@ import { Resolver, Query, Mutation, Arg } from "type-graphql";
 import { AddCommentInput } from "../inputs/AddCommentInput";
 import { getConnection } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
+import { CourseInput } from "../inputs/CourseInput";
 
 @Resolver()
 export class CourseResolver {
@@ -17,12 +18,15 @@ export class CourseResolver {
   }
 
   @Query(() => Course)
-  async course(@Arg("initials") initials: string): Promise<Course | undefined> {
+  async course(@Arg("data") data: CourseInput): Promise<Course | undefined> {
+    const { attribute, order } = data.sortBy;
+
     return await getConnection()
       .getRepository(Course)
       .createQueryBuilder("course")
       .innerJoinAndSelect("course.comments", "course_comment")
-      .where("course.initials = :initials", { initials: initials })
+      .orderBy(attribute, order)
+      .where("course.initials = :initials", { initials: data.initials })
       .getOne();
   }
 
