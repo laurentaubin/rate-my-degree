@@ -25,15 +25,7 @@ export const UpvoteSection: React.FC<UpvoteSectionProps> = ({ commentId, current
         score: -1,
       });
       setCookie(`user-vote-${commentId}`, 0);
-    } else if (userVote === 0) {
-      setScore(score + 1);
-      setUserVote(1);
-      await vote({
-        commentId: commentId,
-        score: 1,
-      });
-      setCookie(`user-vote-${commentId}`, 1);
-    } else {
+    } else if (userVote === -1) {
       setScore(score + 2);
       setUserVote(1);
       await vote({
@@ -41,27 +33,19 @@ export const UpvoteSection: React.FC<UpvoteSectionProps> = ({ commentId, current
         score: 2,
       });
       setCookie(`user-vote-${commentId}`, 1);
-    }
-  };
-
-  const handleDownvote = async () => {
-    if (userVote === -1) {
+    } else {
       setScore(score + 1);
-      setUserVote(0);
+      setUserVote(1);
       await vote({
         commentId: commentId,
         score: 1,
       });
-      setCookie(`user-vote-${commentId}`, 0);
-    } else if (userVote === 0) {
-      setScore(score - 1);
-      setUserVote(-1);
-      await vote({
-        commentId: commentId,
-        score: -1,
-      });
-      setCookie(`user-vote-${commentId}`, -1);
-    } else {
+      setCookie(`user-vote-${commentId}`, 1);
+    }
+  };
+
+  const handleDownvote = async () => {
+    if (userVote === 1) {
       setScore(score - 2);
       setUserVote(-1);
       await vote({
@@ -69,6 +53,21 @@ export const UpvoteSection: React.FC<UpvoteSectionProps> = ({ commentId, current
         score: -2,
       });
       setCookie(`user-vote-${commentId}`, -1);
+    } else if (userVote === -1) {
+      setScore(score + 1);
+      setUserVote(0);
+      await vote({
+        commentId: commentId,
+        score: 1,
+      });
+      setCookie(`user-vote-${commentId}`, 0);
+    } else {
+      setScore(score - 1);
+      setUserVote(-1);
+      await vote({
+        commentId: commentId,
+        score: -1,
+      });
     }
   };
 
