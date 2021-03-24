@@ -1,5 +1,5 @@
 import { ObjectType, Field } from "type-graphql";
-import { Entity, Column, PrimaryColumn, BaseEntity, CreateDateColumn, UpdateDateColumn, ManyToOne } from "typeorm";
+import { Entity, Column, PrimaryColumn, BaseEntity, CreateDateColumn, ManyToOne } from "typeorm";
 import { Course } from "./Course";
 
 @ObjectType()
@@ -24,10 +24,6 @@ export class CourseComment extends BaseEntity {
   course: Course;
 
   @Field(() => String)
-  @CreateDateColumn()
+  @CreateDateColumn({ name: "created_at" })
   createdAt: Date;
-
-  @Field(() => String)
-  @UpdateDateColumn()
-  updatedAt: Date;
 }

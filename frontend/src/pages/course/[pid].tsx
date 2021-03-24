@@ -5,11 +5,13 @@ import { useRouter } from "next/router";
 import { useAddCommentMutation, useCourseQuery } from "../../generated/graphql";
 import { useState } from "react";
 import { Layout } from "../../components/Layout";
+import { SortingBar } from "../../components/SortingBar";
 import { Heading } from "@chakra-ui/layout";
 import { useCookies } from "react-cookie";
 
 const Course = () => {
   const [newComment, setNewComment] = useState("");
+  const [sortingAttribute, setSortingAttribute] = useState("score");
 
   const router = useRouter();
   const { pid } = router.query;
@@ -21,8 +23,8 @@ const Course = () => {
   const [{ data, fetching, error }] = useCourseQuery({
     variables: {
       initials: pid,
-      attribute: "score",
-      order: "DESC",
+      attribute: sortingAttribute,
+      order: sortingAttribute === "Score" ? "ACS" : "DESC",
     },
   });
 
@@ -34,6 +36,11 @@ const Course = () => {
   };
 
   const handleCommentInputChange = (event: any) => setNewComment(event.target.value);
+
+  const handleSortingChange = (event: any) => {
+    console.log(event.target.value);
+    setSortingAttribute(event.target.value);
+  };
 
   if (!data && !fetching) {
     return <div>fucky wucky</div>;
@@ -59,6 +66,7 @@ const Course = () => {
       <p>{data!.course.description}</p>
       <p>{data!.course.professor}</p>
       <Heading>Comments</Heading>
+      <SortingBar onSelectChange={handleSortingChange} />
       {data!.course.comments.map((comment) => {
         const cookieName = `user-vote-${comment.id}`;
         return (
