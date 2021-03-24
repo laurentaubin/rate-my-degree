@@ -7,4 +7,7 @@ export class AddCommentInput {
 
   @Field()
   content!: string;
+
+  @Field(() => String, { nullable: true })
+  parentId: string | null;
 }

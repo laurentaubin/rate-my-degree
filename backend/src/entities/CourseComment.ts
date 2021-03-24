@@ -9,6 +9,12 @@ export class CourseComment extends BaseEntity {
   @PrimaryColumn()
   id!: string;
 
+  @Column({ name: "parent_id", default: null })
+  parentId: string;
+
+  @Field(() => [CourseComment])
+  subComments: CourseComment[];
+
   @Field()
   @Column()
   content: string;

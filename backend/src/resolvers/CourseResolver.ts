@@ -37,21 +37,21 @@ export class CourseResolver {
     return course;
   }
 
-  @Mutation(() => Course)
-  async addComment(@Arg("data") data: AddCommentInput): Promise<Course | undefined> {
-    const { courseInitials, content } = data;
+  @Mutation(() => Boolean)
+  async addComment(@Arg("data") data: AddCommentInput): Promise<Boolean> {
+    const { courseInitials, content, parentId } = data;
     const commentId = uuidv4();
 
     await getConnection().transaction(async (tm) => {
       await tm.query(
         `
-        insert into course_comment ("id", "courseInitials", "content")
-        values ($1, $2, $3)
+        insert into course_comment ("id", "courseInitials", "content", "parent_id")
+        values ($1, $2, $3, $4)
     `,
-        [commentId, courseInitials, content]
+        [commentId, courseInitials, content, parentId]
       );
     });
 
-    return Course.findOne({ where: { initials: courseInitials } });
+    return true;
   }
 }
