@@ -1,0 +1,6 @@
+mutation Vote($score: Float!, $commentId: String!) {
+  vote(data: { score: $score, commentId: $commentId }) {
+    id
+    score
+  }
+}
