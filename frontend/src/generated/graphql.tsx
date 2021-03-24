@@ -16,13 +16,29 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
+  comment: CourseComment;
   courses: Array<Course>;
   course: Course;
 };
 
 
+export type QueryCommentArgs = {
+  id: Scalars['String'];
+};
+
+
 export type QueryCourseArgs = {
   data: CourseInput;
+};
+
+export type CourseComment = {
+  __typename?: 'CourseComment';
+  id: Scalars['String'];
+  subComments: Array<CourseComment>;
+  content: Scalars['String'];
+  score: Scalars['Float'];
+  course: Course;
+  createdAt: Scalars['String'];
 };
 
 export type Course = {
@@ -32,16 +48,6 @@ export type Course = {
   description: Scalars['String'];
   professor: Scalars['String'];
   comments: Array<CourseComment>;
-};
-
-export type CourseComment = {
-  __typename?: 'CourseComment';
-  id: Scalars['String'];
-  content: Scalars['String'];
-  score: Scalars['Float'];
-  course: Course;
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
 };
 
 export type CourseInput = {
@@ -58,7 +64,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   vote: CourseComment;
   createCourse: Course;
-  addComment: Course;
+  addComment: Scalars['Boolean'];
 };
 
 
@@ -91,6 +97,7 @@ export type CreateCourseInput = {
 export type AddCommentInput = {
   courseInitials: Scalars['String'];
   content: Scalars['String'];
+  parentId?: Maybe<Scalars['String']>;
 };
 
 export type AddCommentMutationVariables = Exact<{
@@ -101,14 +108,7 @@ export type AddCommentMutationVariables = Exact<{
 
 export type AddCommentMutation = (
   { __typename?: 'Mutation' }
-  & { addComment: (
-    { __typename?: 'Course' }
-    & Pick<Course, 'initials'>
-    & { comments: Array<(
-      { __typename?: 'CourseComment' }
-      & Pick<CourseComment, 'id' | 'content'>
-    )> }
-  ) }
+  & Pick<Mutation, 'addComment'>
 );
 
 export type CreateCourseMutationVariables = Exact<{
@@ -138,6 +138,27 @@ export type VoteMutation = (
   & { vote: (
     { __typename?: 'CourseComment' }
     & Pick<CourseComment, 'id' | 'score'>
+  ) }
+);
+
+export type CommentQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type CommentQuery = (
+  { __typename?: 'Query' }
+  & { comment: (
+    { __typename?: 'CourseComment' }
+    & Pick<CourseComment, 'id'>
+    & { subComments: Array<(
+      { __typename?: 'CourseComment' }
+      & Pick<CourseComment, 'id' | 'content' | 'score' | 'createdAt'>
+      & { subComments: Array<(
+        { __typename?: 'CourseComment' }
+        & Pick<CourseComment, 'id'>
+      )> }
+    )> }
   ) }
 );
 
@@ -174,13 +195,7 @@ export type CoursesQuery = (
 
 export const AddCommentDocument = gql`
     mutation AddComment($courseInitials: String!, $content: String!) {
-  addComment(data: {courseInitials: $courseInitials, content: $content}) {
-    initials
-    comments {
-      id
-      content
-    }
-  }
+  addComment(data: {courseInitials: $courseInitials, content: $content})
 }
     `;
 
@@ -214,6 +229,26 @@ export const VoteDocument = gql`
 
 export function useVoteMutation() {
   return Urql.useMutation<VoteMutation, VoteMutationVariables>(VoteDocument);
+};
+export const CommentDocument = gql`
+    query Comment($id: String!) {
+  comment(id: $id) {
+    id
+    subComments {
+      id
+      content
+      score
+      subComments {
+        id
+      }
+      createdAt
+    }
+  }
+}
+    `;
+
+export function useCommentQuery(options: Omit<Urql.UseQueryArgs<CommentQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<CommentQuery>({ query: CommentDocument, ...options });
 };
 export const CourseDocument = gql`
     query Course($initials: String!, $attribute: String!, $order: String!) {

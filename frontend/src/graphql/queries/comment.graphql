@@ -1,0 +1,14 @@
+query Comment($id: String!) {
+  comment(id: $id) {
+    id
+    subComments {
+      id
+      content
+      score
+      subComments {
+        id
+      }
+      createdAt
+    }
+  }
+}
