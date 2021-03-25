@@ -8,7 +8,6 @@ import { Layout } from "../../components/Layout";
 import { SortingBar } from "../../components/SortingBar";
 import { Heading, Stack } from "@chakra-ui/layout";
 import { useCookies } from "react-cookie";
-import { Box } from "@chakra-ui/react";
 
 const Course = () => {
   const [newComment, setNewComment] = useState("");
@@ -72,8 +71,8 @@ const Course = () => {
         const cookieName = `user-vote-${comment.id}`;
         return (
           !comment.isSubComment! && (
-            <Stack maxW="md" margin="6px">
-              <Comment key={comment.id} commentId={comment.id} userVote={cookies[cookieName]} setCookie={setCookie} />
+            <Stack key={comment.id} maxW="md" margin="6px">
+              <Comment commentId={comment.id} userVote={cookies[cookieName]} setCookie={setCookie} />
             </Stack>
           )
         );

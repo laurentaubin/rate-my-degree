@@ -52,8 +52,8 @@ export const Comment: React.FC<CommentProps> = ({ commentId, userVote, setCookie
       {subComments!.map((subComment) => {
         const cookieName = `user-vote-${subComment.id}`;
         return (
-          <Stack direction="column">
-            <Comment key={subComment.id} commentId={subComment.id} userVote={cookies[cookieName]} setCookie={setCookie} />
+          <Stack key={subComment.id} direction="column">
+            <Comment commentId={subComment.id} userVote={cookies[cookieName]} setCookie={setCookie} />
           </Stack>
         );
       })}
