@@ -9,6 +9,9 @@ query Course($initials: String!, $attribute: String!, $order: String!) {
       content
       createdAt
       score
+      subComments {
+        id
+      }
     }
   }
 }

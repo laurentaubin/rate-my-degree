@@ -5,6 +5,7 @@ import { AddCommentInput } from "../inputs/AddCommentInput";
 import { getConnection } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
 import { CourseInput } from "../inputs/CourseInput";
+import { CourseComment } from "../entities/CourseComment";
 
 @Resolver()
 export class CourseResolver {
@@ -21,13 +22,20 @@ export class CourseResolver {
   async course(@Arg("data") data: CourseInput): Promise<Course | undefined> {
     const { attribute, order } = data.sortBy;
 
-    return await getConnection()
+    const course = await getConnection()
       .getRepository(Course)
       .createQueryBuilder("course")
       .innerJoinAndSelect("course.comments", "course_comment")
       .orderBy(attribute, order)
       .where("course.initials = :initials", { initials: data.initials })
       .getOne();
+
+    for (const comment of course!.comments) {
+      const subComments = await CourseComment.find({ where: { parentId: comment.id } });
+      comment.subComments = subComments;
+    }
+
+    return course;
   }
 
   @Mutation(() => Course)

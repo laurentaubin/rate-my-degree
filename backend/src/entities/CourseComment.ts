@@ -12,7 +12,7 @@ export class CourseComment extends BaseEntity {
   @Column({ name: "parent_id", default: null })
   parentId: string;
 
-  @Field(() => [CourseComment])
+  @Field(() => [CourseComment], { nullable: true })
   subComments: CourseComment[];
 
   @Field()

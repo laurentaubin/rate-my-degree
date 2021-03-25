@@ -177,6 +177,10 @@ export type CourseQuery = (
     & { comments: Array<(
       { __typename?: 'CourseComment' }
       & Pick<CourseComment, 'id' | 'content' | 'createdAt' | 'score'>
+      & { subComments: Array<(
+        { __typename?: 'CourseComment' }
+        & Pick<CourseComment, 'id'>
+      )> }
     )> }
   ) }
 );
@@ -264,6 +268,9 @@ export const CourseDocument = gql`
       content
       createdAt
       score
+      subComments {
+        id
+      }
     }
   }
 }

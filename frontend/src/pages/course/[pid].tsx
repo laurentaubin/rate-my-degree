@@ -70,16 +70,18 @@ const Course = () => {
       {data!.course.comments.map((comment) => {
         const cookieName = `user-vote-${comment.id}`;
         return (
-          <Comment
-            key={comment.id}
-            id={comment.id}
-            createdAt={new Date(parseInt(comment.createdAt))}
-            content={comment.content}
-            author={"Anonymous"}
-            score={comment.score}
-            userVote={cookies[cookieName]}
-            setCookie={setCookie}
-          />
+          comment.subComments.length == 0 && (
+            <Comment
+              key={comment.id}
+              id={comment.id}
+              createdAt={new Date(parseInt(comment.createdAt))}
+              content={comment.content}
+              author={"Anonymous"}
+              score={comment.score}
+              userVote={cookies[cookieName]}
+              setCookie={setCookie}
+            />
+          )
         );
       })}
 
