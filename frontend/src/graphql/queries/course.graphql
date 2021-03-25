@@ -6,12 +6,7 @@ query Course($initials: String!, $attribute: String!, $order: String!) {
     professor
     comments {
       id
-      content
-      createdAt
-      score
-      subComments {
-        id
-      }
+      isSubComment
     }
   }
 }

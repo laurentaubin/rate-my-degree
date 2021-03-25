@@ -6,8 +6,9 @@ import { useAddCommentMutation, useCourseQuery } from "../../generated/graphql";
 import { useState } from "react";
 import { Layout } from "../../components/Layout";
 import { SortingBar } from "../../components/SortingBar";
-import { Heading } from "@chakra-ui/layout";
+import { Heading, Stack } from "@chakra-ui/layout";
 import { useCookies } from "react-cookie";
+import { Box } from "@chakra-ui/react";
 
 const Course = () => {
   const [newComment, setNewComment] = useState("");
@@ -70,12 +71,13 @@ const Course = () => {
       {data!.course.comments.map((comment) => {
         const cookieName = `user-vote-${comment.id}`;
         return (
-          comment.subComments!.length == 0 && (
-            <Comment key={comment.id} comment={{ author: "Anonymous", ...comment }} userVote={cookies[cookieName]} setCookie={setCookie} />
+          !comment.isSubComment! && (
+            <Stack maxW="md" margin="6px">
+              <Comment key={comment.id} commentId={comment.id} userVote={cookies[cookieName]} setCookie={setCookie} />
+            </Stack>
           )
         );
       })}
-
       <form onSubmit={handleFormSubmit}>
         <Input value={newComment} onChange={handleCommentInputChange} placeholder="Add comment"></Input>
         <Button type="submit"> submit</Button>

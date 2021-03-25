@@ -5,7 +5,6 @@ import { AddCommentInput } from "../inputs/AddCommentInput";
 import { getConnection } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
 import { CourseInput } from "../inputs/CourseInput";
-import { CourseComment } from "../entities/CourseComment";
 
 @Resolver()
 export class CourseResolver {
@@ -31,8 +30,9 @@ export class CourseResolver {
       .getOne();
 
     for (const comment of course!.comments) {
-      const subComments = await CourseComment.find({ where: { parentId: comment.id } });
-      comment.subComments = subComments;
+      if (comment.parentId) {
+        comment.isSubComment = true;
+      }
     }
 
     return course;

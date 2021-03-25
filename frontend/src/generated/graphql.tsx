@@ -35,6 +35,7 @@ export type CourseComment = {
   __typename?: 'CourseComment';
   id: Scalars['String'];
   subComments?: Maybe<Array<CourseComment>>;
+  isSubComment?: Maybe<Scalars['Boolean']>;
   content: Scalars['String'];
   score: Scalars['Float'];
   createdAt: Scalars['String'];
@@ -149,14 +150,10 @@ export type CommentQuery = (
   { __typename?: 'Query' }
   & { comment: (
     { __typename?: 'CourseComment' }
-    & Pick<CourseComment, 'id'>
+    & Pick<CourseComment, 'id' | 'content' | 'createdAt' | 'score'>
     & { subComments?: Maybe<Array<(
       { __typename?: 'CourseComment' }
-      & Pick<CourseComment, 'id' | 'content' | 'score' | 'createdAt'>
-      & { subComments?: Maybe<Array<(
-        { __typename?: 'CourseComment' }
-        & Pick<CourseComment, 'id'>
-      )>> }
+      & Pick<CourseComment, 'id'>
     )>> }
   ) }
 );
@@ -175,11 +172,7 @@ export type CourseQuery = (
     & Pick<Course, 'initials' | 'title' | 'description' | 'professor'>
     & { comments: Array<(
       { __typename?: 'CourseComment' }
-      & Pick<CourseComment, 'id' | 'content' | 'createdAt' | 'score'>
-      & { subComments?: Maybe<Array<(
-        { __typename?: 'CourseComment' }
-        & Pick<CourseComment, 'id'>
-      )>> }
+      & Pick<CourseComment, 'id' | 'isSubComment'>
     )> }
   ) }
 );
@@ -237,14 +230,11 @@ export const CommentDocument = gql`
     query Comment($id: String!) {
   comment(id: $id) {
     id
+    content
+    createdAt
+    score
     subComments {
       id
-      content
-      score
-      subComments {
-        id
-      }
-      createdAt
     }
   }
 }
@@ -264,12 +254,7 @@ export const CourseDocument = gql`
     professor
     comments {
       id
-      content
-      createdAt
-      score
-      subComments {
-        id
-      }
+      isSubComment
     }
   }
 }
