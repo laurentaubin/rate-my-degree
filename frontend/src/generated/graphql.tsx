@@ -34,10 +34,9 @@ export type QueryCourseArgs = {
 export type CourseComment = {
   __typename?: 'CourseComment';
   id: Scalars['String'];
-  subComments: Array<CourseComment>;
+  subComments?: Maybe<Array<CourseComment>>;
   content: Scalars['String'];
   score: Scalars['Float'];
-  course: Course;
   createdAt: Scalars['String'];
 };
 
@@ -151,14 +150,14 @@ export type CommentQuery = (
   & { comment: (
     { __typename?: 'CourseComment' }
     & Pick<CourseComment, 'id'>
-    & { subComments: Array<(
+    & { subComments?: Maybe<Array<(
       { __typename?: 'CourseComment' }
       & Pick<CourseComment, 'id' | 'content' | 'score' | 'createdAt'>
-      & { subComments: Array<(
+      & { subComments?: Maybe<Array<(
         { __typename?: 'CourseComment' }
         & Pick<CourseComment, 'id'>
-      )> }
-    )> }
+      )>> }
+    )>> }
   ) }
 );
 
@@ -177,10 +176,10 @@ export type CourseQuery = (
     & { comments: Array<(
       { __typename?: 'CourseComment' }
       & Pick<CourseComment, 'id' | 'content' | 'createdAt' | 'score'>
-      & { subComments: Array<(
+      & { subComments?: Maybe<Array<(
         { __typename?: 'CourseComment' }
         & Pick<CourseComment, 'id'>
-      )> }
+      )>> }
     )> }
   ) }
 );

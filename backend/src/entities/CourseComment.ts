@@ -23,7 +23,6 @@ export class CourseComment extends BaseEntity {
   @Column({ default: 0 })
   score: number;
 
-  @Field(() => Course)
   @ManyToOne(() => Course, (course) => course.comments, {
     onDelete: "CASCADE",
   })

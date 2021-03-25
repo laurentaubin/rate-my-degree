@@ -5,16 +5,13 @@ import { formatDate } from "../utils/formatDate";
 import { UpvoteSection } from "./UpvoteSection";
 
 interface CommentProps {
-  id: string;
-  author: string;
-  createdAt: Date;
-  content: string;
-  score: number;
+  comment: { id: string; author: string; createdAt: string; content: String; score: number };
   userVote: number;
   setCookie: (name: string, value: number) => void;
 }
 
-export const Comment: React.FC<CommentProps> = ({ id, author, content, createdAt, score, userVote, setCookie }) => {
+export const Comment: React.FC<CommentProps> = ({ comment, userVote, setCookie }) => {
+  const { id, author, content, createdAt, score } = comment;
   return (
     <Flex borderWidth="1px" maxW="sm" borderRadius="lg" margin="6px">
       <Avatar src="https://bit.ly/sage-adebayo" />
@@ -22,7 +19,7 @@ export const Comment: React.FC<CommentProps> = ({ id, author, content, createdAt
         <Text fontWeight="bold">
           {author}
           <Badge ml="1" colorScheme="green">
-            {formatDate(createdAt)}
+            {formatDate(new Date(parseInt(createdAt)))}
           </Badge>
         </Text>
         <Text fontSize="sm">{content}</Text>
