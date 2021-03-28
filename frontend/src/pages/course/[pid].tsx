@@ -19,7 +19,6 @@ const Course = () => {
 
   const [, addComment] = useAddCommentMutation();
 
-  console.log("fetching");
   const [{ data, fetching, error }] = useCourseQuery({
     variables: {
       initials: courseInitials,
