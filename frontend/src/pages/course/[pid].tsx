@@ -1,36 +1,35 @@
 import { Input } from "@chakra-ui/input";
 import { Button } from "@chakra-ui/button";
 import { Comment } from "../../components/Comment";
-import { useRouter } from "next/router";
 import { useAddCommentMutation, useCourseQuery } from "../../generated/graphql";
 import { useState } from "react";
 import { Layout } from "../../components/Layout";
 import { SortingBar } from "../../components/SortingBar";
 import { Heading, Stack } from "@chakra-ui/layout";
 import { useCookies } from "react-cookie";
+import useGetCourseInitials from "../../hooks/useGetCourseInitials";
 
 const Course = () => {
   const [newComment, setNewComment] = useState("");
   const [sortingAttribute, setSortingAttribute] = useState("score");
 
-  const router = useRouter();
-  const { pid } = router.query;
+  const courseInitials = useGetCourseInitials();
 
   const [cookies, setCookie] = useCookies(["user-vote"]);
 
   const [, addComment] = useAddCommentMutation();
 
+  console.log("fetching");
   const [{ data, fetching, error }] = useCourseQuery({
     variables: {
-      initials: pid,
+      initials: courseInitials,
       attribute: sortingAttribute,
-      order: sortingAttribute === "Score" ? "ACS" : "DESC",
-    },
+      order: sortingAttribute === "Score" ? "ACS" : "DESC"
+    }
   });
 
   const handleFormSubmit = (event: any) => {
     event.preventDefault();
-    console.log(newComment);
     addComment({ courseInitials: data!.course.initials, content: newComment });
     router.reload();
   };
@@ -38,7 +37,6 @@ const Course = () => {
   const handleCommentInputChange = (event: any) => setNewComment(event.target.value);
 
   const handleSortingChange = (event: any) => {
-    console.log(event.target.value);
     setSortingAttribute(event.target.value);
   };
 
