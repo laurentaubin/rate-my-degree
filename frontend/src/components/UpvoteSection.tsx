@@ -16,8 +16,11 @@ export const UpvoteSection: React.FC<UpvoteSectionProps> = ({ commentId, current
 
   const [, vote] = useVoteMutation();
 
+  console.log(`${commentId} : ${userVote}`);
+
   const handleUpvote = async () => {
-    if (userVote === 1) {
+    if (userVote == 1) {
+      console.log("deja upvote");
       setScore(score - 1);
       setUserVote(0);
       await vote({
@@ -25,7 +28,7 @@ export const UpvoteSection: React.FC<UpvoteSectionProps> = ({ commentId, current
         score: -1,
       });
       setCookie(`user-vote-${commentId}`, 0);
-    } else if (userVote === -1) {
+    } else if (userVote == -1) {
       setScore(score + 2);
       setUserVote(1);
       await vote({
@@ -45,7 +48,7 @@ export const UpvoteSection: React.FC<UpvoteSectionProps> = ({ commentId, current
   };
 
   const handleDownvote = async () => {
-    if (userVote === 1) {
+    if (userVote == 1) {
       setScore(score - 2);
       setUserVote(-1);
       await vote({
@@ -53,7 +56,7 @@ export const UpvoteSection: React.FC<UpvoteSectionProps> = ({ commentId, current
         score: -2,
       });
       setCookie(`user-vote-${commentId}`, -1);
-    } else if (userVote === -1) {
+    } else if (userVote == -1) {
       setScore(score + 1);
       setUserVote(0);
       await vote({
@@ -68,6 +71,7 @@ export const UpvoteSection: React.FC<UpvoteSectionProps> = ({ commentId, current
         commentId: commentId,
         score: -1,
       });
+      setCookie(`user-vote-${commentId}`, -1);
     }
   };
 
