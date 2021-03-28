@@ -8,10 +8,13 @@ import { SortingBar } from "../../components/SortingBar";
 import { Heading, Stack } from "@chakra-ui/layout";
 import { useCookies } from "react-cookie";
 import useGetCourseInitials from "../../hooks/useGetCourseInitials";
+import { useRouter } from "next/router";
 
 const Course = () => {
   const [newComment, setNewComment] = useState("");
   const [sortingAttribute, setSortingAttribute] = useState("score");
+
+  const router = useRouter();
 
   const courseInitials = useGetCourseInitials();
 
