@@ -22,7 +22,7 @@ export const UpvoteSection: React.FC<UpvoteSectionProps> = ({ commentId, current
       setUserVote(0);
       await vote({
         commentId: commentId,
-        score: -1
+        score: -1,
       });
       setCookie(`user-vote-${commentId}`, 0);
     } else if (userVote == -1) {
@@ -30,7 +30,7 @@ export const UpvoteSection: React.FC<UpvoteSectionProps> = ({ commentId, current
       setUserVote(1);
       await vote({
         commentId: commentId,
-        score: 2
+        score: 2,
       });
       setCookie(`user-vote-${commentId}`, 1);
     } else {
@@ -38,7 +38,7 @@ export const UpvoteSection: React.FC<UpvoteSectionProps> = ({ commentId, current
       setUserVote(1);
       await vote({
         commentId: commentId,
-        score: 1
+        score: 1,
       });
       setCookie(`user-vote-${commentId}`, 1);
     }
@@ -50,7 +50,7 @@ export const UpvoteSection: React.FC<UpvoteSectionProps> = ({ commentId, current
       setUserVote(-1);
       await vote({
         commentId: commentId,
-        score: -2
+        score: -2,
       });
       setCookie(`user-vote-${commentId}`, -1);
     } else if (userVote == -1) {
@@ -58,7 +58,7 @@ export const UpvoteSection: React.FC<UpvoteSectionProps> = ({ commentId, current
       setUserVote(0);
       await vote({
         commentId: commentId,
-        score: 1
+        score: 1,
       });
       setCookie(`user-vote-${commentId}`, 0);
     } else {
@@ -66,7 +66,7 @@ export const UpvoteSection: React.FC<UpvoteSectionProps> = ({ commentId, current
       setUserVote(-1);
       await vote({
         commentId: commentId,
-        score: -1
+        score: -1,
       });
       setCookie(`user-vote-${commentId}`, -1);
     }
@@ -74,9 +74,9 @@ export const UpvoteSection: React.FC<UpvoteSectionProps> = ({ commentId, current
 
   return (
     <Box marginLeft="24px">
-      <TriangleUpIcon color={userVote == 1 ? "orange.400" : "black"} onClick={handleUpvote} />
+      <TriangleUpIcon color={userVote == 1 ? "upvote" : "black"} onClick={handleUpvote} />
       <Text userSelect="none">{score}</Text>
-      <TriangleDownIcon color={userVote == -1 ? "blue.300" : "black"} onClick={handleDownvote} />
+      <TriangleDownIcon color={userVote == -1 ? "downvote" : "black"} onClick={handleDownvote} />
     </Box>
   );
 };
