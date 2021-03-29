@@ -1,5 +1,6 @@
 import { Input } from "@chakra-ui/input";
 import { Button } from "@chakra-ui/button";
+import { Text } from "@chakra-ui/layout";
 import { Comment } from "../../components/Comment";
 import { useAddCommentMutation, useCourseQuery } from "../../generated/graphql";
 import { useState } from "react";
@@ -9,6 +10,7 @@ import { Heading, Stack } from "@chakra-ui/layout";
 import { useCookies } from "react-cookie";
 import { useGetCourseInitials } from "../../hooks/useGetCourseInitials";
 import { useRouter } from "next/router";
+import { Box } from "@chakra-ui/react";
 
 const Course = () => {
   const [newComment, setNewComment] = useState("");
@@ -60,27 +62,45 @@ const Course = () => {
 
   return (
     <Layout>
-      <Heading>
-        {data!.course.initials.toUpperCase()} - {data!.course.title}
-      </Heading>
-      <p>{data!.course.description}</p>
-      <p>{data!.course.professor}</p>
-      <Heading>Comments</Heading>
-      <SortingBar onSelectChange={handleSortingChange} />
-      {data!.course.comments.map((comment) => {
-        const cookieName = `user-vote-${comment.id}`;
-        return (
-          !comment.isSubComment! && (
-            <Stack key={comment.id} maxW="md" margin="6px">
-              <Comment courseInitials={data!.course.initials} commentId={comment.id} userVote={cookies[cookieName]} setCookie={setCookie} />
-            </Stack>
-          )
-        );
-      })}
-      <form onSubmit={handleFormSubmit}>
-        <Input value={newComment} onChange={handleCommentInputChange} placeholder="Add comment"></Input>
-        <Button type="submit"> submit</Button>
-      </form>
+      <Box paddingLeft="2vw" marginTop="4vh">
+        <Heading as="h1" fontSize="4xl" fontWeight="black">
+          {data!.course.initials.toUpperCase()} - {data!.course.title}
+        </Heading>
+        <Text as="h2" fontSize="2xl" fontWeight="medium">
+          Professeur: {data!.course.professor}
+        </Text>
+        <Text paddingTop="2vh">{data!.course.description}</Text>
+
+        <Box marginTop="4vh">
+          <Heading as="h2" marginBottom="3vh">
+            Commentaires
+          </Heading>
+          <SortingBar onSelectChange={handleSortingChange} />
+          <Box marginTop="4vh">
+            {data!.course.comments.map((comment) => {
+              const cookieName = `user-vote-${comment.id}`;
+              return (
+                !comment.isSubComment! && (
+                  <Stack key={comment.id} maxW="md" margin="6px" border="1px" borderRadius={12} direction="row" padding="1em">
+                    <Comment
+                      courseInitials={data!.course.initials}
+                      commentId={comment.id}
+                      userVote={cookies[cookieName]}
+                      setCookie={setCookie}
+                    />
+                  </Stack>
+                )
+              );
+            })}
+          </Box>
+          <form onSubmit={handleFormSubmit}>
+            <Input value={newComment} onChange={handleCommentInputChange} placeholder="Add comment"></Input>
+            <Button type="submit" backgroundColor="main" _hover={{ backgroundColor: "white", border: "2px", borderColor: "main" }}>
+              Soumettre
+            </Button>
+          </form>
+        </Box>
+      </Box>
     </Layout>
   );
 };

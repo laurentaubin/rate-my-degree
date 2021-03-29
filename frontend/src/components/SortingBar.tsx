@@ -8,10 +8,12 @@ interface SortingBarProps {
 export const SortingBar: React.FC<SortingBarProps> = ({ onSelectChange }) => {
   return (
     <Flex>
-      <Text>Sort by</Text>
-      <Select maxW="124px" size="sm" onChange={onSelectChange}>
-        <option value="score">Most popular</option>
-        <option value="created_at">Most recent</option>
+      <Text fontSize="lg" fontWeight="semibold">
+        Trier par
+      </Text>
+      <Select maxW="8vw" size="sm" marginLeft="0.5vw" onChange={onSelectChange}>
+        <option value="score">plus populaire</option>
+        <option value="created_at">plus récent</option>
       </Select>
     </Flex>
   );

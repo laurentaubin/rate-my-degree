@@ -68,27 +68,34 @@ export const Comment: React.FC<CommentProps> = ({ courseInitials, commentId, use
     <Flex>
       <Avatar src="https://bit.ly/sage-adebayo" />
       <Box ml="3">
-        <Text fontWeight="bold">
-          {author}
-          <Badge ml="1" colorScheme="green">
+        <Flex>
+          <Text fontWeight="semibold">{author}</Text>
+          <Badge marginLeft="2" backgroundColor="main">
             {formatDate(new Date(parseInt(createdAt)))}
           </Badge>
-        </Text>
+        </Flex>
         <Text fontSize="sm">{content}</Text>
       </Box>
       <UpvoteSection commentId={id} currentScore={score} initialUserVote={userVote} setCookie={setCookie} />
       {!replying && (
-        <Button backgroundColor="main" onClick={handleReplyClick}>
-          reply
+        <Button backgroundColor="white" border="2px" _hover={{ backgroundColor: "main" }} borderColor="main" onClick={handleReplyClick}>
+          Répondre
         </Button>
       )}
       {replying && (
         <form>
-          <Input value={reply} onChange={handleReplyChange}></Input>
+          <Input value={reply} placeholder="Ajouter une réponse" onChange={handleReplyChange}></Input>
           <Flex>
-            <Button onClick={handleCancelClick}>cancel</Button>
-            <Button type="submit" onClick={handleReplySubmit}>
-              submit
+            <Button backgroundColor="white" border="1px" borderColor="black" onClick={handleCancelClick}>
+              Annuler
+            </Button>
+            <Button
+              type="submit"
+              backgroundColor="main"
+              _hover={{ backgroundColor: "white", border: "2px", borderColor: "main" }}
+              onClick={handleReplySubmit}
+            >
+              Soumettre
             </Button>
           </Flex>
         </form>
@@ -96,7 +103,7 @@ export const Comment: React.FC<CommentProps> = ({ courseInitials, commentId, use
       {subComments!.map((subComment) => {
         const cookieName = `user-vote-${subComment.id}`;
         return (
-          <Stack key={subComment.id} direction="column">
+          <Stack key={subComment.id} direction="row">
             <Comment courseInitials={courseInitials} commentId={subComment.id} userVote={cookies[cookieName]} setCookie={setCookie} />
           </Stack>
         );
