@@ -10,7 +10,7 @@ import { Heading, Stack } from "@chakra-ui/layout";
 import { useCookies } from "react-cookie";
 import { useGetCourseInitials } from "../../hooks/useGetCourseInitials";
 import { useRouter } from "next/router";
-import { Box } from "@chakra-ui/react";
+import { Box, Textarea } from "@chakra-ui/react";
 
 const Course = () => {
   const [newComment, setNewComment] = useState("");
@@ -81,7 +81,7 @@ const Course = () => {
               const cookieName = `user-vote-${comment.id}`;
               return (
                 !comment.isSubComment! && (
-                  <Stack key={comment.id} maxW="md" margin="6px" border="1px" borderRadius={12} direction="row" padding="1em">
+                  <Stack key={comment.id} maxWidth="70vw" margin="6px" border="1px" borderRadius={12} direction="row" padding="1em">
                     <Comment
                       courseInitials={data!.course.initials}
                       commentId={comment.id}
@@ -94,10 +94,25 @@ const Course = () => {
             })}
           </Box>
           <form onSubmit={handleFormSubmit}>
-            <Input value={newComment} onChange={handleCommentInputChange} placeholder="Add comment"></Input>
-            <Button type="submit" backgroundColor="main" _hover={{ backgroundColor: "white", border: "2px", borderColor: "main" }}>
-              Soumettre
-            </Button>
+            <Stack>
+              <Textarea
+                value={newComment}
+                backgroundColor="gray.100"
+                placeholder="Add comment"
+                maxWidth="70vw"
+                marginLeft="1"
+                onChange={handleCommentInputChange}
+              ></Textarea>
+              <Button
+                type="submit"
+                backgroundColor="main"
+                maxWidth="8rem"
+                marginLeft="1"
+                _hover={{ backgroundColor: "white", border: "1px", borderColor: "main" }}
+              >
+                Soumettre
+              </Button>
+            </Stack>
           </form>
         </Box>
       </Box>
