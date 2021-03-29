@@ -7,7 +7,7 @@ import { Layout } from "../../components/Layout";
 import { SortingBar } from "../../components/SortingBar";
 import { Heading, Stack } from "@chakra-ui/layout";
 import { useCookies } from "react-cookie";
-import useGetCourseInitials from "../../hooks/useGetCourseInitials";
+import { useGetCourseInitials } from "../../hooks/useGetCourseInitials";
 import { useRouter } from "next/router";
 
 const Course = () => {
@@ -26,8 +26,8 @@ const Course = () => {
     variables: {
       initials: courseInitials,
       attribute: sortingAttribute,
-      order: sortingAttribute === "Score" ? "ACS" : "DESC"
-    }
+      order: sortingAttribute === "Score" ? "ACS" : "DESC",
+    },
   });
 
   const handleFormSubmit = (event: any) => {
