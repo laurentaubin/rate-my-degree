@@ -35,7 +35,7 @@ export type CourseComment = {
   __typename?: 'CourseComment';
   id: Scalars['String'];
   subComments?: Maybe<Array<CourseComment>>;
-  isSubComment?: Maybe<Scalars['Boolean']>;
+  isSubComment: Scalars['Boolean'];
   content: Scalars['String'];
   score: Scalars['Float'];
   createdAt: Scalars['String'];
@@ -103,6 +103,7 @@ export type AddCommentInput = {
 export type AddCommentMutationVariables = Exact<{
   courseInitials: Scalars['String'];
   content: Scalars['String'];
+  parentId?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -190,8 +191,10 @@ export type CoursesQuery = (
 
 
 export const AddCommentDocument = gql`
-    mutation AddComment($courseInitials: String!, $content: String!) {
-  addComment(data: {courseInitials: $courseInitials, content: $content})
+    mutation AddComment($courseInitials: String!, $content: String!, $parentId: String) {
+  addComment(
+    data: {courseInitials: $courseInitials, content: $content, parentId: $parentId}
+  )
 }
     `;
 

@@ -72,7 +72,7 @@ const Course = () => {
         return (
           !comment.isSubComment! && (
             <Stack key={comment.id} maxW="md" margin="6px">
-              <Comment commentId={comment.id} userVote={cookies[cookieName]} setCookie={setCookie} />
+              <Comment courseInitials={data!.course.initials} commentId={comment.id} userVote={cookies[cookieName]} setCookie={setCookie} />
             </Stack>
           )
         );

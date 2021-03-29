@@ -1,3 +1,3 @@
-mutation AddComment($courseInitials: String!, $content: String!) {
-  addComment(data: { courseInitials: $courseInitials, content: $content })
+mutation AddComment($courseInitials: String!, $content: String!, $parentId: String) {
+  addComment(data: { courseInitials: $courseInitials, content: $content, parentId: $parentId })
 }
