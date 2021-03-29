@@ -84,7 +84,7 @@ export const Comment: React.FC<CommentProps> = ({ courseInitials, commentId, use
       )}
       {replying && (
         <form>
-          <Input value={reply} placeholder="Ajouter une réponse" onChange={handleReplyChange}></Input>
+          <Input value={reply} placeholder="Ajouter une réponse" backgroundColor="gray.100" onChange={handleReplyChange}></Input>
           <Flex>
             <Button backgroundColor="white" border="1px" borderColor="black" onClick={handleCancelClick}>
               Annuler
