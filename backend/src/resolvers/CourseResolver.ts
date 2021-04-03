@@ -9,11 +9,18 @@ import { CourseInput } from "../inputs/CourseInput";
 @Resolver()
 export class CourseResolver {
   @Query(() => [Course])
-  async courses(): Promise<Course[]> {
+  async courses(@Arg("filters") filters: string, @Arg("limit", { nullable: true }) limit: number): Promise<Course[]> {
+    // const filteredWords = filters.split(" ");
+
     return await getConnection()
       .getRepository(Course)
       .createQueryBuilder("course")
-      .innerJoinAndSelect("course.comments", "course_comment")
+      .leftJoinAndSelect("course.comments", "course_comment")
+      .where("LOWER(description) LIKE LOWER(:filters)", { filters: `%${filters}%` })
+      .orWhere("LOWER(initials) LIKE LOWER(:filters)", { filters: `%${filters}%` })
+      .orWhere("LOWER(professor) LIKE LOWER(:filters)", { filters: `%${filters}%` })
+      .orderBy("course.initials")
+      .take(limit)
       .getMany();
   }
 
@@ -24,7 +31,7 @@ export class CourseResolver {
     const course = await getConnection()
       .getRepository(Course)
       .createQueryBuilder("course")
-      .innerJoinAndSelect("course.comments", "course_comment")
+      .leftJoinAndSelect("course.comments", "course_comment")
       .orderBy(attribute, order)
       .where("course.initials = :initials", { initials: data.initials })
       .getOne();
