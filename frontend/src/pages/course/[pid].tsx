@@ -27,8 +27,8 @@ const Course = () => {
     variables: {
       initials: courseInitials,
       attribute: sortingAttribute,
-      order: sortingAttribute === "Score" ? "ACS" : "DESC"
-    }
+      order: sortingAttribute === "Score" ? "ACS" : "DESC",
+    },
   });
 
   const handleFormSubmit = (event: any) => {
