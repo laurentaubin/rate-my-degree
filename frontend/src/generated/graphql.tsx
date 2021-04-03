@@ -27,6 +27,12 @@ export type QueryCommentArgs = {
 };
 
 
+export type QueryCoursesArgs = {
+  limit?: Maybe<Scalars['Float']>;
+  filters: Scalars['String'];
+};
+
+
 export type QueryCourseArgs = {
   data: CourseInput;
 };
@@ -178,14 +184,17 @@ export type CourseQuery = (
   ) }
 );
 
-export type CoursesQueryVariables = Exact<{ [key: string]: never; }>;
+export type CoursesQueryVariables = Exact<{
+  filter: Scalars['String'];
+  limit?: Maybe<Scalars['Float']>;
+}>;
 
 
 export type CoursesQuery = (
   { __typename?: 'Query' }
   & { courses: Array<(
     { __typename?: 'Course' }
-    & Pick<Course, 'initials' | 'title' | 'description' | 'professor'>
+    & Pick<Course, 'initials' | 'title' | 'professor'>
   )> }
 );
 
@@ -267,11 +276,10 @@ export function useCourseQuery(options: Omit<Urql.UseQueryArgs<CourseQueryVariab
   return Urql.useQuery<CourseQuery>({ query: CourseDocument, ...options });
 };
 export const CoursesDocument = gql`
-    query Courses {
-  courses {
+    query Courses($filter: String!, $limit: Float) {
+  courses(filters: $filter, limit: $limit) {
     initials
     title
-    description
     professor
   }
 }

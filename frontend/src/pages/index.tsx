@@ -1,8 +1,7 @@
-import { SearchIcon } from "@chakra-ui/icons";
-import { Input, InputGroup, InputLeftAddon } from "@chakra-ui/input";
 import { Center, VStack, Text } from "@chakra-ui/layout";
 import React from "react";
 import { HomeHeader } from "../components/HomeHeader";
+import { SearchBar } from "../components/SearchBar";
 
 const Index = () => {
   return (
@@ -23,12 +22,7 @@ const Index = () => {
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor{" "}
         </Text>
         <Center minWidth="30vw">
-          <InputGroup marginTop="3vh">
-            <InputLeftAddon minHeight="6vh">
-              <SearchIcon />
-            </InputLeftAddon>
-            <Input placeholder="Rechercher un cours" minHeight="6vh" color="black" backgroundColor="white"></Input>
-          </InputGroup>
+          <SearchBar size={2} />
         </Center>
       </VStack>
     </>

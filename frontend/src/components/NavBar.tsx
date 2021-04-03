@@ -1,7 +1,7 @@
-import { SearchIcon } from "@chakra-ui/icons";
 import { Flex, Text } from "@chakra-ui/layout";
-import { Input, InputGroup, InputLeftAddon, InputRightElement, Link } from "@chakra-ui/react";
+import { InputGroup, InputRightElement, Link } from "@chakra-ui/react";
 import React from "react";
+import { SearchBar } from "./SearchBar";
 
 export const NavBar: React.FC<{}> = () => {
   return (
@@ -11,12 +11,7 @@ export const NavBar: React.FC<{}> = () => {
           Rate my GLO
         </Text>
       </Link>
-      <InputGroup marginTop="4vh" paddingLeft="20vw">
-        <InputLeftAddon minHeight="3vh">
-          <SearchIcon />
-        </InputLeftAddon>
-        <Input placeholder="Rechercher un cours" minHeight="3vh" color="black" backgroundColor="white"></Input>
-      </InputGroup>
+      <SearchBar size={1} paddingLeft="20vw" />
 
       <InputGroup marginTop="4vh" marginRight="15vw">
         <InputRightElement>

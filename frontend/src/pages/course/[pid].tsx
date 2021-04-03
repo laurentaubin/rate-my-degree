@@ -1,4 +1,3 @@
-import { Input } from "@chakra-ui/input";
 import { Button } from "@chakra-ui/button";
 import { Text } from "@chakra-ui/layout";
 import { Comment } from "../../components/Comment";
@@ -28,8 +27,8 @@ const Course = () => {
     variables: {
       initials: courseInitials,
       attribute: sortingAttribute,
-      order: sortingAttribute === "Score" ? "ACS" : "DESC",
-    },
+      order: sortingAttribute === "Score" ? "ACS" : "DESC"
+    }
   });
 
   const handleFormSubmit = (event: any) => {

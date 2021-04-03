@@ -1,8 +1,7 @@
-query Courses {
-  courses {
+query Courses($filter: String!, $limit: Float) {
+  courses(filters: $filter, limit: $limit) {
     initials
     title
-    description
     professor
   }
 }
