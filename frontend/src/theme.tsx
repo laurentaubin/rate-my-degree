@@ -26,6 +26,7 @@ const theme = extendTheme({
   colors: {
     black: "#16161D",
     main: "#FDCD89",
+    mainSelected: "#e6a64c",
     upvote: "#FF9900",
     downvote: "#6E51FF",
   },

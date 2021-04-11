@@ -75,29 +75,37 @@ const Course = () => {
             Commentaires
           </Heading>
           <SortingBar onSelectChange={handleSortingChange} />
-          <Box marginTop="4vh">
-            {data!.course.comments.map((comment) => {
-              const cookieName = `user-vote-${comment.id}`;
-              return (
-                !comment.isSubComment! && (
-                  <Stack key={comment.id} maxWidth="70vw" margin="6px" border="1px" borderRadius={12} direction="row" padding="1em">
-                    <Comment
-                      courseInitials={data!.course.initials}
-                      commentId={comment.id}
-                      userVote={cookies[cookieName]}
-                      setCookie={setCookie}
-                    />
-                  </Stack>
-                )
-              );
-            })}
-          </Box>
+          {data!.course.comments.map((comment) => {
+            const cookieName = `user-vote-${comment.id}`;
+            return (
+              !comment.isSubComment! && (
+                <Stack
+                  className="comment"
+                  key={comment.id}
+                  maxWidth="70vw"
+                  margin="6px"
+                  border="1px"
+                  borderRadius={12}
+                  direction="row"
+                  padding="1em"
+                >
+                  <Comment
+                    nestingLevel={0}
+                    courseInitials={data!.course.initials}
+                    commentId={comment.id}
+                    userVote={cookies[cookieName]}
+                    setCookie={setCookie}
+                  />
+                </Stack>
+              )
+            );
+          })}
           <form onSubmit={handleFormSubmit}>
             <Stack>
               <Textarea
                 value={newComment}
                 backgroundColor="gray.100"
-                placeholder="Add comment"
+                placeholder="Ajouter un commentaire"
                 maxWidth="70vw"
                 marginLeft="1"
                 onChange={handleCommentInputChange}

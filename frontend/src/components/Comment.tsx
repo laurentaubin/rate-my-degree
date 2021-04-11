@@ -13,9 +13,10 @@ interface CommentProps {
   commentId: string;
   userVote: number;
   setCookie: (name: string, value: number) => void;
+  nestingLevel: number;
 }
 
-export const Comment: React.FC<CommentProps> = ({ courseInitials, commentId, userVote, setCookie }) => {
+export const Comment: React.FC<CommentProps> = ({ courseInitials, commentId, userVote, setCookie, nestingLevel: nestingLevel }) => {
   const [replying, setReplying] = useState(false);
   const [reply, setReply] = useState("");
 
@@ -65,34 +66,48 @@ export const Comment: React.FC<CommentProps> = ({ courseInitials, commentId, use
   };
 
   return (
-    <Flex>
-      <Avatar src="https://bit.ly/sage-adebayo" />
-      <Box ml="3">
-        <Flex>
-          <Text fontWeight="semibold">{author}</Text>
-          <Badge marginLeft="2" backgroundColor="main">
-            {formatDate(new Date(parseInt(createdAt)))}
-          </Badge>
-        </Flex>
-        <Text fontSize="sm">{content}</Text>
-      </Box>
-      <UpvoteSection commentId={id} currentScore={score} initialUserVote={userVote} setCookie={setCookie} />
-      {!replying && (
-        <Button backgroundColor="white" border="2px" _hover={{ backgroundColor: "main" }} borderColor="main" onClick={handleReplyClick}>
-          Répondre
-        </Button>
-      )}
+    <Stack width="100%" direction="column">
+      <Flex>
+        <Avatar src="https://bit.ly/sage-adebayo" />
+        <Box ml="3">
+          <Flex>
+            <Text fontWeight="semibold">{author}</Text>
+            <Badge marginLeft="2" backgroundColor="main">
+              {formatDate(new Date(parseInt(createdAt)))}
+            </Badge>
+          </Flex>
+          <Text fontSize="sm" marginTop="8px" paddingRight="16px">
+            {content}
+          </Text>
+        </Box>
+        <Box marginLeft="auto">
+          <UpvoteSection commentId={id} currentScore={score} initialUserVote={userVote} setCookie={setCookie} />
+          {!replying && (
+            <Button backgroundColor="white" border="2px" _hover={{ backgroundColor: "main" }} borderColor="main" onClick={handleReplyClick}>
+              Répondre
+            </Button>
+          )}
+        </Box>
+      </Flex>
       {replying && (
         <form>
-          <Input value={reply} placeholder="Ajouter une réponse" backgroundColor="gray.100" onChange={handleReplyChange}></Input>
+          <Input
+            marginTop="12px"
+            value={reply}
+            placeholder="Ajouter une réponse"
+            backgroundColor="gray.100"
+            onChange={handleReplyChange}
+          ></Input>
           <Flex>
             <Button backgroundColor="white" border="1px" borderColor="black" onClick={handleCancelClick}>
               Annuler
             </Button>
             <Button
               type="submit"
+              border="2px"
+              borderColor="main"
               backgroundColor="main"
-              _hover={{ backgroundColor: "white", border: "2px", borderColor: "main" }}
+              _hover={{ backgroundColor: "mainSelected" }}
               onClick={handleReplySubmit}
             >
               Soumettre
@@ -100,14 +115,22 @@ export const Comment: React.FC<CommentProps> = ({ courseInitials, commentId, use
           </Flex>
         </form>
       )}
-      {subComments!.map((subComment) => {
-        const cookieName = `user-vote-${subComment.id}`;
-        return (
-          <Stack key={subComment.id} direction="row">
-            <Comment courseInitials={courseInitials} commentId={subComment.id} userVote={cookies[cookieName]} setCookie={setCookie} />
-          </Stack>
-        );
-      })}
-    </Flex>
+      <Stack direction="column">
+        {subComments!.map((subComment) => {
+          const cookieName = `user-vote-${subComment.id}`;
+          return (
+            <Stack key={subComment.id} marginLeft={nestingLevel < 6 ? "30px" : "0px"} direction="row">
+              <Comment
+                courseInitials={courseInitials}
+                commentId={subComment.id}
+                userVote={cookies[cookieName]}
+                setCookie={setCookie}
+                nestingLevel={nestingLevel++}
+              />
+            </Stack>
+          );
+        })}
+      </Stack>
+    </Stack>
   );
 };

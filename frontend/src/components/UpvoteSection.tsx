@@ -1,5 +1,5 @@
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Center, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useVoteMutation } from "../generated/graphql";
 
@@ -73,12 +73,14 @@ export const UpvoteSection: React.FC<UpvoteSectionProps> = ({ commentId, current
   };
 
   return (
-    <Box marginLeft="24px">
-      <TriangleUpIcon color={userVote == 1 ? "upvote" : "black"} onClick={handleUpvote} />
-      <Text fontSize="md" fontWeight="semibold" userSelect="none">
-        {score}
-      </Text>
-      <TriangleDownIcon color={userVote == -1 ? "downvote" : "black"} onClick={handleDownvote} />
-    </Box>
+    <Center>
+      <Box textAlign="center">
+        <TriangleUpIcon color={userVote == 1 ? "upvote" : "black"} onClick={handleUpvote} />
+        <Text fontSize="md" fontWeight="semibold" userSelect="none">
+          {score}
+        </Text>
+        <TriangleDownIcon color={userVote == -1 ? "downvote" : "black"} onClick={handleDownvote} />
+      </Box>
+    </Center>
   );
 };
