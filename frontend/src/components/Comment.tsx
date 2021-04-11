@@ -68,7 +68,7 @@ export const Comment: React.FC<CommentProps> = ({ courseInitials, commentId, use
   return (
     <Stack width="100%" direction="column">
       <Flex>
-        <Avatar src="https://bit.ly/sage-adebayo" />
+        <Avatar ddsrc="https://bit.ly/sage-adebayo" />
         <Box ml="3">
           <Flex>
             <Text fontWeight="semibold">{author}</Text>
@@ -80,7 +80,7 @@ export const Comment: React.FC<CommentProps> = ({ courseInitials, commentId, use
             {content}
           </Text>
         </Box>
-        <Box marginLeft="auto">
+        <Box marginLeft="auto" minWidth="12vh">
           <UpvoteSection commentId={id} currentScore={score} initialUserVote={userVote} setCookie={setCookie} />
           {!replying && (
             <Button backgroundColor="white" border="2px" _hover={{ backgroundColor: "main" }} borderColor="main" onClick={handleReplyClick}>
