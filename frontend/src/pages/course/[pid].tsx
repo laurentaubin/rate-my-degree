@@ -14,6 +14,7 @@ import { Box, Textarea } from "@chakra-ui/react";
 const Course = () => {
   const [newComment, setNewComment] = useState("");
   const [sortingAttribute, setSortingAttribute] = useState("score");
+  const [inputError, setInputError] = useState(false);
 
   const router = useRouter();
 
@@ -31,9 +32,14 @@ const Course = () => {
     },
   });
 
-  const handleFormSubmit = (event: any) => {
+  const handleFormSubmit = async (event: any) => {
     event.preventDefault();
-    addComment({ courseInitials: data!.course.initials, content: newComment });
+    const { error } = await addComment({ courseInitials: data!.course.initials, content: newComment });
+    if (error) {
+      setInputError(true);
+      return;
+    }
+
     router.reload();
   };
 
@@ -109,7 +115,13 @@ const Course = () => {
                 maxWidth="70vw"
                 marginLeft="1"
                 onChange={handleCommentInputChange}
+                isInvalid={inputError}
               ></Textarea>
+              {inputError && (
+                <Text marginLeft="1" color="red">
+                  Le contenu du commentaire ne peut pas être vide.
+                </Text>
+              )}
               <Button
                 type="submit"
                 backgroundColor="main"

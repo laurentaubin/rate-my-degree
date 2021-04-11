@@ -5,6 +5,7 @@ import { AddCommentInput } from "../inputs/AddCommentInput";
 import { getConnection } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
 import { CourseInput } from "../inputs/CourseInput";
+import { UserInputError } from "apollo-server-errors";
 
 @Resolver()
 export class CourseResolver {
@@ -57,6 +58,9 @@ export class CourseResolver {
   @Mutation(() => Boolean)
   async addComment(@Arg("data") data: AddCommentInput): Promise<Boolean> {
     const { courseInitials, content, parentId } = data;
+    if (!content) {
+      throw new UserInputError("Comment content cannot be empty");
+    }
     const commentId = uuidv4();
 
     await getConnection().transaction(async (tm) => {

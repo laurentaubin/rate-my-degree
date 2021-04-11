@@ -4,6 +4,7 @@ import React from "react";
 import { SearchBar } from "./SearchBar";
 
 export const NavBar: React.FC<{}> = () => {
+  console.log("reder");
   return (
     <Flex backgroundColor="black" minHeight="12vh">
       <Link href="/" marginTop="4vh" minWidth="12rem" marginLeft="5vw">

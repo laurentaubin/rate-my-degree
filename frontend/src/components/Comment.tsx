@@ -1,11 +1,10 @@
 import { Badge, Stack } from "@chakra-ui/layout";
-import { Avatar, Box, Button, Flex, Input, Text } from "@chakra-ui/react";
+import { Avatar, Box, Button, Flex, Text, Textarea } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useAddCommentMutation, useCommentQuery } from "../generated/graphql";
 import { formatDate } from "../utils/formatDate";
-import { Layout } from "./Layout";
 import { UpvoteSection } from "./UpvoteSection";
 
 interface CommentProps {
@@ -19,6 +18,11 @@ interface CommentProps {
 export const Comment: React.FC<CommentProps> = ({ courseInitials, commentId, userVote, setCookie, nestingLevel: nestingLevel }) => {
   const [replying, setReplying] = useState(false);
   const [reply, setReply] = useState("");
+  const [inputError, setInputError] = useState(false);
+
+  useEffect(() => {
+    setInputError(false);
+  }, [replying]);
 
   const [{ data, fetching }] = useCommentQuery({
     variables: {
@@ -37,11 +41,7 @@ export const Comment: React.FC<CommentProps> = ({ courseInitials, commentId, use
   }
 
   if (!data && fetching) {
-    return (
-      <Layout>
-        <div>loading...</div>
-      </Layout>
-    );
+    return <div>loading...</div>;
   }
 
   const { id, author, content, createdAt, score, subComments } = { ...data!.comment, author: "Anonymous" };
@@ -54,9 +54,14 @@ export const Comment: React.FC<CommentProps> = ({ courseInitials, commentId, use
     setReply(event.target.value);
   };
 
-  const handleReplySubmit = (event: any) => {
+  const handleReplySubmit = async (event: any) => {
     event.preventDefault();
-    addComment({ courseInitials: courseInitials, content: reply, parentId: commentId });
+    const { error } = await addComment({ courseInitials: courseInitials, content: reply, parentId: commentId });
+    if (error) {
+      setInputError(true);
+      return;
+    }
+
     router.reload();
   };
 
@@ -91,28 +96,37 @@ export const Comment: React.FC<CommentProps> = ({ courseInitials, commentId, use
       </Flex>
       {replying && (
         <form>
-          <Input
-            marginTop="12px"
-            value={reply}
-            placeholder="Ajouter une réponse"
-            backgroundColor="gray.100"
-            onChange={handleReplyChange}
-          ></Input>
-          <Flex>
-            <Button backgroundColor="white" border="1px" borderColor="black" onClick={handleCancelClick}>
-              Annuler
-            </Button>
-            <Button
-              type="submit"
-              border="2px"
-              borderColor="main"
-              backgroundColor="main"
-              _hover={{ backgroundColor: "mainSelected" }}
-              onClick={handleReplySubmit}
-            >
-              Soumettre
-            </Button>
-          </Flex>
+          <Stack>
+            <Textarea
+              value={reply}
+              backgroundColor="gray.100"
+              placeholder="Ajouter un commentaire"
+              maxWidth="70vw"
+              marginLeft="1"
+              onChange={handleReplyChange}
+              isInvalid={inputError}
+            ></Textarea>
+            {inputError && (
+              <Text marginLeft="1" color="red">
+                Le contenu du commentaire ne peut pas être vide.
+              </Text>
+            )}
+            <Flex>
+              <Button backgroundColor="white" border="1px" borderColor="black" onClick={handleCancelClick}>
+                Annuler
+              </Button>
+              <Button
+                type="submit"
+                border="2px"
+                borderColor="main"
+                backgroundColor="main"
+                _hover={{ backgroundColor: "mainSelected" }}
+                onClick={handleReplySubmit}
+              >
+                Soumettre
+              </Button>
+            </Flex>
+          </Stack>
         </form>
       )}
       <Stack direction="column">
