@@ -9,16 +9,18 @@ import { CourseInput } from "../inputs/CourseInput";
 @Resolver()
 export class CourseResolver {
   @Query(() => [Course])
-  async courses(@Arg("filters") filters: string, @Arg("limit", { nullable: true }) limit: number): Promise<Course[]> {
-    // const filteredWords = filters.split(" ");
+  async courses(@Arg("filters") filter: string, @Arg("limit", { nullable: true }) limit: number): Promise<Course[]> {
+    if (!filter) {
+      return [];
+    }
 
     return await getConnection()
       .getRepository(Course)
       .createQueryBuilder("course")
       .leftJoinAndSelect("course.comments", "course_comment")
-      .where("LOWER(description) LIKE LOWER(:filters)", { filters: `%${filters}%` })
-      .orWhere("LOWER(initials) LIKE LOWER(:filters)", { filters: `%${filters}%` })
-      .orWhere("LOWER(professor) LIKE LOWER(:filters)", { filters: `%${filters}%` })
+      .where("LOWER(description) LIKE LOWER(:filters)", { filters: `%${filter}%` })
+      .orWhere("LOWER(initials) LIKE LOWER(:filters)", { filters: `%${filter}%` })
+      .orWhere("LOWER(professor) LIKE LOWER(:filters)", { filters: `%${filter}%` })
       .orderBy("course.initials")
       .take(limit)
       .getMany();

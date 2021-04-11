@@ -9,16 +9,14 @@ interface SearchBarProps extends HTMLChakraProps<"div"> {
 }
 
 export const SearchBar: React.FC<SearchBarProps> = ({ size, ...props }) => {
-  const [query, setQuery] = useState("9999");
+  const [query, setQuery] = useState("");
 
-  const [{ data, fetching, error }] = useCoursesQuery({
+  const [{ data, fetching }] = useCoursesQuery({
     variables: {
       filter: query,
-      limit: 5
-    }
+      limit: 5,
+    },
   });
-
-  console.log(!!(!fetching && data));
 
   const handleInputChange = (event: any) => {
     setQuery(event.target.value);
