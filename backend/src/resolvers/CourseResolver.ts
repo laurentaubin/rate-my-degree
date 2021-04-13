@@ -29,24 +29,13 @@ export class CourseResolver {
   }
 
   @Query(() => Course)
-  async course(@Arg("data") data: CourseInput): Promise<Course | undefined> {
-    const { attribute, order } = data.sortBy;
-
-    const course = await getConnection()
+  course(@Arg("data") data: CourseInput): Promise<Course | undefined> {
+    return getConnection()
       .getRepository(Course)
       .createQueryBuilder("course")
-      .leftJoinAndSelect("course.comments", "course_comment")
-      .orderBy(attribute, order)
+      .select()
       .where("course.initials = :initials", { initials: data.initials })
       .getOne();
-
-    for (const comment of course!.comments) {
-      if (comment.parentId) {
-        comment.isSubComment = true;
-      }
-    }
-
-    return course;
   }
 
   @Mutation(() => Course)
@@ -78,7 +67,17 @@ export class CourseResolver {
   }
 
   @FieldResolver()
-  async comments(@Root() course: Course) {
-    return CourseComment.find({ where: { course: course.initials } });
+  comments(
+    @Root() course: Course,
+    @Arg("attribute", (_type) => String, { defaultValue: "score" }) attribute: "score" | "date",
+    @Arg("order", (_type) => String, { defaultValue: "DESC" }) order: "ASC" | "DESC"
+  ): Promise<CourseComment[]> {
+    return getConnection()
+      .getRepository(CourseComment)
+      .createQueryBuilder("course_comment")
+      .select()
+      .orderBy(attribute, order)
+      .where("course_comment.courseInitials = :initials", { initials: course.initials })
+      .getMany();
   }
 }

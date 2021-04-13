@@ -82,7 +82,6 @@ const Course = () => {
           </Heading>
           <SortingBar onSelectChange={handleSortingChange} />
           {data!.course.comments.map((comment) => {
-            console.log(comment.subComments);
             const cookieName = `user-vote-${comment.id}`;
             return (
               !comment.isSubComment! && (

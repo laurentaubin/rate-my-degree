@@ -1,10 +1,10 @@
 query Course($initials: String!, $order: String!, $attribute: String!) {
-  course(data: { initials: $initials, sortBy: { order: $order, attribute: $attribute } }) {
+  course(data: { initials: $initials }) {
     title
     initials
     professor
     description
-    comments {
+    comments(order: $order, attribute: $attribute) {
       ...CommentFields
       ...SubComments
     }

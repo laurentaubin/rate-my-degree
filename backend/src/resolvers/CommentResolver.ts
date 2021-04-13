@@ -10,8 +10,8 @@ export class CommentResolver {
     return CourseComment.find({ where: { parentId: comment.id } });
   }
 
-  @FieldResolver((_of) => CourseComment)
-  isSubComment(@Root() comment: CourseComment) {
+  @FieldResolver()
+  isSubComment(@Root() comment: CourseComment): boolean {
     return comment.parentId != null;
   }
 

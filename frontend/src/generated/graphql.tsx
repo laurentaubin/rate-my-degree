@@ -40,6 +40,12 @@ export type Course = {
   comments: Array<CourseComment>;
 };
 
+
+export type CourseCommentsArgs = {
+  order?: Maybe<Scalars['String']>;
+  attribute?: Maybe<Scalars['String']>;
+};
+
 export type CourseComment = {
   __typename?: 'CourseComment';
   id: Scalars['String'];
@@ -52,12 +58,6 @@ export type CourseComment = {
 
 export type CourseInput = {
   initials: Scalars['String'];
-  sortBy: SortBy;
-};
-
-export type SortBy = {
-  attribute: Scalars['String'];
-  order: Scalars['String'];
 };
 
 export type Mutation = {
@@ -276,14 +276,12 @@ export function useVoteMutation() {
 };
 export const CourseDocument = gql`
     query Course($initials: String!, $order: String!, $attribute: String!) {
-  course(
-    data: {initials: $initials, sortBy: {order: $order, attribute: $attribute}}
-  ) {
+  course(data: {initials: $initials}) {
     title
     initials
     professor
     description
-    comments {
+    comments(order: $order, attribute: $attribute) {
       ...CommentFields
       ...SubComments
     }
