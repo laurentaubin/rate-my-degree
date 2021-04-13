@@ -38,7 +38,6 @@ export const SearchBar: React.FC<SearchBarProps> = ({ size, ...props }) => {
       </InputGroup>
       {!!(!fetching && data) ? (
         data!.courses.map((course) => {
-          console.log("rendering");
           return <Text color="white">{course.initials}</Text>;
         })
       ) : (

@@ -6,7 +6,6 @@ import { SearchBar } from "./SearchBar";
 
 export const NavBar: React.FC<{}> = () => {
   const { width } = useWindowDimensions();
-  console.log(width);
 
   return (
     <Flex backgroundColor="black" minHeight="12vh">
