@@ -3,19 +3,35 @@ import { Avatar, Box, Button, Flex, Text, Textarea } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import { useAddCommentMutation, useCommentQuery } from "../generated/graphql";
+import { useAddCommentMutation } from "../generated/graphql";
 import { formatDate } from "../utils/formatDate";
 import { UpvoteSection } from "./UpvoteSection";
 
 interface CommentProps {
   courseInitials: string;
-  commentId: string;
+  id: string;
+  score: number;
+  content: string;
+  createdAt: string;
+  subComments: [CommentProps] | [] | any;
   userVote: number;
   setCookie: (name: string, value: number) => void;
   nestingLevel: number;
 }
 
-export const Comment: React.FC<CommentProps> = ({ courseInitials, commentId, userVote, setCookie, nestingLevel: nestingLevel }) => {
+export const Comment: React.FC<CommentProps> = ({
+  courseInitials,
+  id,
+  score,
+  content,
+  createdAt,
+  subComments,
+  setCookie,
+  userVote,
+  nestingLevel,
+}) => {
+  const author = "Anonymous";
+
   const [replying, setReplying] = useState(false);
   const [reply, setReply] = useState("");
   const [inputError, setInputError] = useState(false);
@@ -24,27 +40,11 @@ export const Comment: React.FC<CommentProps> = ({ courseInitials, commentId, use
     setInputError(false);
   }, [replying]);
 
-  const [{ data, fetching }] = useCommentQuery({
-    variables: {
-      id: commentId,
-    },
-  });
-
   const [, addComment] = useAddCommentMutation();
 
   const [cookies, _] = useCookies(["user-vote"]);
 
   const router = useRouter();
-
-  if (!data && !fetching) {
-    return <div>fucky wucky</div>;
-  }
-
-  if (!data && fetching) {
-    return <div>loading...</div>;
-  }
-
-  const { id, author, content, createdAt, score, subComments } = { ...data!.comment, author: "Anonymous" };
 
   const handleReplyClick = () => {
     setReplying(true);
@@ -56,7 +56,7 @@ export const Comment: React.FC<CommentProps> = ({ courseInitials, commentId, use
 
   const handleReplySubmit = async (event: any) => {
     event.preventDefault();
-    const { error } = await addComment({ courseInitials: courseInitials, content: reply, parentId: commentId });
+    const { error } = await addComment({ courseInitials: courseInitials, content: reply, parentId: id });
     if (error) {
       setInputError(true);
       return;
@@ -130,20 +130,25 @@ export const Comment: React.FC<CommentProps> = ({ courseInitials, commentId, use
         </form>
       )}
       <Stack direction="column">
-        {subComments!.map((subComment) => {
-          const cookieName = `user-vote-${subComment.id}`;
-          return (
-            <Stack key={subComment.id} marginLeft={nestingLevel < 6 ? "30px" : "0px"} direction="row">
-              <Comment
-                courseInitials={courseInitials}
-                commentId={subComment.id}
-                userVote={cookies[cookieName]}
-                setCookie={setCookie}
-                nestingLevel={nestingLevel++}
-              />
-            </Stack>
-          );
-        })}
+        {subComments.length != 0 &&
+          subComments.map((subComment: CommentProps) => {
+            const cookieName = `user-vote-${subComment.id}`;
+            return (
+              <Stack key={subComment.id} marginLeft={nestingLevel < 6 ? "30px" : "0px"} direction="row">
+                <Comment
+                  courseInitials={courseInitials}
+                  id={subComment.id}
+                  score={subComment.score}
+                  content={subComment.content}
+                  createdAt={subComment.createdAt}
+                  subComments={subComment.subComments}
+                  userVote={cookies[cookieName]}
+                  setCookie={setCookie}
+                  nestingLevel={nestingLevel++}
+                />
+              </Stack>
+            );
+          })}
       </Stack>
     </Stack>
   );

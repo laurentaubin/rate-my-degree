@@ -16,14 +16,8 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
-  comment: CourseComment;
   courses: Array<Course>;
   course: Course;
-};
-
-
-export type QueryCommentArgs = {
-  id: Scalars['String'];
 };
 
 
@@ -37,6 +31,15 @@ export type QueryCourseArgs = {
   data: CourseInput;
 };
 
+export type Course = {
+  __typename?: 'Course';
+  initials: Scalars['String'];
+  title: Scalars['String'];
+  description: Scalars['String'];
+  professor: Scalars['String'];
+  comments: Array<CourseComment>;
+};
+
 export type CourseComment = {
   __typename?: 'CourseComment';
   id: Scalars['String'];
@@ -45,15 +48,6 @@ export type CourseComment = {
   content: Scalars['String'];
   score: Scalars['Float'];
   createdAt: Scalars['String'];
-};
-
-export type Course = {
-  __typename?: 'Course';
-  initials: Scalars['String'];
-  title: Scalars['String'];
-  description: Scalars['String'];
-  professor: Scalars['String'];
-  comments: Array<CourseComment>;
 };
 
 export type CourseInput = {
@@ -148,27 +142,10 @@ export type VoteMutation = (
   ) }
 );
 
-export type CommentQueryVariables = Exact<{
-  id: Scalars['String'];
-}>;
-
-
-export type CommentQuery = (
-  { __typename?: 'Query' }
-  & { comment: (
-    { __typename?: 'CourseComment' }
-    & Pick<CourseComment, 'id' | 'content' | 'createdAt' | 'score'>
-    & { subComments?: Maybe<Array<(
-      { __typename?: 'CourseComment' }
-      & Pick<CourseComment, 'id'>
-    )>> }
-  ) }
-);
-
 export type CourseQueryVariables = Exact<{
   initials: Scalars['String'];
-  attribute: Scalars['String'];
   order: Scalars['String'];
+  attribute: Scalars['String'];
 }>;
 
 
@@ -176,12 +153,43 @@ export type CourseQuery = (
   { __typename?: 'Query' }
   & { course: (
     { __typename?: 'Course' }
-    & Pick<Course, 'initials' | 'title' | 'description' | 'professor'>
+    & Pick<Course, 'title' | 'initials' | 'professor' | 'description'>
     & { comments: Array<(
       { __typename?: 'CourseComment' }
-      & Pick<CourseComment, 'id' | 'isSubComment'>
+      & CommentFieldsFragment
+      & SubCommentsFragment
     )> }
   ) }
+);
+
+export type SubCommentsFragment = (
+  { __typename?: 'CourseComment' }
+  & { subComments?: Maybe<Array<(
+    { __typename?: 'CourseComment' }
+    & { subComments?: Maybe<Array<(
+      { __typename?: 'CourseComment' }
+      & { subComments?: Maybe<Array<(
+        { __typename?: 'CourseComment' }
+        & { subComments?: Maybe<Array<(
+          { __typename?: 'CourseComment' }
+          & { subComments?: Maybe<Array<(
+            { __typename?: 'CourseComment' }
+            & CommentFieldsFragment
+          )>> }
+          & CommentFieldsFragment
+        )>> }
+        & CommentFieldsFragment
+      )>> }
+      & CommentFieldsFragment
+    )>> }
+    & CommentFieldsFragment
+  )>> }
+  & CommentFieldsFragment
+);
+
+export type CommentFieldsFragment = (
+  { __typename?: 'CourseComment' }
+  & Pick<CourseComment, 'id' | 'content' | 'score' | 'createdAt' | 'isSubComment'>
 );
 
 export type CoursesQueryVariables = Exact<{
@@ -198,7 +206,35 @@ export type CoursesQuery = (
   )> }
 );
 
-
+export const CommentFieldsFragmentDoc = gql`
+    fragment CommentFields on CourseComment {
+  id
+  content
+  score
+  createdAt
+  isSubComment
+}
+    `;
+export const SubCommentsFragmentDoc = gql`
+    fragment SubComments on CourseComment {
+  ...CommentFields
+  subComments {
+    ...CommentFields
+    subComments {
+      ...CommentFields
+      subComments {
+        ...CommentFields
+        subComments {
+          ...CommentFields
+          subComments {
+            ...CommentFields
+          }
+        }
+      }
+    }
+  }
+}
+    ${CommentFieldsFragmentDoc}`;
 export const AddCommentDocument = gql`
     mutation AddComment($courseInitials: String!, $content: String!, $parentId: String) {
   addComment(
@@ -238,39 +274,23 @@ export const VoteDocument = gql`
 export function useVoteMutation() {
   return Urql.useMutation<VoteMutation, VoteMutationVariables>(VoteDocument);
 };
-export const CommentDocument = gql`
-    query Comment($id: String!) {
-  comment(id: $id) {
-    id
-    content
-    createdAt
-    score
-    subComments {
-      id
-    }
-  }
-}
-    `;
-
-export function useCommentQuery(options: Omit<Urql.UseQueryArgs<CommentQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<CommentQuery>({ query: CommentDocument, ...options });
-};
 export const CourseDocument = gql`
-    query Course($initials: String!, $attribute: String!, $order: String!) {
+    query Course($initials: String!, $order: String!, $attribute: String!) {
   course(
-    data: {initials: $initials, sortBy: {attribute: $attribute, order: $order}}
+    data: {initials: $initials, sortBy: {order: $order, attribute: $attribute}}
   ) {
-    initials
     title
-    description
+    initials
     professor
+    description
     comments {
-      id
-      isSubComment
+      ...CommentFields
+      ...SubComments
     }
   }
 }
-    `;
+    ${CommentFieldsFragmentDoc}
+${SubCommentsFragmentDoc}`;
 
 export function useCourseQuery(options: Omit<Urql.UseQueryArgs<CourseQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<CourseQuery>({ query: CourseDocument, ...options });

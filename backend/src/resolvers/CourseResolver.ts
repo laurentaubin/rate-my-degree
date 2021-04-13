@@ -1,13 +1,14 @@
 import { Course } from "../entities/Course";
 import { CreateCourseInput } from "../inputs/CreateCourseInput";
-import { Resolver, Query, Mutation, Arg } from "type-graphql";
+import { Resolver, Query, Mutation, Arg, FieldResolver, Root } from "type-graphql";
 import { AddCommentInput } from "../inputs/AddCommentInput";
 import { getConnection } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
 import { CourseInput } from "../inputs/CourseInput";
 import { UserInputError } from "apollo-server-errors";
+import { CourseComment } from "../entities/CourseComment";
 
-@Resolver()
+@Resolver((_of) => Course)
 export class CourseResolver {
   @Query(() => [Course])
   async courses(@Arg("filters") filter: string, @Arg("limit", { nullable: true }) limit: number): Promise<Course[]> {
@@ -18,7 +19,7 @@ export class CourseResolver {
     return await getConnection()
       .getRepository(Course)
       .createQueryBuilder("course")
-      .leftJoinAndSelect("course.comments", "course_comment")
+      .select()
       .where("LOWER(description) LIKE LOWER(:filters)", { filters: `%${filter}%` })
       .orWhere("LOWER(initials) LIKE LOWER(:filters)", { filters: `%${filter}%` })
       .orWhere("LOWER(professor) LIKE LOWER(:filters)", { filters: `%${filter}%` })
@@ -74,5 +75,10 @@ export class CourseResolver {
     });
 
     return true;
+  }
+
+  @FieldResolver()
+  async comments(@Root() course: Course) {
+    return CourseComment.find({ where: { course: course.initials } });
   }
 }

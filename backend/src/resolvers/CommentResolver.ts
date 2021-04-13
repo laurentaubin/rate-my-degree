@@ -1,17 +1,18 @@
 import { CourseComment } from "../entities/CourseComment";
 import { VoteInput } from "../inputs/VoteInput";
-import { Resolver, Mutation, Arg, Query } from "type-graphql";
+import { Resolver, Mutation, Arg, FieldResolver, Root } from "type-graphql";
 import { getConnection } from "typeorm";
 
-@Resolver()
+@Resolver((_of) => CourseComment)
 export class CommentResolver {
-  @Query(() => CourseComment)
-  async comment(@Arg("id") id: string): Promise<CourseComment | undefined> {
-    const comment = await CourseComment.findOne({ where: { id: id } });
-    const subComments = await CourseComment.find({ where: { parentId: id } });
-    comment!.subComments = subComments;
+  @FieldResolver((_of) => CourseComment)
+  subComments(@Root() comment: CourseComment) {
+    return CourseComment.find({ where: { parentId: comment.id } });
+  }
 
-    return comment;
+  @FieldResolver((_of) => CourseComment)
+  isSubComment(@Root() comment: CourseComment) {
+    return comment.parentId != null;
   }
 
   @Mutation(() => CourseComment)

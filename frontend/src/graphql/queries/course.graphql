@@ -1,12 +1,40 @@
-query Course($initials: String!, $attribute: String!, $order: String!) {
-  course(data: { initials: $initials, sortBy: { attribute: $attribute, order: $order } }) {
-    initials
+query Course($initials: String!, $order: String!, $attribute: String!) {
+  course(data: { initials: $initials, sortBy: { order: $order, attribute: $attribute } }) {
     title
-    description
+    initials
     professor
+    description
     comments {
-      id
-      isSubComment
+      ...CommentFields
+      ...SubComments
     }
   }
+}
+
+fragment SubComments on CourseComment {
+  # We can easily scale up to n recusions by adding n more nestings
+  ...CommentFields
+  subComments {
+    ...CommentFields
+    subComments {
+      ...CommentFields
+      subComments {
+        ...CommentFields
+        subComments {
+          ...CommentFields
+          subComments {
+            ...CommentFields
+          }
+        }
+      }
+    }
+  }
+}
+
+fragment CommentFields on CourseComment {
+  id
+  content
+  score
+  createdAt
+  isSubComment
 }

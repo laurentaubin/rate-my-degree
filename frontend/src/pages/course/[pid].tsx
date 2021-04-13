@@ -82,6 +82,7 @@ const Course = () => {
           </Heading>
           <SortingBar onSelectChange={handleSortingChange} />
           {data!.course.comments.map((comment) => {
+            console.log(comment.subComments);
             const cookieName = `user-vote-${comment.id}`;
             return (
               !comment.isSubComment! && (
@@ -96,11 +97,15 @@ const Course = () => {
                   padding="1em"
                 >
                   <Comment
-                    nestingLevel={0}
                     courseInitials={data!.course.initials}
-                    commentId={comment.id}
+                    id={comment.id}
+                    score={comment.score}
+                    content={comment.content}
+                    createdAt={comment.createdAt}
+                    subComments={comment.subComments}
                     userVote={cookies[cookieName]}
                     setCookie={setCookie}
+                    nestingLevel={0}
                   />
                 </Stack>
               )
