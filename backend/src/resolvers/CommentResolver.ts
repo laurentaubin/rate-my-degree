@@ -10,11 +10,6 @@ export class CommentResolver {
     return CourseComment.find({ where: { parentId: comment.id } });
   }
 
-  @FieldResolver()
-  isSubComment(@Root() comment: CourseComment): boolean {
-    return comment.parentId != null;
-  }
-
   @Mutation(() => CourseComment)
   async vote(@Arg("data") data: VoteInput): Promise<CourseComment | undefined> {
     const { score, commentId } = data;

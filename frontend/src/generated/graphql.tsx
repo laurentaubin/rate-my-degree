@@ -50,7 +50,6 @@ export type CourseComment = {
   __typename?: 'CourseComment';
   id: Scalars['String'];
   subComments?: Maybe<Array<CourseComment>>;
-  isSubComment: Scalars['Boolean'];
   content: Scalars['String'];
   score: Scalars['Float'];
   createdAt: Scalars['String'];
@@ -189,7 +188,7 @@ export type SubCommentsFragment = (
 
 export type CommentFieldsFragment = (
   { __typename?: 'CourseComment' }
-  & Pick<CourseComment, 'id' | 'content' | 'score' | 'createdAt' | 'isSubComment'>
+  & Pick<CourseComment, 'id' | 'content' | 'score' | 'createdAt'>
 );
 
 export type CoursesQueryVariables = Exact<{
@@ -212,7 +211,6 @@ export const CommentFieldsFragmentDoc = gql`
   content
   score
   createdAt
-  isSubComment
 }
     `;
 export const SubCommentsFragmentDoc = gql`

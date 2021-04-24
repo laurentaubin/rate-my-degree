@@ -36,5 +36,4 @@ fragment CommentFields on CourseComment {
   content
   score
   createdAt
-  isSubComment
 }

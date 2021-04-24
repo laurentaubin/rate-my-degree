@@ -16,9 +16,6 @@ export class CourseComment extends BaseEntity {
   subComments: CourseComment[];
 
   @Field()
-  isSubComment: Boolean = false;
-
-  @Field()
   @Column()
   content: string;
 

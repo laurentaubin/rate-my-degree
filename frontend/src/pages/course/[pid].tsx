@@ -84,30 +84,28 @@ const Course = () => {
           {data!.course.comments.map((comment) => {
             const cookieName = `user-vote-${comment.id}`;
             return (
-              !comment.isSubComment! && (
-                <Stack
-                  className="comment"
-                  key={comment.id}
-                  maxWidth={{ sm: "100%", xl: "70vw" }}
-                  margin="6px"
-                  border="1px"
-                  borderRadius={12}
-                  direction="row"
-                  padding="1em"
-                >
-                  <Comment
-                    courseInitials={data!.course.initials}
-                    id={comment.id}
-                    score={comment.score}
-                    content={comment.content}
-                    createdAt={comment.createdAt}
-                    subComments={comment.subComments}
-                    userVote={cookies[cookieName]}
-                    setCookie={setCookie}
-                    nestingLevel={0}
-                  />
-                </Stack>
-              )
+              <Stack
+                className="comment"
+                key={comment.id}
+                maxWidth={{ sm: "100%", xl: "70vw" }}
+                margin="6px"
+                border="1px"
+                borderRadius={12}
+                direction="row"
+                padding="1em"
+              >
+                <Comment
+                  courseInitials={data!.course.initials}
+                  id={comment.id}
+                  score={comment.score}
+                  content={comment.content}
+                  createdAt={comment.createdAt}
+                  subComments={comment.subComments}
+                  userVote={cookies[cookieName]}
+                  setCookie={setCookie}
+                  nestingLevel={0}
+                />
+              </Stack>
             );
           })}
           <form onSubmit={handleFormSubmit}>

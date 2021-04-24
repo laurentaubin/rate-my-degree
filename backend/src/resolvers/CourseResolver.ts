@@ -78,6 +78,7 @@ export class CourseResolver {
       .select()
       .orderBy(attribute, order)
       .where("course_comment.courseInitials = :initials", { initials: course.initials })
+      .where("course_comment.parentId is null")
       .getMany();
   }
 }
