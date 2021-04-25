@@ -12,7 +12,7 @@ interface SearchBarProps extends HTMLChakraProps<"div"> {
 export const SearchBar: React.FC<SearchBarProps> = ({ size }) => {
   const [query, setQuery] = useState("");
 
-  const [{ data, fetching }] = useCoursesQuery({
+  const [{ data }] = useCoursesQuery({
     variables: {
       filter: query,
       limit: 5,
@@ -41,7 +41,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ size }) => {
         </InputGroup>
         {query && <Divider marginTop="0px !important" marginBottom="0.5rem" />}
         <Stack textAlign="center" marginTop="0px !important">
-          {!fetching && data ? (
+          {data ? (
             data!.courses.map((course) => {
               return (
                 <NextChakraLink
