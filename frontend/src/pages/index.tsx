@@ -1,4 +1,4 @@
-import { Center, VStack, Text } from "@chakra-ui/layout";
+import { VStack, Text } from "@chakra-ui/layout";
 import React from "react";
 import { HomeHeader } from "../components/HomeHeader";
 import { SearchBar } from "../components/SearchBar";
@@ -21,9 +21,7 @@ const Index = () => {
         <Text fontWeight="medium" fontSize="lg" color="white">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor{" "}
         </Text>
-        <Center minWidth="30vw">
-          <SearchBar size={2} />
-        </Center>
+        <SearchBar size={2} />
       </VStack>
     </>
   );

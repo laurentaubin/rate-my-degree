@@ -20,7 +20,7 @@ export class CourseResolver {
       .getRepository(Course)
       .createQueryBuilder("course")
       .select()
-      .where("LOWER(description) LIKE LOWER(:filters)", { filters: `%${filter}%` })
+      .where("LOWER(title) LIKE LOWER(:filters)", { filters: `%${filter}%` })
       .orWhere("LOWER(initials) LIKE LOWER(:filters)", { filters: `%${filter}%` })
       .orWhere("LOWER(professor) LIKE LOWER(:filters)", { filters: `%${filter}%` })
       .orderBy("course.initials")
@@ -40,7 +40,7 @@ export class CourseResolver {
 
   @Mutation(() => Course)
   async createCourse(@Arg("data") data: CreateCourseInput): Promise<Course> {
-    const course = Course.create({ ...data, comments: [] });
+    const course = Course.create({ ...data, comments: [], initials: data.initials.toLowerCase() });
     await course.save();
     return course;
   }

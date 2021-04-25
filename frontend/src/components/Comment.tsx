@@ -30,7 +30,6 @@ export const Comment: React.FC<CommentProps> = ({
   userVote,
   nestingLevel,
 }) => {
-  console.log(nestingLevel, content);
   const author = "Anonymous";
 
   const [replying, setReplying] = useState(false);
