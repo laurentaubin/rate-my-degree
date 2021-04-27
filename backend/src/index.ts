@@ -5,8 +5,10 @@ import { buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";
 import { Course } from "./entities/Course";
 import { CourseComment } from "./entities/CourseComment";
+import { User } from "./entities/User";
 import { CommentResolver } from "./resolvers/CommentResolver";
 import { CourseResolver } from "./resolvers/CourseResolver";
+import { UserResolver } from "./resolvers/UserResolver";
 
 const main = async () => {
   await createConnection({
@@ -16,7 +18,7 @@ const main = async () => {
     password: "postgres",
     logging: true,
     synchronize: true,
-    entities: [Course, CourseComment],
+    entities: [Course, CourseComment, User],
   });
 
   const app = express();
@@ -30,7 +32,7 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [CourseResolver, CommentResolver],
+      resolvers: [CourseResolver, CommentResolver, UserResolver],
     }),
   });
 
