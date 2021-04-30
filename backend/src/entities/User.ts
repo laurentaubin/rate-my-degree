@@ -9,14 +9,17 @@ export class User extends BaseEntity {
   @PrimaryColumn()
   id!: string;
 
+  @Field()
   @Column()
-  oauthToken: string;
+  email: string;
 
+  @Field()
   @Column()
-  refreshToken: string;
+  name: string;
 
+  @Field()
   @Column()
-  shortTermToken: string;
+  pictureUrl: string;
 
   @Field(() => [CourseComment])
   @OneToMany(() => CourseComment, (courseComment) => courseComment.course)

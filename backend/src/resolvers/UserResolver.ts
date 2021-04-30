@@ -1,18 +1,17 @@
-import { Resolver, Query, Mutation, Arg, Root } from "type-graphql";
-import { User } from "src/entities/User";
-import { RegisterUserInput } from "src/inputs/RegisterUserInput";
-import { sign } from "jsonwebtoken";
+import { Resolver, Query, Ctx } from "type-graphql";
+import { User } from "../entities/User";
+import { MyContext } from "../types";
+import { AuthenticationError } from "apollo-server-errors";
+import { findOrCreateUser } from "../utils/findOrCreateUser";
 
 @Resolver((_of) => User)
 export class UserResolver {
-  @Mutation(() => String)
-  async register(@Arg("data") data: RegisterUserInput): Promise<String> {
-    const user = User.create({ ...data, comments: [] });
-    await User.save(user);
-
-    return sign({ id: data.id }, process.env.JWT_SECRET, { expiresIn: "1y" });
+  @Query(() => User)
+  async me(@Ctx() { req }: MyContext): Promise<User | undefined> {
+    const authToken = req.headers.authorization!;
+    if (authToken) {
+      return await findOrCreateUser(authToken);
+    }
+    throw new AuthenticationError(`Authentication failed with token ${authToken}`);
   }
-
-  @Mutation(() => String)
-  async login(@Arg("data") data: LoginUserInput);
 }

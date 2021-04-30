@@ -34,6 +34,10 @@ const main = async () => {
     schema: await buildSchema({
       resolvers: [CourseResolver, CommentResolver, UserResolver],
     }),
+    context: ({ req, res }) => ({
+      req,
+      res,
+    }),
   });
 
   apolloServer.applyMiddleware({ app, cors: false });
