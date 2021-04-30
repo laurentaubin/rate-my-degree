@@ -73,7 +73,9 @@ export const Comment: React.FC<CommentProps> = ({
   return (
     <Stack width="100%" direction="column">
       <Flex>
-        <Avatar ddsrc="https://bit.ly/sage-adebayo" />
+        <Stack>
+          <Avatar ddsrc="https://bit.ly/sage-adebayo" />
+        </Stack>
         <Box ml="3">
           <Flex>
             <Text fontWeight="semibold">{author}</Text>
@@ -134,7 +136,14 @@ export const Comment: React.FC<CommentProps> = ({
           subComments.map((subComment: CommentProps) => {
             const cookieName = `user-vote-${subComment.id}`;
             return (
-              <Stack key={subComment.id} marginLeft={nestingLevel < 6 ? "30px !important" : "0px"} direction="row">
+              <Stack
+                key={subComment.id}
+                marginLeft={nestingLevel < 6 ? "25px !important" : "0px"}
+                direction="row"
+                border="1px"
+                borderRadius={12}
+                padding="1rem"
+              >
                 <Comment
                   courseInitials={courseInitials}
                   id={subComment.id}
