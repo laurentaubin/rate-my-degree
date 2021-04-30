@@ -50,7 +50,7 @@ Then create the project's database
 
 ```bash
 $ sudo -iu postgres psql
-$ CREATE DATABASE ratemyglo
+$ CREATE DATABASE ratemyglo;
 ```
 
 #### Run the node server
