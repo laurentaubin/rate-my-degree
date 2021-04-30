@@ -45,11 +45,11 @@ The data will be stored on a [PostgreSQL](https://www.postgresql.org/) database 
 
 #### Set up Postgres database
 
-First, [install postgresql database](https://www.postgresql.org/download/).
+First, [install postgresql database](https://www.postgresql.org/download/). You can also use package managers like apt and homebrew. Check your package manager's documentation for more information.
 Then create the project's database
 
 ```bash
-$ sudo -iu postgres
+$ sudo -iu postgres psql
 $ CREATE DATABASE ratemyglo
 ```
 
