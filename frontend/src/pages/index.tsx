@@ -11,9 +11,9 @@ const Index = () => {
         height="80vh"
         paddingTop="15vh"
         backgroundImage="url(https://i.ibb.co/7b3NqVJ/Background-1.png)"
-        backgroundSize=""
         backgroundPosition="center"
         backgroundRepeat="no-repeat"
+        backgroundSize="100vw 80vh"
       >
         <Text fontWeight="bold" fontSize="7xl" color="white">
           Rate my GLO
