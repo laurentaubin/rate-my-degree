@@ -8,6 +8,7 @@ COPY yarn.lock .
 RUN yarn install
 
 COPY . .
+COPY wait-for-it.sh .
 
 RUN yarn build
 

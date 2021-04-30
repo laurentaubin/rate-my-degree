@@ -6,17 +6,20 @@ services:
       - ./backend/src:/usr/src/app/src
     ports:
       - 4000:4000
+    environment:
+      DB_HOST: db
     depends_on:
       - db
+    command: ["./wait-for-it.sh", "db:5432", "--", "node", "index.js"]
 
-  frontend:
-    restart: unless-stopped
-    build: ./frontend
-    ports:
-      - 3000:3000
-    volumes:
-      - ./frontend/src:/usr/src/app/src
-      - /usr/src/app/node_modules
+  # frontend:
+  #   restart: unless-stopped
+  #   build: ./frontend
+  #   ports:
+  #     - 3000:3000
+  #   volumes:
+  #     - ./frontend/src:/usr/src/app/src
+  #     - /usr/src/app/node_modules
 
   db:
     image: postgres:latest
@@ -25,4 +28,4 @@ services:
     volumes:
       - ./data/db:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "3030:5432"
