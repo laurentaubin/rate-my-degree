@@ -73,9 +73,7 @@ export const Comment: React.FC<CommentProps> = ({
   return (
     <Stack width="100%" direction="column">
       <Flex>
-        <Stack>
-          <Avatar ddsrc="https://bit.ly/sage-adebayo" />
-        </Stack>
+        <Avatar ddsrc="https://bit.ly/sage-adebayo" />
         <Box ml="3">
           <Flex>
             <Text fontWeight="semibold">{author}</Text>
