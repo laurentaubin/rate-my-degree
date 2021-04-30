@@ -7,12 +7,10 @@ import { CommentResolver } from "./resolvers/CommentResolver";
 import { CourseResolver } from "./resolvers/CourseResolver";
 
 const main = async () => {
-  console.log(process.env.DB_HOST);
-
   await createConnection({
     type: "postgres",
-    host: "0.0.0.0",
-    port: 3030,
+    host: process.env.DB_HOST || "localhost",
+    port: 5432,
     username: "postgres",
     password: "postgres",
     database: "ratemyglo",
