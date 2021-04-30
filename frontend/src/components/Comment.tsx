@@ -134,7 +134,7 @@ export const Comment: React.FC<CommentProps> = ({
           subComments.map((subComment: CommentProps) => {
             const cookieName = `user-vote-${subComment.id}`;
             return (
-              <Stack key={subComment.id} marginLeft={nestingLevel < 6 ? "30px" : "0px"} direction="row">
+              <Stack key={subComment.id} marginLeft={nestingLevel < 6 ? "30px !important" : "0px"} direction="row">
                 <Comment
                   courseInitials={courseInitials}
                   id={subComment.id}
