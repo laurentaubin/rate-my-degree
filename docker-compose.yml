@@ -1,16 +1,28 @@
 services:
-  #backend:
-  #  restart: unless-stopped
-  #  build: ./baclend
-  #  volumes:
-  #    - ./station:/root/catkin_ws/src
-  #  ports:
-  #    - 4000:4000
+  backend:
+    restart: unless-stopped
+    build: ./backend
+    volumes:
+      - ./backend/src:/usr/src/app/src
+    ports:
+      - 4000:4000
+    depends_on:
+      - db
 
   frontend:
     restart: unless-stopped
     build: ./frontend
     ports:
       - 3000:3000
-    #volumes:
-    #  - ./frontend:/usr/src/app
+    volumes:
+      - ./frontend/src:/usr/src/app/src
+      - /usr/src/app/node_modules
+
+  db:
+    image: postgres:latest
+    environment:
+      - "POSTGRES_PASSWORD=postgres"
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
