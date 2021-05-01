@@ -2,8 +2,8 @@ name: deploy-backend
 
 on:
   push:
-    # branches:
-    #   - "master"
+    branches:
+      - "master"
     paths:
       - "backend/**"
 
