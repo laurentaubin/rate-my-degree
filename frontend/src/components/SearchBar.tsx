@@ -11,6 +11,7 @@ interface SearchBarProps extends HTMLChakraProps<"div"> {
 
 export const SearchBar: React.FC<SearchBarProps> = ({ size, ...props }) => {
   const [query, setQuery] = useState("");
+  const [focused, setFocused] = useState(false);
 
   const [{ data }] = useCoursesQuery({
     variables: {
@@ -23,6 +24,10 @@ export const SearchBar: React.FC<SearchBarProps> = ({ size, ...props }) => {
     setQuery(event.target.value);
   };
 
+  const handleChangeFocus = () => {
+    setFocused((focus) => !focus);
+  };
+
   return (
     <>
       <Stack {...props} minWidth="35vw" backgroundColor="white" borderRadius="6px" paddingBottom={query ? "0.5rem" : "0"}>
@@ -31,6 +36,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({ size, ...props }) => {
             <SearchIcon marginTop="0 !important" />
           </InputLeftElement>
           <Input
+            onBlur={handleChangeFocus}
+            onFocus={handleChangeFocus}
             placeholder="Rechercher un cours"
             minHeight={3 * size + "vh"}
             color="black"
@@ -39,7 +46,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ size, ...props }) => {
             variant="unstyled"
           ></Input>
         </InputGroup>
-        {query && (
+        {query && focused && (
           <>
             <Divider marginTop="0px !important" marginBottom="0.5rem" />
             <Stack textAlign="center" marginTop="0px !important" zIndex={1}>
