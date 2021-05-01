@@ -13,6 +13,7 @@ const fontWeights = {
   bold: 700,
   extrabold: 800,
   black: 900,
+  color: 123,
 };
 
 const breakpoints = createBreakpoints({
