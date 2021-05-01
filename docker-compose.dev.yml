@@ -14,14 +14,14 @@ services:
       - db
     command: ["./wait-for-it.sh", "db:5432", "--", "node", "dist/index.js"]
 
-  # frontend:
-  #   restart: unless-stopped
-  #   build: ./frontend
-  #   ports:
-  #     - 3000:3000
-  #   volumes:
-  #     - ./frontend/src:/usr/src/app/src
-  #     - /usr/src/app/node_modules
+  frontend:
+    restart: unless-stopped
+    build: ./frontend
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend/src:/usr/src/app/src
+      - /usr/src/app/node_modules
 
   db:
     image: postgres:latest
