@@ -3,20 +3,21 @@ import cors from "cors";
 import express from "express";
 import { buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";
-import { Course } from "./entities/Course";
-import { CourseComment } from "./entities/CourseComment";
 import { CommentResolver } from "./resolvers/CommentResolver";
 import { CourseResolver } from "./resolvers/CourseResolver";
 
 const main = async () => {
   await createConnection({
     type: "postgres",
-    database: "ratemyglo",
+    host: process.env.DB_HOST || "localhost",
+    port: 5432,
     username: "postgres",
     password: "postgres",
+    database: "ratemyglo",
+    entities: ["dist/entities/*.js"],
+    migrations: ["dist/migrations/*.js"],
     logging: true,
     synchronize: true,
-    entities: [Course, CourseComment],
   });
 
   const app = express();
