@@ -12,13 +12,13 @@ export const GoogleLogin: React.FC<GoogleLoginProps> = ({ ...props }) => {
 
   const onLoginSucess = (googleUser: GoogleLoginResponse | GoogleLoginResponseOffline) => {
     const idToken = (googleUser as GoogleLoginResponse).getAuthResponse().id_token;
-    setCookies("auth-token", idToken);
+    setCookies("auth-token", idToken, { path: "/" });
 
     refreshTokenSetup(googleUser as GoogleLoginResponse);
   };
 
   const onLogoutSuccess = () => {
-    removeCookie("auth-token");
+    removeCookie("auth-token", { path: "/" });
   };
 
   const { signIn, loaded } = useGoogleLogin({
@@ -38,7 +38,7 @@ export const GoogleLogin: React.FC<GoogleLoginProps> = ({ ...props }) => {
     </Button>
   ) : (
     <Button {...props} leftIcon={<GoogleIcon />} onClick={signIn}>
-      Connexion avec Google
+      Connexion
     </Button>
   );
 };
