@@ -1,7 +1,7 @@
 services:
   backend:
-    restart: unless-stopped
-    image: laurentaubin/rate-my-degree-backend:latest
+    #restart: unless-stopped
+    build: ./backend
     environment:
       DB_HOST: db
     volumes:
