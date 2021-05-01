@@ -1,12 +1,12 @@
 import { ObjectType, Field } from "type-graphql";
-import { Entity, Column, PrimaryColumn, BaseEntity, OneToMany, CreateDateColumn } from "typeorm";
+import { Entity, Column, BaseEntity, OneToMany, CreateDateColumn, PrimaryGeneratedColumn } from "typeorm";
 import { CourseComment } from "./CourseComment";
 
 @ObjectType()
 @Entity()
 export class User extends BaseEntity {
   @Field()
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn("uuid")
   id!: string;
 
   @Field()

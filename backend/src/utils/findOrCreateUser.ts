@@ -7,12 +7,9 @@ export const findOrCreateUser = async (authToken: string): Promise<User | undefi
   const googleUser = await verifyAuthToken(authToken);
 
   const { email, name, picture } = googleUser!;
+  const user = await doesUserExist(email!);
 
-  if (doesUserExist(email!)) {
-    return User.findOne({ where: { email: email } });
-  }
-  const user = User.create({ email, name, pictureUrl: picture, comments: [] });
-  return await User.save(user);
+  return user ? user : createUser(email!, name!, picture!);
 };
 
 const verifyAuthToken = async (authToken: string): Promise<TokenPayload | undefined> => {
@@ -25,8 +22,11 @@ const verifyAuthToken = async (authToken: string): Promise<TokenPayload | undefi
   }
 };
 
-const doesUserExist = (email: string): boolean => {
-  const user = User.findOne({ where: { email: email } });
+const doesUserExist = async (email: string): Promise<User | undefined> => {
+  return await User.findOne({ where: { email: email } });
+};
 
-  return !!user;
+const createUser = async (email: string, name: string, pictureUrl: string): Promise<User> => {
+  const user = User.create({ email, name, pictureUrl, comments: [] });
+  return await User.save(user);
 };
