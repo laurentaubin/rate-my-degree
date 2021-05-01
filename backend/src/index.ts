@@ -7,7 +7,6 @@ import { CommentResolver } from "./resolvers/CommentResolver";
 import { CourseResolver } from "./resolvers/CourseResolver";
 
 const main = async () => {
-  console.log("hello");
   await createConnection({
     type: "postgres",
     host: process.env.DB_HOST || "localhost",
