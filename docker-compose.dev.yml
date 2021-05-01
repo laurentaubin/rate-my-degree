@@ -1,0 +1,40 @@
+services:
+  backend:
+    #restart: unless-stopped
+    build: ./backend
+    environment:
+      DB_HOST: db
+    volumes:
+      - ./backend/src:/usr/src/app/src
+    ports:
+      - 4000:4000
+    networks:
+      - webnet
+    depends_on:
+      - db
+    command: ["./wait-for-it.sh", "db:5432", "--", "node", "dist/index.js"]
+
+  frontend:
+    restart: unless-stopped
+    build: ./frontend
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend/src:/usr/src/app/src
+      - /usr/src/app/node_modules
+
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: ratemyglo
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    ports:
+      - "3030:5432"
+    networks:
+      - webnet
+
+networks:
+  webnet:
