@@ -1,13 +1,21 @@
 import { InputGroup, InputLeftElement, InputRightElement } from "@chakra-ui/input";
 import { Flex, Text } from "@chakra-ui/layout";
-import { Link } from "@chakra-ui/react";
-import React from "react";
+import { Box, Link } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { GoogleLogin } from "./GoogleLogin";
 import FacebookIcon from "./icons/FacebookIcon";
 import WebsiteIcon from "./icons/WebsiteIcon";
 
 interface HomeHeaderProps {}
 
 export const HomeHeader: React.FC<HomeHeaderProps> = ({}) => {
+  // TODO use context
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    setIsLoggedIn((loggedIn) => !loggedIn);
+  }, []);
+
   return (
     <Flex
       height="20vh"
@@ -16,27 +24,13 @@ export const HomeHeader: React.FC<HomeHeaderProps> = ({}) => {
       backgroundRepeat="no-repeat"
       backgroundPosition="60vw"
     >
-      <InputGroup marginLeft="20vw">
-        <InputLeftElement>
-          <Link href="https://www.facebook.com/groups/aeglo" isExternal marginRight="16px">
-            <FacebookIcon boxSize={5} color="black" />
-          </Link>
-          <Link href="http://aeglo.ift.ulaval.ca/" isExternal>
-            <WebsiteIcon boxSize={5} color="black" />
-          </Link>
-        </InputLeftElement>
-      </InputGroup>
-
-      <InputGroup marginRight="30vw">
-        <InputRightElement>
-          <Text fontWeight="semibold" as="button" marginRight={2} minWidth="8em">
-            Se connecter
-          </Text>
-          <Text fontWeight="semibold" as="button" color="white" backgroundColor="black" minWidth="6em" borderRadius={5}>
-            S'inscrire
-          </Text>
-        </InputRightElement>
-      </InputGroup>
+      <Link href="https://www.facebook.com/groups/aeglo" isExternal marginRight="16px" marginLeft="15vw">
+        <FacebookIcon boxSize={5} color="black" />
+      </Link>
+      <Link href="http://aeglo.ift.ulaval.ca/" isExternal>
+        <WebsiteIcon boxSize={5} color="black" />
+      </Link>
+      <GoogleLogin loggedIn={isLoggedIn} marginLeft="auto" marginRight="25vw" backgroundColor="black" color="white" _hover={{}} />
     </Flex>
   );
 };

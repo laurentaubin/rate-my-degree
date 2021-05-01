@@ -11,8 +11,6 @@ const Login = () => {
 
   const [{ data }] = useMeQuery();
 
-  console.log(data);
-
   const onLoginSucess = (googleUser: GoogleLoginResponse | GoogleLoginResponseOffline) => {
     const idToken = (googleUser as GoogleLoginResponse).getAuthResponse().id_token;
     setCookies("auth-token", idToken);
