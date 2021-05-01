@@ -53,7 +53,6 @@ export const SearchBar: React.FC<SearchBarProps> = ({ size, ...props }) => {
                       paddingTop="0.25rem"
                       paddingBottom="0.25rem"
                       _hover={{ backgroundColor: "main" }}
-                      overflow="hidden"
                     >
                       {course.initials.toUpperCase()} - {course.title}
                     </NextChakraLink>
