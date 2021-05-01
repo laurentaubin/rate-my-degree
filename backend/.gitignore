@@ -1,7 +1,8 @@
-dist
-node_modules
-data
+/dist
+/node_modules
+/data
 backend/data
 
 *.log
 .vscode
+*.env

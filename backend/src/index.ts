@@ -1,10 +1,12 @@
 import { ApolloServer } from "apollo-server-express";
 import cors from "cors";
 import express from "express";
+import cookieParser from "cookie-parser";
 import { buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";
 import { CommentResolver } from "./resolvers/CommentResolver";
 import { CourseResolver } from "./resolvers/CourseResolver";
+import { UserResolver } from "./resolvers/UserResolver";
 
 const main = async () => {
   await createConnection({
@@ -17,7 +19,7 @@ const main = async () => {
     entities: ["dist/entities/*.js"],
     migrations: ["dist/migrations/*.js"],
     logging: true,
-    synchronize: true,
+    synchronize: true
   });
 
   const app = express();
@@ -25,14 +27,20 @@ const main = async () => {
   app.use(
     cors({
       origin: "http://localhost:3000",
-      credentials: true,
+      credentials: true
     })
   );
 
+  app.use(cookieParser());
+
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [CourseResolver, CommentResolver],
+      resolvers: [CourseResolver, CommentResolver, UserResolver]
     }),
+    context: ({ req, res }) => ({
+      req,
+      res
+    })
   });
 
   apolloServer.applyMiddleware({ app, cors: false });

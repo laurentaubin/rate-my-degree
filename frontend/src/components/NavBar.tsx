@@ -2,6 +2,7 @@ import { Flex, Text } from "@chakra-ui/layout";
 import { Box, Center, Link } from "@chakra-ui/react";
 import React from "react";
 import useWindowDimensions from "../hooks/useWindowDimensions";
+import { GoogleLogin } from "./GoogleLogin";
 import { SearchBar } from "./SearchBar";
 
 export const NavBar: React.FC<{}> = () => {
@@ -20,12 +21,7 @@ export const NavBar: React.FC<{}> = () => {
         </Box>
       )}
       <Center marginLeft="auto" marginRight="32px">
-        <Text fontWeight="semibold" as="button" color="white" marginRight={2} minWidth="8em">
-          Se connecter
-        </Text>
-        <Text fontWeight="semibold" as="button" color="white" borderColor="yellow" border="1px" minWidth="6em" borderRadius={5} padding={1}>
-          S'inscrire
-        </Text>
+        <GoogleLogin backgroundColor="black" color="white" borderColor="white" border="1px" _hover={{}} />
       </Center>
     </Flex>
   );

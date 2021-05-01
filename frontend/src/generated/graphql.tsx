@@ -18,6 +18,7 @@ export type Query = {
   __typename?: 'Query';
   courses: Array<Course>;
   course: Course;
+  me: User;
 };
 
 
@@ -57,6 +58,16 @@ export type CourseComment = {
 
 export type CourseInput = {
   initials: Scalars['String'];
+};
+
+export type User = {
+  __typename?: 'User';
+  id: Scalars['String'];
+  email: Scalars['String'];
+  name: Scalars['String'];
+  pictureUrl: Scalars['String'];
+  comments: Array<CourseComment>;
+  createdAt: Scalars['String'];
 };
 
 export type Mutation = {
@@ -205,6 +216,17 @@ export type CoursesQuery = (
   )> }
 );
 
+export type MeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MeQuery = (
+  { __typename?: 'Query' }
+  & { me: (
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'email' | 'name'>
+  ) }
+);
+
 export const CommentFieldsFragmentDoc = gql`
     fragment CommentFields on CourseComment {
   id
@@ -303,4 +325,17 @@ export const CoursesDocument = gql`
 
 export function useCoursesQuery(options: Omit<Urql.UseQueryArgs<CoursesQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<CoursesQuery>({ query: CoursesDocument, ...options });
+};
+export const MeDocument = gql`
+    query Me {
+  me {
+    id
+    email
+    name
+  }
+}
+    `;
+
+export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
 };
