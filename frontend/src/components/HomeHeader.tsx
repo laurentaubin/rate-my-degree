@@ -1,7 +1,6 @@
-import { InputGroup, InputLeftElement, InputRightElement } from "@chakra-ui/input";
-import { Flex, Text } from "@chakra-ui/layout";
-import { Box, Link } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import { Flex } from "@chakra-ui/layout";
+import { Link } from "@chakra-ui/react";
+import React from "react";
 import { GoogleLogin } from "./GoogleLogin";
 import FacebookIcon from "./icons/FacebookIcon";
 import WebsiteIcon from "./icons/WebsiteIcon";
@@ -9,13 +8,6 @@ import WebsiteIcon from "./icons/WebsiteIcon";
 interface HomeHeaderProps {}
 
 export const HomeHeader: React.FC<HomeHeaderProps> = ({}) => {
-  // TODO use context
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    setIsLoggedIn((loggedIn) => !loggedIn);
-  }, []);
-
   return (
     <Flex
       height="20vh"
@@ -30,7 +22,7 @@ export const HomeHeader: React.FC<HomeHeaderProps> = ({}) => {
       <Link href="http://aeglo.ift.ulaval.ca/" isExternal>
         <WebsiteIcon boxSize={5} color="black" />
       </Link>
-      <GoogleLogin loggedIn={isLoggedIn} marginLeft="auto" marginRight="25vw" backgroundColor="black" color="white" _hover={{}} />
+      <GoogleLogin marginLeft="auto" marginRight="25vw" backgroundColor="black" color="white" _hover={{}} />
     </Flex>
   );
 };
