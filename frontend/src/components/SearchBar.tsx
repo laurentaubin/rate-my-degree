@@ -9,8 +9,9 @@ interface SearchBarProps extends HTMLChakraProps<"div"> {
   size: number;
 }
 
-export const SearchBar: React.FC<SearchBarProps> = ({ size }) => {
+export const SearchBar: React.FC<SearchBarProps> = ({ size, ...props }) => {
   const [query, setQuery] = useState("");
+  const [focused, setFocused] = useState(false);
 
   const [{ data }] = useCoursesQuery({
     variables: {
@@ -23,14 +24,20 @@ export const SearchBar: React.FC<SearchBarProps> = ({ size }) => {
     setQuery(event.target.value);
   };
 
+  const handleChangeFocus = () => {
+    setFocused((focus) => !focus);
+  };
+
   return (
     <>
-      <Stack minWidth="30vw" backgroundColor="white" marginTop="4vh !important" borderRadius="6px" paddingBottom={query ? "0.5rem" : "0"}>
+      <Stack {...props} minWidth="35vw" backgroundColor="white" borderRadius="6px" paddingBottom={query ? "0.5rem" : "0"}>
         <InputGroup>
           <InputLeftElement minHeight={3 * size + "vh"} pointerEvents="none">
-            <SearchIcon />
+            <SearchIcon marginTop="0 !important" />
           </InputLeftElement>
           <Input
+            onBlur={handleChangeFocus}
+            onFocus={handleChangeFocus}
             placeholder="Rechercher un cours"
             minHeight={3 * size + "vh"}
             color="black"
@@ -39,27 +46,31 @@ export const SearchBar: React.FC<SearchBarProps> = ({ size }) => {
             variant="unstyled"
           ></Input>
         </InputGroup>
-        {query && <Divider marginTop="0px !important" marginBottom="0.5rem" />}
-        <Stack textAlign="center" marginTop="0px !important">
-          {data ? (
-            data!.courses.map((course) => {
-              return (
-                <NextChakraLink
-                  key={course.initials}
-                  href={`/course/${course.initials}`}
-                  color="black"
-                  paddingTop="0.25rem"
-                  paddingBottom="0.25rem"
-                  _hover={{ backgroundColor: "main" }}
-                >
-                  {course.initials.toUpperCase()} - {course.title}
-                </NextChakraLink>
-              );
-            })
-          ) : (
-            <div>loading...</div>
-          )}
-        </Stack>
+        {query && focused && (
+          <>
+            <Divider marginTop="0px !important" marginBottom="0.5rem" />
+            <Stack textAlign="center" marginTop="0px !important" zIndex={1}>
+              {data ? (
+                data!.courses.map((course) => {
+                  return (
+                    <NextChakraLink
+                      key={course.initials}
+                      href={`/course/${course.initials}`}
+                      color="black"
+                      paddingTop="0.25rem"
+                      paddingBottom="0.25rem"
+                      _hover={{ backgroundColor: "main" }}
+                    >
+                      {course.initials.toUpperCase()} - {course.title}
+                    </NextChakraLink>
+                  );
+                })
+              ) : (
+                <div>loading...</div>
+              )}
+            </Stack>
+          </>
+        )}
       </Stack>
     </>
   );

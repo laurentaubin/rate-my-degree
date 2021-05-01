@@ -1,5 +1,5 @@
 import { Flex, Text } from "@chakra-ui/layout";
-import { Center, Link } from "@chakra-ui/react";
+import { Box, Center, Link } from "@chakra-ui/react";
 import React from "react";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 import { SearchBar } from "./SearchBar";
@@ -14,7 +14,11 @@ export const NavBar: React.FC<{}> = () => {
           Rate my GLO
         </Text>
       </Link>
-      {width > 600 && <SearchBar size={1} width="300px" />}
+      {width > 600 && (
+        <Box marginTop="4vh" marginLeft={width > 950 ? "10vw" : "0"}>
+          <SearchBar size={1.5} position="absolute" />
+        </Box>
+      )}
       <Center marginLeft="auto" marginRight="32px">
         <Text fontWeight="semibold" as="button" color="white" marginRight={2} minWidth="8em">
           Se connecter

@@ -50,7 +50,8 @@ const Course = () => {
   };
 
   if (!data && !fetching) {
-    return <div>fucky wucky</div>;
+    router.push("/404");
+    return <div></div>;
   }
 
   if (!data && fetching) {
