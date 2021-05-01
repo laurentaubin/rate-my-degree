@@ -9,7 +9,7 @@ interface SearchBarProps extends HTMLChakraProps<"div"> {
   size: number;
 }
 
-export const SearchBar: React.FC<SearchBarProps> = ({ size }) => {
+export const SearchBar: React.FC<SearchBarProps> = ({ size, ...props }) => {
   const [query, setQuery] = useState("");
 
   const [{ data }] = useCoursesQuery({
@@ -25,7 +25,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ size }) => {
 
   return (
     <>
-      <Stack minWidth="40rem" backgroundColor="white" borderRadius="6px" paddingBottom={query ? "0.5rem" : "0"}>
+      <Stack {...props} minWidth="35vw" backgroundColor="white" borderRadius="6px" paddingBottom={query ? "0.5rem" : "0"}>
         <InputGroup>
           <InputLeftElement minHeight={3 * size + "vh"} pointerEvents="none">
             <SearchIcon marginTop="0 !important" />
@@ -42,7 +42,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ size }) => {
         {query && (
           <>
             <Divider marginTop="0px !important" marginBottom="0.5rem" />
-            <Stack textAlign="center" marginTop="0px !important" zIndex={1} position="sticky">
+            <Stack textAlign="center" marginTop="0px !important" zIndex={1}>
               {data ? (
                 data!.courses.map((course) => {
                   return (
@@ -53,6 +53,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ size }) => {
                       paddingTop="0.25rem"
                       paddingBottom="0.25rem"
                       _hover={{ backgroundColor: "main" }}
+                      overflow="hidden"
                     >
                       {course.initials.toUpperCase()} - {course.title}
                     </NextChakraLink>

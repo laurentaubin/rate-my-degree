@@ -15,8 +15,8 @@ export const NavBar: React.FC<{}> = () => {
         </Text>
       </Link>
       {width > 600 && (
-        <Box zIndex="4" marginTop="4vh">
-          <SearchBar size={1.5} />
+        <Box marginTop="4vh" marginLeft={width > 950 ? "10vw" : "0"}>
+          <SearchBar size={1.5} position="absolute" />
         </Box>
       )}
       <Center marginLeft="auto" marginRight="32px">
