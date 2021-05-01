@@ -11,7 +11,8 @@ export class UserResolver {
   async me(@Ctx() { req }: MyContext): Promise<User | undefined> {
     const authToken = req.cookies["auth-token"];
     if (authToken) {
-      return await findOrCreateUser(authToken);
+      const user = await findOrCreateUser(authToken);
+      return user;
     }
     throw new AuthenticationError(`Authentication failed with token ${authToken}`);
   }
