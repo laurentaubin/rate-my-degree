@@ -18,7 +18,7 @@ const Index = () => {
         <Text fontWeight="bold" fontSize="7xl" color="white">
           Rate my GLO
         </Text>
-        <Text fontWeight="medium" fontSize="lg" color="white">
+        <Text fontWeight="medium" fontSize="lg" color="white" marginBottom="4vh">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor{" "}
         </Text>
         <SearchBar size={2} />
