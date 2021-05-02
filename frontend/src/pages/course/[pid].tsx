@@ -33,18 +33,24 @@ const Course = () => {
     },
   });
 
-  const [{ data: meData }] = useMeQuery();
-
   const handleFormSubmit = async (event: any) => {
     event.preventDefault();
-    if (!meData) {
-      setAuthenticationError(true);
-      return;
-    }
 
-    const { error } = await addComment({ courseInitials: courseData!.course.initials, content: newComment, authorId: meData!.me.id });
+    const { error } = await addComment({ courseInitials: courseData!.course.initials, content: newComment });
     if (error) {
-      setInputError(true);
+      switch (error.graphQLErrors[0].extensions!.code) {
+        case "BAD_USER_INPUT":
+          setInputError(true);
+          break;
+
+        case "UNAUTHENTICATED":
+          setAuthenticationError(true);
+          break;
+
+        default:
+          break;
+      }
+
       return;
     }
 
@@ -53,7 +59,7 @@ const Course = () => {
 
   const handleReplySubmit = async (event: any, content: string, commentId: string) => {
     event.preventDefault();
-    const { error } = await addComment({ courseInitials: courseInitials, content: content, parentId: commentId, authorId: meData!.me.id });
+    const { error } = await addComment({ courseInitials: courseInitials, content: content, parentId: commentId });
     if (error) {
       setInputError(true);
       return;

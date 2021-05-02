@@ -1,12 +1,14 @@
 import { Course } from "../entities/Course";
 import { CreateCourseInput } from "../inputs/CreateCourseInput";
-import { Resolver, Query, Mutation, Arg, FieldResolver, Root } from "type-graphql";
+import { Resolver, Query, Mutation, Arg, FieldResolver, Root, Ctx } from "type-graphql";
 import { AddCommentInput } from "../inputs/AddCommentInput";
 import { getConnection } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
 import { CourseInput } from "../inputs/CourseInput";
 import { UserInputError } from "apollo-server-errors";
 import { CourseComment } from "../entities/CourseComment";
+import { MyContext } from "src/types";
+import { verifyUserIsAuthenticated } from "src/utils/verifyUserIsAuthenticated";
 
 @Resolver((_of) => Course)
 export class CourseResolver {
@@ -46,8 +48,12 @@ export class CourseResolver {
   }
 
   @Mutation(() => Boolean)
-  async addComment(@Arg("data") data: AddCommentInput): Promise<Boolean> {
-    const { courseInitials, content, parentId, authorId } = data;
+  async addComment(@Ctx() { currentUser }: MyContext, @Arg("data") data: AddCommentInput): Promise<Boolean | Error> {
+    verifyUserIsAuthenticated(currentUser);
+
+    const { courseInitials, content, parentId } = data;
+    const { id: authorId } = currentUser;
+
     if (!content) {
       throw new UserInputError("Comment content cannot be empty");
     }

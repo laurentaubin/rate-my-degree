@@ -7,6 +7,7 @@ import { createConnection } from "typeorm";
 import { CommentResolver } from "./resolvers/CommentResolver";
 import { CourseResolver } from "./resolvers/CourseResolver";
 import { UserResolver } from "./resolvers/UserResolver";
+import { findOrCreateUser } from "./utils/findOrCreateUser";
 
 const main = async () => {
   await createConnection({
@@ -19,7 +20,7 @@ const main = async () => {
     entities: ["dist/entities/*.js"],
     migrations: ["dist/migrations/*.js"],
     logging: true,
-    synchronize: true
+    synchronize: true,
   });
 
   const app = express();
@@ -27,7 +28,7 @@ const main = async () => {
   app.use(
     cors({
       origin: "http://localhost:3000",
-      credentials: true
+      credentials: true,
     })
   );
 
@@ -35,12 +36,20 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [CourseResolver, CommentResolver, UserResolver]
+      resolvers: [CourseResolver, CommentResolver, UserResolver],
     }),
-    context: ({ req, res }) => ({
-      req,
-      res
-    })
+    context: async ({ req }) => {
+      let currentUser = null;
+      const authToken = req.cookies["auth-token"];
+
+      if (!authToken) {
+        return;
+      }
+
+      currentUser = await findOrCreateUser(authToken);
+
+      return { currentUser };
+    },
   });
 
   apolloServer.applyMiddleware({ app, cors: false });

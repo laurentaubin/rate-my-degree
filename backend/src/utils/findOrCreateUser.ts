@@ -9,7 +9,7 @@ export const findOrCreateUser = async (authToken: string): Promise<User | undefi
   const { email, name, picture } = googleUser!;
   const user = await doesUserExist(email!);
 
-  return user ? user : createUser(email!, name!, picture!);
+  return user ? user : await createUser(email!, name!, picture!);
 };
 
 const verifyAuthToken = async (authToken: string): Promise<TokenPayload | undefined> => {

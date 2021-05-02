@@ -74,6 +74,7 @@ export type CourseInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   vote: CourseComment;
+  delete: Scalars['Boolean'];
   createCourse: Course;
   addComment: Scalars['Boolean'];
 };
@@ -81,6 +82,11 @@ export type Mutation = {
 
 export type MutationVoteArgs = {
   data: VoteInput;
+};
+
+
+export type MutationDeleteArgs = {
+  commentId: Scalars['String'];
 };
 
 
@@ -109,14 +115,12 @@ export type AddCommentInput = {
   courseInitials: Scalars['String'];
   content: Scalars['String'];
   parentId?: Maybe<Scalars['String']>;
-  authorId: Scalars['String'];
 };
 
 export type AddCommentMutationVariables = Exact<{
   courseInitials: Scalars['String'];
   content: Scalars['String'];
   parentId?: Maybe<Scalars['String']>;
-  authorId: Scalars['String'];
 }>;
 
 
@@ -267,9 +271,9 @@ export const SubCommentsFragmentDoc = gql`
 }
     ${CommentFieldsFragmentDoc}`;
 export const AddCommentDocument = gql`
-    mutation AddComment($courseInitials: String!, $content: String!, $parentId: String, $authorId: String!) {
+    mutation AddComment($courseInitials: String!, $content: String!, $parentId: String) {
   addComment(
-    data: {courseInitials: $courseInitials, content: $content, parentId: $parentId, authorId: $authorId}
+    data: {courseInitials: $courseInitials, content: $content, parentId: $parentId}
   )
 }
     `;

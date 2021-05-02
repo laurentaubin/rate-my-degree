@@ -26,7 +26,6 @@ export const SearchBar: React.FC<SearchBarProps> = ({ size, ...props }) => {
   };
 
   const handleChangeFocus = () => {
-    console.log("blur)");
     setIsFocused((focus) => !focus);
   };
 
