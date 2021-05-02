@@ -22,7 +22,7 @@ export class User extends BaseEntity {
   pictureUrl: string;
 
   @Field(() => [CourseComment])
-  @OneToMany(() => CourseComment, (courseComment) => courseComment.course)
+  @OneToMany(() => CourseComment, (courseComment) => courseComment.author)
   comments: CourseComment[];
 
   @Field(() => String)
