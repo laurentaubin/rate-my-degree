@@ -53,11 +53,8 @@ export type CourseComment = {
   subComments?: Maybe<Array<CourseComment>>;
   content: Scalars['String'];
   score: Scalars['Float'];
+  author: User;
   createdAt: Scalars['String'];
-};
-
-export type CourseInput = {
-  initials: Scalars['String'];
 };
 
 export type User = {
@@ -68,6 +65,10 @@ export type User = {
   pictureUrl: Scalars['String'];
   comments: Array<CourseComment>;
   createdAt: Scalars['String'];
+};
+
+export type CourseInput = {
+  initials: Scalars['String'];
 };
 
 export type Mutation = {
@@ -108,12 +109,14 @@ export type AddCommentInput = {
   courseInitials: Scalars['String'];
   content: Scalars['String'];
   parentId?: Maybe<Scalars['String']>;
+  authorId: Scalars['String'];
 };
 
 export type AddCommentMutationVariables = Exact<{
   courseInitials: Scalars['String'];
   content: Scalars['String'];
   parentId?: Maybe<Scalars['String']>;
+  authorId: Scalars['String'];
 }>;
 
 
@@ -200,6 +203,10 @@ export type SubCommentsFragment = (
 export type CommentFieldsFragment = (
   { __typename?: 'CourseComment' }
   & Pick<CourseComment, 'id' | 'content' | 'score' | 'createdAt'>
+  & { author: (
+    { __typename?: 'User' }
+    & Pick<User, 'name' | 'pictureUrl'>
+  ) }
 );
 
 export type CoursesQueryVariables = Exact<{
@@ -223,7 +230,7 @@ export type MeQuery = (
   { __typename?: 'Query' }
   & { me: (
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'email' | 'name'>
+    & Pick<User, 'id' | 'name' | 'pictureUrl'>
   ) }
 );
 
@@ -233,6 +240,10 @@ export const CommentFieldsFragmentDoc = gql`
   content
   score
   createdAt
+  author {
+    name
+    pictureUrl
+  }
 }
     `;
 export const SubCommentsFragmentDoc = gql`
@@ -256,9 +267,9 @@ export const SubCommentsFragmentDoc = gql`
 }
     ${CommentFieldsFragmentDoc}`;
 export const AddCommentDocument = gql`
-    mutation AddComment($courseInitials: String!, $content: String!, $parentId: String) {
+    mutation AddComment($courseInitials: String!, $content: String!, $parentId: String, $authorId: String!) {
   addComment(
-    data: {courseInitials: $courseInitials, content: $content, parentId: $parentId}
+    data: {courseInitials: $courseInitials, content: $content, parentId: $parentId, authorId: $authorId}
   )
 }
     `;
@@ -330,8 +341,8 @@ export const MeDocument = gql`
     query Me {
   me {
     id
-    email
     name
+    pictureUrl
   }
 }
     `;

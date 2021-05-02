@@ -75,7 +75,7 @@ export class CourseResolver {
     return getConnection()
       .getRepository(CourseComment)
       .createQueryBuilder("course_comment")
-      .select()
+      .leftJoinAndSelect("course_comment.author", "user")
       .orderBy(attribute, order)
       .where("course_comment.course_initials = :initials", { initials: course.initials })
       .andWhere("course_comment.parentId is null")

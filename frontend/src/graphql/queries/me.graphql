@@ -1,7 +1,7 @@
 query Me {
   me {
     id
-    email
     name
+    pictureUrl
   }
 }

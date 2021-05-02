@@ -31,7 +31,7 @@ export class CourseComment extends BaseEntity {
   course: Course;
 
   @Field()
-  @ManyToOne(() => User, (user) => user.comments)
+  @ManyToOne(() => User, (user) => user.comments, { eager: true })
   @JoinColumn({ name: "author_id" })
   author: User;
 
