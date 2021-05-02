@@ -25,4 +25,16 @@ export class CommentResolver {
 
     return CourseComment.findOne({ where: { id: commentId } });
   }
+
+  @Mutation(() => Boolean)
+  async delete(@Arg("commentId") commentId: string): Promise<Boolean> {
+    await getConnection()
+      .getRepository(CourseComment)
+      .createQueryBuilder()
+      .delete()
+      .where("course_comment.id = :id", { id: commentId })
+      .execute();
+
+    return true;
+  }
 }
