@@ -1,5 +1,10 @@
 import { SearchIcon } from "@chakra-ui/icons";
-import { InputGroup, Input, HTMLChakraProps, InputLeftElement } from "@chakra-ui/react";
+import {
+  InputGroup,
+  Input,
+  HTMLChakraProps,
+  InputLeftElement,
+} from "@chakra-ui/react";
 import { Divider, Stack } from "@chakra-ui/layout";
 import React, { useState } from "react";
 import { useCoursesQuery } from "@generated/graphql";

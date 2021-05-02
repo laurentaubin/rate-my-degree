@@ -1,7 +1,11 @@
 import { extendTheme } from "@chakra-ui/react";
 import { createBreakpoints } from "@chakra-ui/theme-tools";
 
-const fonts = { body: "Montserrat, sans-serif", heading: "Montserrat, sans-serif", mono: `'Menlo', monospace` };
+const fonts = {
+  body: "Montserrat, sans-serif",
+  heading: "Montserrat, sans-serif",
+  mono: `'Menlo', monospace`,
+};
 
 const fontWeights = {
   hairline: 100,

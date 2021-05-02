@@ -1,7 +1,9 @@
 import { ChakraProps, Icon } from "@chakra-ui/react";
 import React from "react";
 
-interface GoogleIconProps extends Omit<React.SVGAttributes<SVGElement>, keyof ChakraProps>, ChakraProps {}
+interface GoogleIconProps
+  extends Omit<React.SVGAttributes<SVGElement>, keyof ChakraProps>,
+    ChakraProps {}
 
 const GoogleIcon: React.FC<GoogleIconProps> = (props) => (
   <Icon viewBox="0 0 512 512" {...props}>

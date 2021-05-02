@@ -22,7 +22,9 @@ const Course = () => {
 
   const [cookies, setCookie] = useCookies(["user-vote"]);
 
-  const [{ data: courseData, fetching: courseFetching, error: courseError }] = useCourseQuery({
+  const [
+    { data: courseData, fetching: courseFetching, error: courseError },
+  ] = useCourseQuery({
     variables: {
       initials: courseInitials,
       attribute: sortingAttribute,
@@ -33,7 +35,10 @@ const Course = () => {
   const handleFormSubmit = async (event: any, newComment: string) => {
     event.preventDefault();
 
-    const { error } = await addComment({ courseInitials: courseData!.course.initials, content: newComment });
+    const { error } = await addComment({
+      courseInitials: courseData!.course.initials,
+      content: newComment,
+    });
     if (error) {
       switch (error.graphQLErrors[0].extensions!.code) {
         case "BAD_USER_INPUT":
@@ -79,7 +84,8 @@ const Course = () => {
     <Layout>
       <Box paddingLeft="2vw" marginTop="4vh">
         <Heading as="h1" fontSize="4xl" fontWeight="black">
-          {courseData!.course.initials.toUpperCase()} - {courseData!.course.title}
+          {courseData!.course.initials.toUpperCase()} -{" "}
+          {courseData!.course.title}
         </Heading>
         <Text as="h2" fontSize="2xl" fontWeight="medium">
           Professeur: {courseData!.course.professor}
@@ -120,7 +126,11 @@ const Course = () => {
               </Stack>
             );
           })}
-          <ReplySection authenticationError={authenticationError} inputError={inputError} onFormSubmit={handleFormSubmit} />
+          <ReplySection
+            authenticationError={authenticationError}
+            inputError={inputError}
+            onFormSubmit={handleFormSubmit}
+          />
         </Box>
       </Box>
     </Layout>

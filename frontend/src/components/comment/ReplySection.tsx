@@ -1,4 +1,11 @@
-import { Stack, Textarea, Flex, Text, Button, HTMLChakraProps } from "@chakra-ui/react";
+import {
+  Stack,
+  Textarea,
+  Flex,
+  Text,
+  Button,
+  HTMLChakraProps,
+} from "@chakra-ui/react";
 import React, { useState } from "react";
 
 interface ReplySectionProps extends HTMLChakraProps<"div"> {
@@ -8,10 +15,16 @@ interface ReplySectionProps extends HTMLChakraProps<"div"> {
   onCancel?: any;
 }
 
-export const ReplySection: React.FC<ReplySectionProps> = ({ inputError, authenticationError, onFormSubmit, onCancel }) => {
+export const ReplySection: React.FC<ReplySectionProps> = ({
+  inputError,
+  authenticationError,
+  onFormSubmit,
+  onCancel,
+}) => {
   const [newComment, setNewComment] = useState("");
 
-  const handleCommentInputChange = (event: any) => setNewComment(event.target.value);
+  const handleCommentInputChange = (event: any) =>
+    setNewComment(event.target.value);
 
   const handleFormSubmit = (event: any) => {
     onFormSubmit(event, newComment);
@@ -41,7 +54,12 @@ export const ReplySection: React.FC<ReplySectionProps> = ({ inputError, authenti
         )}
         <Flex>
           {onCancel && (
-            <Button backgroundColor="white" border="1px" borderColor="black" onClick={onCancel}>
+            <Button
+              backgroundColor="white"
+              border="1px"
+              borderColor="black"
+              onClick={onCancel}
+            >
               Annuler
             </Button>
           )}
@@ -50,7 +68,11 @@ export const ReplySection: React.FC<ReplySectionProps> = ({ inputError, authenti
             backgroundColor="main"
             maxWidth="8rem"
             marginLeft="1"
-            _hover={{ backgroundColor: "white", border: "1px", borderColor: "main" }}
+            _hover={{
+              backgroundColor: "white",
+              border: "1px",
+              borderColor: "main",
+            }}
           >
             Soumettre
           </Button>

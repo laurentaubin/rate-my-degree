@@ -1,10 +1,21 @@
 import { DeleteIcon } from "@chakra-ui/icons";
 import { Badge, Stack } from "@chakra-ui/layout";
-import { Avatar, Box, Button, Center, Flex, Text, Textarea } from "@chakra-ui/react";
+import {
+  Avatar,
+  Box,
+  Button,
+  Center,
+  Flex,
+  Text,
+  Textarea,
+} from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import { useAddCommentMutation, useDeleteCommentMutation } from "@generated/graphql";
+import {
+  useAddCommentMutation,
+  useDeleteCommentMutation,
+} from "@generated/graphql";
 import { formatDate } from "@utils/formatDate";
 import { UpvoteSection } from "@components/comment/UpvoteSection";
 import { ReplySection } from "./ReplySection";
@@ -72,7 +83,11 @@ export const Comment: React.FC<CommentProps> = ({
 
   const handleFormSubmit = async (event: any, content: string) => {
     event.preventDefault();
-    const { error } = await addComment({ courseInitials: courseInitials, content: content, parentId: id });
+    const { error } = await addComment({
+      courseInitials: courseInitials,
+      content: content,
+      parentId: id,
+    });
     if (error) {
       switch (error.graphQLErrors[0].extensions!.code) {
         case "BAD_USER_INPUT":
@@ -105,7 +120,11 @@ export const Comment: React.FC<CommentProps> = ({
             </Badge>
             {isUserAuthor && (
               <Center>
-                <DeleteIcon marginLeft="6px" _hover={{ cursor: "pointer" }} onClick={handleDeleteComment} />
+                <DeleteIcon
+                  marginLeft="6px"
+                  _hover={{ cursor: "pointer" }}
+                  onClick={handleDeleteComment}
+                />
               </Center>
             )}
           </Flex>
@@ -114,9 +133,20 @@ export const Comment: React.FC<CommentProps> = ({
           </Text>
         </Box>
         <Box marginLeft="auto" minWidth="12vh">
-          <UpvoteSection commentId={id} currentScore={score} initialUserVote={userVote} setCookie={setCookie} />
+          <UpvoteSection
+            commentId={id}
+            currentScore={score}
+            initialUserVote={userVote}
+            setCookie={setCookie}
+          />
           {!replying && (
-            <Button backgroundColor="white" border="2px" _hover={{ backgroundColor: "main" }} borderColor="main" onClick={handleReplyClick}>
+            <Button
+              backgroundColor="white"
+              border="2px"
+              _hover={{ backgroundColor: "main" }}
+              borderColor="main"
+              onClick={handleReplyClick}
+            >
               Répondre
             </Button>
           )}

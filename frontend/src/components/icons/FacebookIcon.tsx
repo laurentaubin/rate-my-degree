@@ -1,7 +1,9 @@
 import { ChakraProps, Icon } from "@chakra-ui/react";
 import React from "react";
 
-interface FacebookIconProps extends Omit<React.SVGAttributes<SVGElement>, keyof ChakraProps>, ChakraProps {}
+interface FacebookIconProps
+  extends Omit<React.SVGAttributes<SVGElement>, keyof ChakraProps>,
+    ChakraProps {}
 
 const FacebookIcon: React.FC<FacebookIconProps> = (props) => (
   <Icon viewBox="0 0 20 20" {...props}>

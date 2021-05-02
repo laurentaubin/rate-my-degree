@@ -21,7 +21,13 @@ export const NavBar: React.FC<{}> = () => {
         </Box>
       )}
       <Center marginLeft="auto" marginRight="32px">
-        <GoogleLogin backgroundColor="black" color="white" borderColor="white" border="1px" _hover={{}} />
+        <GoogleLogin
+          backgroundColor="black"
+          color="white"
+          borderColor="white"
+          border="1px"
+          _hover={{}}
+        />
       </Center>
     </Flex>
   );

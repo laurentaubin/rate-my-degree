@@ -1,7 +1,9 @@
 import { ChakraProps, Icon } from "@chakra-ui/react";
 import React from "react";
 
-interface WebsiteIconProps extends Omit<React.SVGAttributes<SVGElement>, keyof ChakraProps>, ChakraProps {}
+interface WebsiteIconProps
+  extends Omit<React.SVGAttributes<SVGElement>, keyof ChakraProps>,
+    ChakraProps {}
 
 const WebsiteIcon: React.FC<WebsiteIconProps> = (props) => (
   <Icon viewBox="0 0 20 20" {...props}>
