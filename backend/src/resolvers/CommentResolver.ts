@@ -44,6 +44,20 @@ export class CommentResolver {
     verifyUserIsAuthenticated(currentUser);
     verifyUserIsCommentAuthor(currentUser, commentId);
 
+    const comment = await CourseComment.findOne({ where: { id: commentId } });
+    const subComments = await this.subComments(comment!);
+
+    if (subComments.length > 0) {
+      const deletedAuthor = await findOrCreateDeletedUser();
+      await getConnection()
+        .createQueryBuilder()
+        .update(CourseComment)
+        .set({ content: "[deleted]", author: deletedAuthor })
+        .where({ id: commentId })
+        .execute();
+      return true;
+    }
+
     await getConnection()
       .getRepository(CourseComment)
       .createQueryBuilder()
@@ -61,4 +75,20 @@ const verifyUserIsCommentAuthor = async (user: User, commentId: string) => {
   if (comment?.author.id != user.id) {
     throw new ForbiddenError("User is not the comment's author");
   }
+};
+
+const findOrCreateDeletedUser = async () => {
+  const user = await User.findOne({ where: { email: "deleted" } });
+
+  if (user) {
+    return user;
+  }
+
+  const newUser = User.create({
+    email: "deleted",
+    name: "",
+    pictureUrl: "https://i.ibb.co/Pw6SW57/default-avatar.png",
+    comments: [],
+  });
+  return await User.save(newUser);
 };
