@@ -2,12 +2,8 @@ import { VStack, Text } from "@chakra-ui/layout";
 import React from "react";
 import { HomeHeader } from "../components/HomeHeader";
 import { SearchBar } from "../components/SearchBar";
-import { useMeQuery } from "../generated/graphql";
 
 const Index = () => {
-  const [{ data }] = useMeQuery();
-  console.log(data);
-
   return (
     <>
       <HomeHeader />
