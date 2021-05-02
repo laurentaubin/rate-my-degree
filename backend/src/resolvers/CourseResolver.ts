@@ -7,8 +7,8 @@ import { v4 as uuidv4 } from "uuid";
 import { CourseInput } from "../inputs/CourseInput";
 import { UserInputError } from "apollo-server-errors";
 import { CourseComment } from "../entities/CourseComment";
-import { MyContext } from "src/types";
-import { verifyUserIsAuthenticated } from "src/utils/verifyUserIsAuthenticated";
+import { AppContext } from "../types";
+import { verifyUserIsAuthenticated } from "../utils/verifyUserIsAuthenticated";
 
 @Resolver((_of) => Course)
 export class CourseResolver {
@@ -48,7 +48,7 @@ export class CourseResolver {
   }
 
   @Mutation(() => Boolean)
-  async addComment(@Ctx() { currentUser }: MyContext, @Arg("data") data: AddCommentInput): Promise<Boolean | Error> {
+  async addComment(@Ctx() { currentUser }: AppContext, @Arg("data") data: AddCommentInput): Promise<Boolean | Error> {
     verifyUserIsAuthenticated(currentUser);
 
     const { courseInitials, content, parentId } = data;

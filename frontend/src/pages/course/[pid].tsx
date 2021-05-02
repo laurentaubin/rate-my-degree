@@ -125,6 +125,7 @@ const Course = () => {
                   id={comment.id}
                   score={comment.score}
                   content={comment.content}
+                  isUserAuthor={comment.isUserAuthor}
                   createdAt={comment.createdAt}
                   author={comment.author}
                   subComments={comment.subComments}

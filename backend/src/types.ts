@@ -1,5 +1,5 @@
 import { User } from "./entities/User";
 
-export type MyContext = {
+export type AppContext = {
   currentUser: User;
 };

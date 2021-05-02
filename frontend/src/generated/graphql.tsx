@@ -54,6 +54,7 @@ export type CourseComment = {
   content: Scalars['String'];
   score: Scalars['Float'];
   author: User;
+  isUserAuthor: Scalars['Boolean'];
   createdAt: Scalars['String'];
 };
 
@@ -74,7 +75,7 @@ export type CourseInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   vote: CourseComment;
-  delete: Scalars['Boolean'];
+  deleteComment: Scalars['Boolean'];
   createCourse: Course;
   addComment: Scalars['Boolean'];
 };
@@ -85,7 +86,7 @@ export type MutationVoteArgs = {
 };
 
 
-export type MutationDeleteArgs = {
+export type MutationDeleteCommentArgs = {
   commentId: Scalars['String'];
 };
 
@@ -143,6 +144,16 @@ export type CreateCourseMutation = (
     { __typename?: 'Course' }
     & Pick<Course, 'initials' | 'title' | 'description' | 'professor'>
   ) }
+);
+
+export type DeleteCommentMutationVariables = Exact<{
+  commentId: Scalars['String'];
+}>;
+
+
+export type DeleteCommentMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'deleteComment'>
 );
 
 export type VoteMutationVariables = Exact<{
@@ -206,7 +217,7 @@ export type SubCommentsFragment = (
 
 export type CommentFieldsFragment = (
   { __typename?: 'CourseComment' }
-  & Pick<CourseComment, 'id' | 'content' | 'score' | 'createdAt'>
+  & Pick<CourseComment, 'id' | 'content' | 'score' | 'createdAt' | 'isUserAuthor'>
   & { author: (
     { __typename?: 'User' }
     & Pick<User, 'name' | 'pictureUrl'>
@@ -244,6 +255,7 @@ export const CommentFieldsFragmentDoc = gql`
   content
   score
   createdAt
+  isUserAuthor
   author {
     name
     pictureUrl
@@ -296,6 +308,15 @@ export const CreateCourseDocument = gql`
 
 export function useCreateCourseMutation() {
   return Urql.useMutation<CreateCourseMutation, CreateCourseMutationVariables>(CreateCourseDocument);
+};
+export const DeleteCommentDocument = gql`
+    mutation DeleteComment($commentId: String!) {
+  deleteComment(commentId: $commentId)
+}
+    `;
+
+export function useDeleteCommentMutation() {
+  return Urql.useMutation<DeleteCommentMutation, DeleteCommentMutationVariables>(DeleteCommentDocument);
 };
 export const VoteDocument = gql`
     mutation Vote($score: Float!, $commentId: String!) {

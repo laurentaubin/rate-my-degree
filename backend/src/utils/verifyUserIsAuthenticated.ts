@@ -1,5 +1,5 @@
 import { AuthenticationError } from "apollo-server-errors";
-import { User } from "src/entities/User";
+import { User } from "../entities/User";
 
 export const verifyUserIsAuthenticated = (user: User): void => {
   if (!user) {
