@@ -4,10 +4,8 @@ export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K];
 };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
-  { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
-  { [SubKey in K]: Maybe<T[SubKey]> };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -121,10 +119,7 @@ export type AddCommentMutationVariables = Exact<{
   parentId?: Maybe<Scalars["String"]>;
 }>;
 
-export type AddCommentMutation = { __typename?: "Mutation" } & Pick<
-  Mutation,
-  "addComment"
->;
+export type AddCommentMutation = { __typename?: "Mutation" } & Pick<Mutation, "addComment">;
 
 export type CreateCourseMutationVariables = Exact<{
   initials: Scalars["String"];
@@ -134,20 +129,14 @@ export type CreateCourseMutationVariables = Exact<{
 }>;
 
 export type CreateCourseMutation = { __typename?: "Mutation" } & {
-  createCourse: { __typename?: "Course" } & Pick<
-    Course,
-    "initials" | "title" | "description" | "professor"
-  >;
+  createCourse: { __typename?: "Course" } & Pick<Course, "initials" | "title" | "description" | "professor">;
 };
 
 export type DeleteCommentMutationVariables = Exact<{
   commentId: Scalars["String"];
 }>;
 
-export type DeleteCommentMutation = { __typename?: "Mutation" } & Pick<
-  Mutation,
-  "deleteComment"
->;
+export type DeleteCommentMutation = { __typename?: "Mutation" } & Pick<Mutation, "deleteComment">;
 
 export type VoteMutationVariables = Exact<{
   score: Scalars["Float"];
@@ -165,14 +154,8 @@ export type CourseQueryVariables = Exact<{
 }>;
 
 export type CourseQuery = { __typename?: "Query" } & {
-  course: { __typename?: "Course" } & Pick<
-    Course,
-    "title" | "initials" | "professor" | "description"
-  > & {
-      comments: Array<
-        { __typename?: "CourseComment" } & CommentFieldsFragment &
-          SubCommentsFragment
-      >;
+  course: { __typename?: "Course" } & Pick<Course, "title" | "initials" | "professor" | "description"> & {
+      comments: Array<{ __typename?: "CourseComment" } & CommentFieldsFragment & SubCommentsFragment>;
     };
 };
 
@@ -221,9 +204,7 @@ export type CoursesQueryVariables = Exact<{
 }>;
 
 export type CoursesQuery = { __typename?: "Query" } & {
-  courses: Array<
-    { __typename?: "Course" } & Pick<Course, "initials" | "title" | "professor">
-  >;
+  courses: Array<{ __typename?: "Course" } & Pick<Course, "initials" | "title" | "professor">>;
 };
 
 export type MeQueryVariables = Exact<{ [key: string]: never }>;
@@ -267,41 +248,17 @@ export const SubCommentsFragmentDoc = gql`
   ${CommentFieldsFragmentDoc}
 `;
 export const AddCommentDocument = gql`
-  mutation AddComment(
-    $courseInitials: String!
-    $content: String!
-    $parentId: String
-  ) {
-    addComment(
-      data: {
-        courseInitials: $courseInitials
-        content: $content
-        parentId: $parentId
-      }
-    )
+  mutation AddComment($courseInitials: String!, $content: String!, $parentId: String) {
+    addComment(data: { courseInitials: $courseInitials, content: $content, parentId: $parentId })
   }
 `;
 
 export function useAddCommentMutation() {
-  return Urql.useMutation<AddCommentMutation, AddCommentMutationVariables>(
-    AddCommentDocument
-  );
+  return Urql.useMutation<AddCommentMutation, AddCommentMutationVariables>(AddCommentDocument);
 }
 export const CreateCourseDocument = gql`
-  mutation CreateCourse(
-    $initials: String!
-    $title: String!
-    $description: String!
-    $professor: String!
-  ) {
-    createCourse(
-      data: {
-        initials: $initials
-        title: $title
-        description: $description
-        professor: $professor
-      }
-    ) {
+  mutation CreateCourse($initials: String!, $title: String!, $description: String!, $professor: String!) {
+    createCourse(data: { initials: $initials, title: $title, description: $description, professor: $professor }) {
       initials
       title
       description
@@ -311,9 +268,7 @@ export const CreateCourseDocument = gql`
 `;
 
 export function useCreateCourseMutation() {
-  return Urql.useMutation<CreateCourseMutation, CreateCourseMutationVariables>(
-    CreateCourseDocument
-  );
+  return Urql.useMutation<CreateCourseMutation, CreateCourseMutationVariables>(CreateCourseDocument);
 }
 export const DeleteCommentDocument = gql`
   mutation DeleteComment($commentId: String!) {
@@ -322,10 +277,7 @@ export const DeleteCommentDocument = gql`
 `;
 
 export function useDeleteCommentMutation() {
-  return Urql.useMutation<
-    DeleteCommentMutation,
-    DeleteCommentMutationVariables
-  >(DeleteCommentDocument);
+  return Urql.useMutation<DeleteCommentMutation, DeleteCommentMutationVariables>(DeleteCommentDocument);
 }
 export const VoteDocument = gql`
   mutation Vote($score: Float!, $commentId: String!) {
@@ -356,9 +308,7 @@ export const CourseDocument = gql`
   ${SubCommentsFragmentDoc}
 `;
 
-export function useCourseQuery(
-  options: Omit<Urql.UseQueryArgs<CourseQueryVariables>, "query"> = {}
-) {
+export function useCourseQuery(options: Omit<Urql.UseQueryArgs<CourseQueryVariables>, "query"> = {}) {
   return Urql.useQuery<CourseQuery>({ query: CourseDocument, ...options });
 }
 export const CoursesDocument = gql`
@@ -371,9 +321,7 @@ export const CoursesDocument = gql`
   }
 `;
 
-export function useCoursesQuery(
-  options: Omit<Urql.UseQueryArgs<CoursesQueryVariables>, "query"> = {}
-) {
+export function useCoursesQuery(options: Omit<Urql.UseQueryArgs<CoursesQueryVariables>, "query"> = {}) {
   return Urql.useQuery<CoursesQuery>({ query: CoursesDocument, ...options });
 }
 export const MeDocument = gql`
@@ -386,8 +334,6 @@ export const MeDocument = gql`
   }
 `;
 
-export function useMeQuery(
-  options: Omit<Urql.UseQueryArgs<MeQueryVariables>, "query"> = {}
-) {
+export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, "query"> = {}) {
   return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
 }

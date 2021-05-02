@@ -1,17 +1,5 @@
-mutation CreateCourse(
-  $initials: String!
-  $title: String!
-  $description: String!
-  $professor: String!
-) {
-  createCourse(
-    data: {
-      initials: $initials
-      title: $title
-      description: $description
-      professor: $professor
-    }
-  ) {
+mutation CreateCourse($initials: String!, $title: String!, $description: String!, $professor: String!) {
+  createCourse(data: { initials: $initials, title: $title, description: $description, professor: $professor }) {
     initials
     title
     description

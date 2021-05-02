@@ -21,12 +21,7 @@ const Index = () => {
         backgroundRepeat="no-repeat"
         backgroundSize="100vw 80vh"
       >
-        <Stack
-          marginRight="33vw"
-          marginLeft="15vw"
-          marginTop="10vh"
-          textAlign="center"
-        >
+        <Stack marginRight="33vw" marginLeft="15vw" marginTop="10vh" textAlign="center">
           <Text fontSize="9xl" fontWeight="bold">
             404
           </Text>

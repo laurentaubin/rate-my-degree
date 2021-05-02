@@ -1,9 +1,7 @@
 import { ChakraProps, Icon } from "@chakra-ui/react";
 import React from "react";
 
-interface DeleteIconProps
-  extends Omit<React.SVGAttributes<SVGElement>, keyof ChakraProps>,
-    ChakraProps {}
+interface DeleteIconProps extends Omit<React.SVGAttributes<SVGElement>, keyof ChakraProps>, ChakraProps {}
 
 const DeleteIcon: React.FC<DeleteIconProps> = (props) => (
   <Icon viewBox="0 0 20 20" {...props}>
