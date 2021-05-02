@@ -12,10 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Validate frontend code formatting
+        working-directory: ./frontend
         run: yarn format:check
-        with:
-          context: backend/
       - name: Validate backend code formatting
+        working-directory: ./backend
         run: yarn format:check
-        with:
-          context: backend/
