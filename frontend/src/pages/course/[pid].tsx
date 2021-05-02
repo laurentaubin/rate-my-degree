@@ -14,6 +14,7 @@ import { Box, Textarea } from "@chakra-ui/react";
 const Course = () => {
   const [newComment, setNewComment] = useState("");
   const [sortingAttribute, setSortingAttribute] = useState("score");
+  const [authenticationError, setAuthenticationError] = useState(false);
   const [inputError, setInputError] = useState(false);
 
   const router = useRouter();
@@ -36,6 +37,11 @@ const Course = () => {
 
   const handleFormSubmit = async (event: any) => {
     event.preventDefault();
+    if (!meData) {
+      setAuthenticationError(true);
+      return;
+    }
+
     const { error } = await addComment({ courseInitials: courseData!.course.initials, content: newComment, authorId: meData!.me.id });
     if (error) {
       setInputError(true);
@@ -133,11 +139,16 @@ const Course = () => {
                 maxWidth="70vw"
                 marginLeft="1"
                 onChange={handleCommentInputChange}
-                isInvalid={inputError}
+                isInvalid={inputError || authenticationError}
               ></Textarea>
               {inputError && (
                 <Text marginLeft="1" color="red">
                   Le contenu du commentaire ne peut pas être vide.
+                </Text>
+              )}
+              {authenticationError && (
+                <Text marginLeft="1" color="red">
+                  Vous devez être authentifié pour ajouter un commentaire.
                 </Text>
               )}
               <Button
