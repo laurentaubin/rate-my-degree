@@ -11,7 +11,8 @@ interface SearchBarProps extends HTMLChakraProps<"div"> {
 
 export const SearchBar: React.FC<SearchBarProps> = ({ size, ...props }) => {
   const [query, setQuery] = useState("");
-  const [focused, setFocused] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const [isMousedOver, setIsMousedOver] = useState(false);
 
   const [{ data }] = useCoursesQuery({
     variables: {
@@ -25,19 +26,39 @@ export const SearchBar: React.FC<SearchBarProps> = ({ size, ...props }) => {
   };
 
   const handleChangeFocus = () => {
-    setFocused((focus) => !focus);
+    console.log("blur)");
+    setIsFocused((focus) => !focus);
+  };
+
+  const handleMouseOver = () => {
+    setIsMousedOver(() => true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsMousedOver(() => false);
+  };
+
+  const handleResultClick = () => {
+    setIsMousedOver(() => false);
+    setIsFocused(() => false);
   };
 
   return (
     <>
-      <Stack {...props} minWidth="35vw" backgroundColor="white" borderRadius="6px" paddingBottom={query ? "0.5rem" : "0"}>
+      <Stack
+        {...props}
+        minWidth="35vw"
+        backgroundColor="white"
+        borderRadius="6px"
+        paddingBottom={query ? "0.5rem" : "0"}
+        onBlur={handleChangeFocus}
+        onFocus={handleChangeFocus}
+      >
         <InputGroup>
           <InputLeftElement minHeight={3 * size + "vh"} pointerEvents="none">
             <SearchIcon marginTop="0 !important" />
           </InputLeftElement>
           <Input
-            onBlur={handleChangeFocus}
-            onFocus={handleChangeFocus}
             placeholder="Rechercher un cours"
             minHeight={3 * size + "vh"}
             color="black"
@@ -46,10 +67,17 @@ export const SearchBar: React.FC<SearchBarProps> = ({ size, ...props }) => {
             variant="unstyled"
           ></Input>
         </InputGroup>
-        {query && focused && (
+        {query && (isFocused || isMousedOver) && (
           <>
             <Divider marginTop="0px !important" marginBottom="0.5rem" />
-            <Stack textAlign="center" marginTop="0px !important" zIndex={1}>
+            <Stack
+              textAlign="center"
+              marginTop="0px !important"
+              zIndex={1}
+              onMouseEnter={handleMouseOver}
+              onMouseLeave={handleMouseLeave}
+              onClick={handleResultClick}
+            >
               {data ? (
                 data!.courses.map((course) => {
                   return (
