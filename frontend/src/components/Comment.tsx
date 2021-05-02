@@ -66,7 +66,7 @@ export const Comment: React.FC<CommentProps> = ({
   return (
     <Stack width="100%" direction="column">
       <Flex>
-        <Avatar ddsrc={author.pictureUrl} />
+        <Avatar src={author.pictureUrl} />
         <Box ml="3">
           <Flex>
             <Text fontWeight="semibold">{author.name}</Text>
