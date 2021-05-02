@@ -1,8 +1,10 @@
+import { DeleteIcon } from "@chakra-ui/icons";
 import { Badge, Stack } from "@chakra-ui/layout";
-import { Avatar, Box, Button, Flex, Text, Textarea } from "@chakra-ui/react";
+import { Avatar, Box, Button, Center, Flex, IconButton, Text, Textarea } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import { useDeleteCommentMutation } from "../generated/graphql";
 import { formatDate } from "../utils/formatDate";
 import { UpvoteSection } from "./UpvoteSection";
 
@@ -16,6 +18,7 @@ interface CommentProps {
   id: string;
   score: number;
   content: string;
+  isUserAuthor: boolean;
   createdAt: string;
   author: AuthorProp;
   subComments: [CommentProps] | [] | any;
@@ -31,6 +34,7 @@ export const Comment: React.FC<CommentProps> = ({
   score,
   content,
   createdAt,
+  isUserAuthor,
   author,
   subComments,
   setCookie,
@@ -46,9 +50,16 @@ export const Comment: React.FC<CommentProps> = ({
     setInputError(false);
   }, [replying]);
 
+  const [, deleteComment] = useDeleteCommentMutation();
+
   const [cookies, _] = useCookies(["user-vote"]);
 
   const router = useRouter();
+
+  const handleDeleteComment = () => {
+    deleteComment({ commentId: id });
+    router.reload();
+  };
 
   const handleReplyClick = () => {
     setReplying(true);
@@ -73,6 +84,11 @@ export const Comment: React.FC<CommentProps> = ({
             <Badge marginLeft="2" backgroundColor="main">
               {formatDate(new Date(parseInt(createdAt)))}
             </Badge>
+            {isUserAuthor && (
+              <Center>
+                <DeleteIcon marginLeft="6px" _hover={{ cursor: "pointer" }} onClick={handleDeleteComment} />
+              </Center>
+            )}
           </Flex>
           <Text fontSize="sm" marginTop="8px" paddingRight="16px">
             {content}
@@ -140,6 +156,7 @@ export const Comment: React.FC<CommentProps> = ({
                   id={subComment.id}
                   score={subComment.score}
                   content={subComment.content}
+                  isUserAuthor={subComment.isUserAuthor}
                   createdAt={subComment.createdAt}
                   author={subComment.author}
                   subComments={subComment.subComments}

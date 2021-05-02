@@ -40,7 +40,7 @@ export class CommentResolver {
   }
 
   @Mutation(() => Boolean)
-  async delete(@Ctx() { currentUser }: AppContext, @Arg("commentId") commentId: string): Promise<Boolean> {
+  async deleteComment(@Ctx() { currentUser }: AppContext, @Arg("commentId") commentId: string): Promise<Boolean> {
     verifyUserIsAuthenticated(currentUser);
     verifyUserIsCommentAuthor(currentUser, commentId);
 
