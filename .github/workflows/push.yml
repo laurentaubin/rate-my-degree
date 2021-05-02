@@ -1,0 +1,19 @@
+name: push
+on:
+  push:
+    branches:
+      - "**"
+    paths-ignore:
+      - "**.md"
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Validate frontend code formatting
+        context: frontend/
+        run: yarn format:check
+      - name: Validate backend code formatting
+        context: backend/
+        run: yarn format:check
