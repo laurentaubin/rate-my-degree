@@ -65,7 +65,17 @@ export class CommentResolver {
       .where("course_comment.id = :id", { id: commentId })
       .execute();
 
+    this.cleanUpParent({ currentUser }, comment!);
+
     return true;
+  }
+
+  async cleanUpParent({ currentUser }: AppContext, comment: CourseComment) {
+    const parentComment = await CourseComment.findOne({ where: { id: comment.parentId } });
+
+    if (parentComment?.author.email === "deleted") {
+      this.deleteComment({ currentUser }, parentComment.id);
+    }
   }
 }
 
