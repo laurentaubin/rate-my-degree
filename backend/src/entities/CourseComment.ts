@@ -35,6 +35,9 @@ export class CourseComment extends BaseEntity {
   @JoinColumn({ name: "author_id" })
   author: User;
 
+  @Field()
+  isUserAuthor: boolean;
+
   @Field(() => String)
   @CreateDateColumn({ name: "created_at" })
   createdAt: Date;

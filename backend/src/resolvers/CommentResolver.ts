@@ -14,6 +14,15 @@ export class CommentResolver {
     return CourseComment.find({ where: { parentId: comment.id } });
   }
 
+  @FieldResolver((_of) => CourseComment)
+  isUserAuthor(@Ctx() { currentUser }: AppContext, @Root() comment: CourseComment): Boolean {
+    if (!currentUser) {
+      return false;
+    }
+
+    return currentUser.id === comment.author.id;
+  }
+
   @Mutation(() => CourseComment)
   async vote(@Arg("data") data: VoteInput): Promise<CourseComment | undefined> {
     const { score, commentId } = data;
