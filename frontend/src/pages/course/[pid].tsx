@@ -1,13 +1,13 @@
 import { Button } from "@chakra-ui/button";
 import { Text } from "@chakra-ui/layout";
-import { Comment } from "../../components/Comment";
-import { useAddCommentMutation, useCourseQuery, useMeQuery } from "../../generated/graphql";
+import { Comment } from "@components/Comment";
+import { useAddCommentMutation, useCourseQuery, useMeQuery } from "generated/graphql";
 import { useState } from "react";
-import { Layout } from "../../components/Layout";
-import { SortingBar } from "../../components/SortingBar";
+import { Layout } from "@components/Layout";
+import { SortingBar } from "@components/SortingBar";
 import { Heading, Stack } from "@chakra-ui/layout";
 import { useCookies } from "react-cookie";
-import { useGetCourseInitials } from "../../hooks/useGetCourseInitials";
+import { useGetCourseInitials } from "hooks/useGetCourseInitials";
 import { useRouter } from "next/router";
 import { Box, Textarea } from "@chakra-ui/react";
 

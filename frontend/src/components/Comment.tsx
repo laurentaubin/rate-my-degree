@@ -1,12 +1,12 @@
 import { DeleteIcon } from "@chakra-ui/icons";
 import { Badge, Stack } from "@chakra-ui/layout";
-import { Avatar, Box, Button, Center, Flex, IconButton, Text, Textarea } from "@chakra-ui/react";
+import { Avatar, Box, Button, Center, Flex, Text, Textarea } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import { useDeleteCommentMutation } from "../generated/graphql";
-import { formatDate } from "../utils/formatDate";
-import { UpvoteSection } from "./UpvoteSection";
+import { useDeleteCommentMutation } from "@generated/graphql";
+import { formatDate } from "@utils/formatDate";
+import { UpvoteSection } from "@components/UpvoteSection";
 
 interface AuthorProp {
   name: string;

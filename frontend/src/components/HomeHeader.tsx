@@ -1,9 +1,9 @@
 import { Flex } from "@chakra-ui/layout";
 import { Link } from "@chakra-ui/react";
 import React from "react";
-import { GoogleLogin } from "./GoogleLogin";
-import FacebookIcon from "./icons/FacebookIcon";
-import WebsiteIcon from "./icons/WebsiteIcon";
+import { GoogleLogin } from "@components/GoogleLogin";
+import FacebookIcon from "@components/icons/FacebookIcon";
+import WebsiteIcon from "@components/icons/WebsiteIcon";
 
 interface HomeHeaderProps {}
 

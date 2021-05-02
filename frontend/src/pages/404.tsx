@@ -2,7 +2,7 @@ import { Flex, Text } from "@chakra-ui/layout";
 import { Button, Stack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React from "react";
-import { NavBar } from "../components/NavBar";
+import { NavBar } from "@components/NavBar";
 
 const Index = () => {
   const router = useRouter();
