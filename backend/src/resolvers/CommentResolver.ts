@@ -1,7 +1,11 @@
 import { CourseComment } from "../entities/CourseComment";
 import { VoteInput } from "../inputs/VoteInput";
-import { Resolver, Mutation, Arg, FieldResolver, Root } from "type-graphql";
+import { Resolver, Mutation, Arg, FieldResolver, Root, Ctx } from "type-graphql";
 import { getConnection } from "typeorm";
+import { AppContext } from "../types";
+import { verifyUserIsAuthenticated } from "../utils/verifyUserIsAuthenticated";
+import { User } from "../entities/User";
+import { ForbiddenError } from "apollo-server-errors";
 
 @Resolver((_of) => CourseComment)
 export class CommentResolver {
@@ -27,7 +31,10 @@ export class CommentResolver {
   }
 
   @Mutation(() => Boolean)
-  async delete(@Arg("commentId") commentId: string): Promise<Boolean> {
+  async delete(@Ctx() { currentUser }: AppContext, @Arg("commentId") commentId: string): Promise<Boolean> {
+    verifyUserIsAuthenticated(currentUser);
+    verifyUserIsCommentAuthor(currentUser, commentId);
+
     await getConnection()
       .getRepository(CourseComment)
       .createQueryBuilder()
@@ -38,3 +45,11 @@ export class CommentResolver {
     return true;
   }
 }
+
+const verifyUserIsCommentAuthor = async (user: User, commentId: string) => {
+  const comment = await CourseComment.findOne({ where: { id: commentId } });
+
+  if (comment?.author.id != user.id) {
+    throw new ForbiddenError("User is not the comment's author");
+  }
+};
