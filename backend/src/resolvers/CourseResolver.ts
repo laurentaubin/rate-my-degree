@@ -47,7 +47,7 @@ export class CourseResolver {
 
   @Mutation(() => Boolean)
   async addComment(@Arg("data") data: AddCommentInput): Promise<Boolean> {
-    const { courseInitials, content, parentId } = data;
+    const { courseInitials, content, parentId, authorId } = data;
     if (!content) {
       throw new UserInputError("Comment content cannot be empty");
     }
@@ -56,10 +56,10 @@ export class CourseResolver {
     await getConnection().transaction(async (tm) => {
       await tm.query(
         `
-        insert into course_comment ("id", "courseInitials", "content", "parent_id")
-        values ($1, $2, $3, $4)
+        insert into course_comment ("id", "course_initials", "content", "parent_id", "author_id")
+        values ($1, $2, $3, $4, $5)
     `,
-        [commentId, courseInitials, content, parentId]
+        [commentId, courseInitials, content, parentId, authorId]
       );
     });
 
@@ -75,9 +75,9 @@ export class CourseResolver {
     return getConnection()
       .getRepository(CourseComment)
       .createQueryBuilder("course_comment")
-      .select()
+      .leftJoinAndSelect("course_comment.author", "user")
       .orderBy(attribute, order)
-      .where("course_comment.courseInitials = :initials", { initials: course.initials })
+      .where("course_comment.course_initials = :initials", { initials: course.initials })
       .andWhere("course_comment.parentId is null")
       .getMany();
   }

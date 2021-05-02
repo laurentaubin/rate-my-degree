@@ -3,9 +3,13 @@ import { Avatar, Box, Button, Flex, Text, Textarea } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import { useAddCommentMutation } from "../generated/graphql";
 import { formatDate } from "../utils/formatDate";
 import { UpvoteSection } from "./UpvoteSection";
+
+interface AuthorProp {
+  name: string;
+  pictureUrl: string;
+}
 
 interface CommentProps {
   courseInitials: string;
@@ -13,9 +17,11 @@ interface CommentProps {
   score: number;
   content: string;
   createdAt: string;
+  author: AuthorProp;
   subComments: [CommentProps] | [] | any;
   userVote: number;
   setCookie: (name: string, value: number) => void;
+  handleReplySubmit: (event: any, content: string, commentId: string) => void;
   nestingLevel: number;
 }
 
@@ -25,13 +31,13 @@ export const Comment: React.FC<CommentProps> = ({
   score,
   content,
   createdAt,
+  author,
   subComments,
   setCookie,
+  handleReplySubmit,
   userVote,
   nestingLevel,
 }) => {
-  const author = "Anonymous";
-
   const [replying, setReplying] = useState(false);
   const [reply, setReply] = useState("");
   const [inputError, setInputError] = useState(false);
@@ -39,8 +45,6 @@ export const Comment: React.FC<CommentProps> = ({
   useEffect(() => {
     setInputError(false);
   }, [replying]);
-
-  const [, addComment] = useAddCommentMutation();
 
   const [cookies, _] = useCookies(["user-vote"]);
 
@@ -54,17 +58,6 @@ export const Comment: React.FC<CommentProps> = ({
     setReply(event.target.value);
   };
 
-  const handleReplySubmit = async (event: any) => {
-    event.preventDefault();
-    const { error } = await addComment({ courseInitials: courseInitials, content: reply, parentId: id });
-    if (error) {
-      setInputError(true);
-      return;
-    }
-
-    router.reload();
-  };
-
   const handleCancelClick = () => {
     setReplying(false);
     setReply("");
@@ -73,10 +66,10 @@ export const Comment: React.FC<CommentProps> = ({
   return (
     <Stack width="100%" direction="column">
       <Flex>
-        <Avatar ddsrc="https://bit.ly/sage-adebayo" />
+        <Avatar src={author.pictureUrl} />
         <Box ml="3">
           <Flex>
-            <Text fontWeight="semibold">{author}</Text>
+            <Text fontWeight="semibold">{author.name}</Text>
             <Badge marginLeft="2" backgroundColor="main">
               {formatDate(new Date(parseInt(createdAt)))}
             </Badge>
@@ -121,7 +114,7 @@ export const Comment: React.FC<CommentProps> = ({
                 borderColor="main"
                 backgroundColor="main"
                 _hover={{ backgroundColor: "mainSelected" }}
-                onClick={handleReplySubmit}
+                onClick={(event) => handleReplySubmit(event, reply, id)}
               >
                 Soumettre
               </Button>
@@ -148,9 +141,11 @@ export const Comment: React.FC<CommentProps> = ({
                   score={subComment.score}
                   content={subComment.content}
                   createdAt={subComment.createdAt}
+                  author={subComment.author}
                   subComments={subComment.subComments}
                   userVote={cookies[cookieName]}
                   setCookie={setCookie}
+                  handleReplySubmit={handleReplySubmit}
                   nestingLevel={nestingLevel + 1}
                 />
               </Stack>

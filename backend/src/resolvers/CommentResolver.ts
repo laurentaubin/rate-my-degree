@@ -6,7 +6,7 @@ import { getConnection } from "typeorm";
 @Resolver((_of) => CourseComment)
 export class CommentResolver {
   @FieldResolver((_of) => CourseComment)
-  subComments(@Root() comment: CourseComment) {
+  subComments(@Root() comment: CourseComment): Promise<CourseComment[]> {
     return CourseComment.find({ where: { parentId: comment.id } });
   }
 

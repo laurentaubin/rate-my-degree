@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/button";
 import { Text } from "@chakra-ui/layout";
 import { Comment } from "../../components/Comment";
-import { useAddCommentMutation, useCourseQuery } from "../../generated/graphql";
+import { useAddCommentMutation, useCourseQuery, useMeQuery } from "../../generated/graphql";
 import { useState } from "react";
 import { Layout } from "../../components/Layout";
 import { SortingBar } from "../../components/SortingBar";
@@ -14,6 +14,7 @@ import { Box, Textarea } from "@chakra-ui/react";
 const Course = () => {
   const [newComment, setNewComment] = useState("");
   const [sortingAttribute, setSortingAttribute] = useState("score");
+  const [authenticationError, setAuthenticationError] = useState(false);
   const [inputError, setInputError] = useState(false);
 
   const router = useRouter();
@@ -24,7 +25,7 @@ const Course = () => {
 
   const [, addComment] = useAddCommentMutation();
 
-  const [{ data, fetching, error }] = useCourseQuery({
+  const [{ data: courseData, fetching: courseFetching, error: courseError }] = useCourseQuery({
     variables: {
       initials: courseInitials,
       attribute: sortingAttribute,
@@ -32,9 +33,27 @@ const Course = () => {
     },
   });
 
+  const [{ data: meData }] = useMeQuery();
+
   const handleFormSubmit = async (event: any) => {
     event.preventDefault();
-    const { error } = await addComment({ courseInitials: data!.course.initials, content: newComment });
+    if (!meData) {
+      setAuthenticationError(true);
+      return;
+    }
+
+    const { error } = await addComment({ courseInitials: courseData!.course.initials, content: newComment, authorId: meData!.me.id });
+    if (error) {
+      setInputError(true);
+      return;
+    }
+
+    router.reload();
+  };
+
+  const handleReplySubmit = async (event: any, content: string, commentId: string) => {
+    event.preventDefault();
+    const { error } = await addComment({ courseInitials: courseInitials, content: content, parentId: commentId, authorId: meData!.me.id });
     if (error) {
       setInputError(true);
       return;
@@ -49,12 +68,12 @@ const Course = () => {
     setSortingAttribute(event.target.value);
   };
 
-  if (!data && !fetching) {
+  if (!courseData && !courseFetching) {
     router.push("/404");
     return <div></div>;
   }
 
-  if (!data && fetching) {
+  if (!courseData && courseFetching) {
     return (
       <Layout>
         <div>loading...</div>
@@ -62,27 +81,27 @@ const Course = () => {
     );
   }
 
-  if (error) {
-    return <div>{error.message}</div>;
+  if (courseError) {
+    return <div>{courseError.message}</div>;
   }
 
   return (
     <Layout>
       <Box paddingLeft="2vw" marginTop="4vh">
         <Heading as="h1" fontSize="4xl" fontWeight="black">
-          {data!.course.initials.toUpperCase()} - {data!.course.title}
+          {courseData!.course.initials.toUpperCase()} - {courseData!.course.title}
         </Heading>
         <Text as="h2" fontSize="2xl" fontWeight="medium">
-          Professeur: {data!.course.professor}
+          Professeur: {courseData!.course.professor}
         </Text>
-        <Text paddingTop="2vh">{data!.course.description}</Text>
+        <Text paddingTop="2vh">{courseData!.course.description}</Text>
 
         <Box marginTop="4vh">
           <Heading as="h2" marginBottom="3vh">
             Commentaires
           </Heading>
           <SortingBar onSelectChange={handleSortingChange} />
-          {data!.course.comments.map((comment) => {
+          {courseData!.course.comments.map((comment) => {
             const cookieName = `user-vote-${comment.id}`;
             return (
               <Stack
@@ -96,14 +115,16 @@ const Course = () => {
                 padding="1em"
               >
                 <Comment
-                  courseInitials={data!.course.initials}
+                  courseInitials={courseData!.course.initials}
                   id={comment.id}
                   score={comment.score}
                   content={comment.content}
                   createdAt={comment.createdAt}
+                  author={comment.author}
                   subComments={comment.subComments}
                   userVote={cookies[cookieName]}
                   setCookie={setCookie}
+                  handleReplySubmit={handleReplySubmit}
                   nestingLevel={0}
                 />
               </Stack>
@@ -118,11 +139,16 @@ const Course = () => {
                 maxWidth="70vw"
                 marginLeft="1"
                 onChange={handleCommentInputChange}
-                isInvalid={inputError}
+                isInvalid={inputError || authenticationError}
               ></Textarea>
               {inputError && (
                 <Text marginLeft="1" color="red">
                   Le contenu du commentaire ne peut pas être vide.
+                </Text>
+              )}
+              {authenticationError && (
+                <Text marginLeft="1" color="red">
+                  Vous devez être authentifié pour ajouter un commentaire.
                 </Text>
               )}
               <Button
