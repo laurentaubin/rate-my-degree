@@ -4,9 +4,10 @@ import { Avatar, Box, Button, Center, Flex, Text, Textarea } from "@chakra-ui/re
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import { useDeleteCommentMutation } from "@generated/graphql";
+import { useAddCommentMutation, useDeleteCommentMutation } from "@generated/graphql";
 import { formatDate } from "@utils/formatDate";
-import { UpvoteSection } from "@components/UpvoteSection";
+import { UpvoteSection } from "@components/comment/UpvoteSection";
+import { ReplySection } from "./ReplySection";
 
 interface AuthorProp {
   name: string;
@@ -24,7 +25,6 @@ interface CommentProps {
   subComments: [CommentProps] | [] | any;
   userVote: number;
   setCookie: (name: string, value: number) => void;
-  handleReplySubmit: (event: any, content: string, commentId: string) => void;
   nestingLevel: number;
 }
 
@@ -38,16 +38,16 @@ export const Comment: React.FC<CommentProps> = ({
   author,
   subComments,
   setCookie,
-  handleReplySubmit,
   userVote,
   nestingLevel,
 }) => {
   const [replying, setReplying] = useState(false);
-  const [reply, setReply] = useState("");
   const [inputError, setInputError] = useState(false);
+  const [authenticationError, setAuthenticationError] = useState(false);
 
   useEffect(() => {
     setInputError(false);
+    setAuthenticationError(false);
   }, [replying]);
 
   const [, deleteComment] = useDeleteCommentMutation();
@@ -55,6 +55,7 @@ export const Comment: React.FC<CommentProps> = ({
   const [cookies, _] = useCookies(["user-vote"]);
 
   const router = useRouter();
+  const [, addComment] = useAddCommentMutation();
 
   const handleDeleteComment = () => {
     deleteComment({ commentId: id });
@@ -65,13 +66,31 @@ export const Comment: React.FC<CommentProps> = ({
     setReplying(true);
   };
 
-  const handleReplyChange = (event: any) => {
-    setReply(event.target.value);
-  };
-
   const handleCancelClick = () => {
     setReplying(false);
-    setReply("");
+  };
+
+  const handleFormSubmit = async (event: any, content: string) => {
+    event.preventDefault();
+    const { error } = await addComment({ courseInitials: courseInitials, content: content, parentId: id });
+    if (error) {
+      switch (error.graphQLErrors[0].extensions!.code) {
+        case "BAD_USER_INPUT":
+          setInputError(true);
+          break;
+
+        case "UNAUTHENTICATED":
+          setAuthenticationError(true);
+          break;
+
+        default:
+          break;
+      }
+
+      return;
+    }
+
+    router.reload();
   };
 
   return (
@@ -104,39 +123,12 @@ export const Comment: React.FC<CommentProps> = ({
         </Box>
       </Flex>
       {replying && (
-        <form>
-          <Stack>
-            <Textarea
-              value={reply}
-              backgroundColor="gray.100"
-              placeholder="Ajouter un commentaire"
-              maxWidth="70vw"
-              marginLeft="1"
-              onChange={handleReplyChange}
-              isInvalid={inputError}
-            ></Textarea>
-            {inputError && (
-              <Text marginLeft="1" color="red">
-                Le contenu du commentaire ne peut pas être vide.
-              </Text>
-            )}
-            <Flex>
-              <Button backgroundColor="white" border="1px" borderColor="black" onClick={handleCancelClick}>
-                Annuler
-              </Button>
-              <Button
-                type="submit"
-                border="2px"
-                borderColor="main"
-                backgroundColor="main"
-                _hover={{ backgroundColor: "mainSelected" }}
-                onClick={(event) => handleReplySubmit(event, reply, id)}
-              >
-                Soumettre
-              </Button>
-            </Flex>
-          </Stack>
-        </form>
+        <ReplySection
+          authenticationError={authenticationError}
+          inputError={inputError}
+          onCancel={handleCancelClick}
+          onFormSubmit={handleFormSubmit}
+        />
       )}
       <Stack direction="column">
         {subComments.length != 0 &&
@@ -162,7 +154,6 @@ export const Comment: React.FC<CommentProps> = ({
                   subComments={subComment.subComments}
                   userVote={cookies[cookieName]}
                   setCookie={setCookie}
-                  handleReplySubmit={handleReplySubmit}
                   nestingLevel={nestingLevel + 1}
                 />
               </Stack>
