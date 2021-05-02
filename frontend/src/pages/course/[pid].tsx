@@ -1,29 +1,26 @@
-import { Button } from "@chakra-ui/button";
-import { Text } from "@chakra-ui/layout";
-import { Comment } from "../../components/Comment";
-import { useAddCommentMutation, useCourseQuery, useMeQuery } from "../../generated/graphql";
-import { useState } from "react";
-import { Layout } from "../../components/Layout";
-import { SortingBar } from "../../components/SortingBar";
-import { Heading, Stack } from "@chakra-ui/layout";
-import { useCookies } from "react-cookie";
-import { useGetCourseInitials } from "../../hooks/useGetCourseInitials";
+import { Heading, Stack, Text } from "@chakra-ui/layout";
+import { Box } from "@chakra-ui/react";
+import { Comment } from "@components/comment/Comment";
+import { ReplySection } from "@components/comment/ReplySection";
+import { Layout } from "@components/Layout";
+import { SortingBar } from "@components/SortingBar";
+import { useAddCommentMutation, useCourseQuery } from "generated/graphql";
+import { useGetCourseInitials } from "hooks/useGetCourseInitials";
 import { useRouter } from "next/router";
-import { Box, Textarea } from "@chakra-ui/react";
+import { useState } from "react";
+import { useCookies } from "react-cookie";
 
 const Course = () => {
-  const [newComment, setNewComment] = useState("");
   const [sortingAttribute, setSortingAttribute] = useState("score");
-  const [authenticationError, setAuthenticationError] = useState(false);
   const [inputError, setInputError] = useState(false);
+  const [authenticationError, setAuthenticationError] = useState(false);
 
   const router = useRouter();
+  const [_, addComment] = useAddCommentMutation();
 
   const courseInitials = useGetCourseInitials();
 
   const [cookies, setCookie] = useCookies(["user-vote"]);
-
-  const [, addComment] = useAddCommentMutation();
 
   const [{ data: courseData, fetching: courseFetching, error: courseError }] = useCourseQuery({
     variables: {
@@ -33,7 +30,7 @@ const Course = () => {
     },
   });
 
-  const handleFormSubmit = async (event: any) => {
+  const handleFormSubmit = async (event: any, newComment: string) => {
     event.preventDefault();
 
     const { error } = await addComment({ courseInitials: courseData!.course.initials, content: newComment });
@@ -56,19 +53,6 @@ const Course = () => {
 
     router.reload();
   };
-
-  const handleReplySubmit = async (event: any, content: string, commentId: string) => {
-    event.preventDefault();
-    const { error } = await addComment({ courseInitials: courseInitials, content: content, parentId: commentId });
-    if (error) {
-      setInputError(true);
-      return;
-    }
-
-    router.reload();
-  };
-
-  const handleCommentInputChange = (event: any) => setNewComment(event.target.value);
 
   const handleSortingChange = (event: any) => {
     setSortingAttribute(event.target.value);
@@ -131,44 +115,12 @@ const Course = () => {
                   subComments={comment.subComments}
                   userVote={cookies[cookieName]}
                   setCookie={setCookie}
-                  handleReplySubmit={handleReplySubmit}
                   nestingLevel={0}
                 />
               </Stack>
             );
           })}
-          <form onSubmit={handleFormSubmit}>
-            <Stack>
-              <Textarea
-                value={newComment}
-                backgroundColor="gray.100"
-                placeholder="Ajouter un commentaire"
-                maxWidth="70vw"
-                marginLeft="1"
-                onChange={handleCommentInputChange}
-                isInvalid={inputError || authenticationError}
-              ></Textarea>
-              {inputError && (
-                <Text marginLeft="1" color="red">
-                  Le contenu du commentaire ne peut pas être vide.
-                </Text>
-              )}
-              {authenticationError && (
-                <Text marginLeft="1" color="red">
-                  Vous devez être authentifié pour ajouter un commentaire.
-                </Text>
-              )}
-              <Button
-                type="submit"
-                backgroundColor="main"
-                maxWidth="8rem"
-                marginLeft="1"
-                _hover={{ backgroundColor: "white", border: "1px", borderColor: "main" }}
-              >
-                Soumettre
-              </Button>
-            </Stack>
-          </form>
+          <ReplySection authenticationError={authenticationError} inputError={inputError} onFormSubmit={handleFormSubmit} />
         </Box>
       </Box>
     </Layout>
