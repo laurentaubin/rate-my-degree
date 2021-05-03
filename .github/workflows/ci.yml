@@ -1,13 +1,11 @@
-name: ci-backend
+name: ci
 on:
   push:
     branches:
       - "**"
-    paths:
-      - "backend/**"
 
 jobs:
-  push:
+  backend:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -16,4 +14,15 @@ jobs:
         run: yarn
       - name: Validate code formatting
         working-directory: ./backend
+        run: yarn format:check
+
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: yarn
+      - name: Validate frontend formatting
+        working-directory: ./frontend
         run: yarn format:check
