@@ -72,7 +72,11 @@ export const Comment: React.FC<CommentProps> = ({
 
   const handleFormSubmit = async (event: any, content: string) => {
     event.preventDefault();
-    const { error } = await addComment({ courseInitials: courseInitials, content: content, parentId: id });
+    const { error } = await addComment({
+      courseInitials: courseInitials,
+      content: content,
+      parentId: id,
+    });
     if (error) {
       switch (error.graphQLErrors[0].extensions!.code) {
         case "BAD_USER_INPUT":

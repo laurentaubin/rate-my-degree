@@ -50,7 +50,11 @@ export const ReplySection: React.FC<ReplySectionProps> = ({ inputError, authenti
             backgroundColor="main"
             maxWidth="8rem"
             marginLeft="1"
-            _hover={{ backgroundColor: "white", border: "1px", borderColor: "main" }}
+            _hover={{
+              backgroundColor: "white",
+              border: "1px",
+              borderColor: "main",
+            }}
           >
             Soumettre
           </Button>

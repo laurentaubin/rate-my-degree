@@ -33,7 +33,10 @@ const Course = () => {
   const handleFormSubmit = async (event: any, newComment: string) => {
     event.preventDefault();
 
-    const { error } = await addComment({ courseInitials: courseData!.course.initials, content: newComment });
+    const { error } = await addComment({
+      courseInitials: courseData!.course.initials,
+      content: newComment,
+    });
     if (error) {
       switch (error.graphQLErrors[0].extensions!.code) {
         case "BAD_USER_INPUT":
