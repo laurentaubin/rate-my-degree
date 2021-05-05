@@ -6,8 +6,8 @@ import { buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";
 import { CommentResolver } from "./resolvers/CommentResolver";
 import { CourseResolver } from "./resolvers/CourseResolver";
-import { UserResolver } from "./resolvers/UserResolver";
 import { findOrCreateUser } from "./utils/findOrCreateUser";
+import { UserResolver } from "./resolvers/UserResolver";
 
 const main = async () => {
   await createConnection({
