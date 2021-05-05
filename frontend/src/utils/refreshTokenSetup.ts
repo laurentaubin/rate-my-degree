@@ -1,4 +1,4 @@
-import { GoogleLoginResponse, GoogleLoginResponseOffline } from "react-google-login";
+import { GoogleLoginResponse } from "react-google-login";
 
 const ONE_HOUR_IN_SECONDS = 60 * 60;
 

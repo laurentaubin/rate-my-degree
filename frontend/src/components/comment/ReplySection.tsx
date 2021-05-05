@@ -1,4 +1,4 @@
-import { Stack, Textarea, Flex, Text, Button, HTMLChakraProps } from "@chakra-ui/react";
+import { Button, Flex, HTMLChakraProps, Stack, Text, Textarea } from "@chakra-ui/react";
 import React, { useState } from "react";
 
 interface ReplySectionProps extends HTMLChakraProps<"div"> {
@@ -50,10 +50,10 @@ export const ReplySection: React.FC<ReplySectionProps> = ({ inputError, authenti
             backgroundColor="main"
             maxWidth="8rem"
             marginLeft="1"
+            border="1px"
+            borderColor="main"
             _hover={{
               backgroundColor: "white",
-              border: "1px",
-              borderColor: "main",
             }}
           >
             Soumettre

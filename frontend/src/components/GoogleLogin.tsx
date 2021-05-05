@@ -1,10 +1,10 @@
 import { Button, ButtonProps } from "@chakra-ui/button";
+import GoogleIcon from "@components/icons/GoogleIcon";
+import { refreshTokenSetup } from "@utils/refreshTokenSetup";
 import { useRouter } from "next/router";
 import React from "react";
 import { useCookies } from "react-cookie";
 import { GoogleLoginResponse, GoogleLoginResponseOffline, useGoogleLogin, useGoogleLogout } from "react-google-login";
-import { refreshTokenSetup } from "@utils/refreshTokenSetup";
-import GoogleIcon from "@components/icons/GoogleIcon";
 
 interface GoogleLoginProps extends ButtonProps {}
 

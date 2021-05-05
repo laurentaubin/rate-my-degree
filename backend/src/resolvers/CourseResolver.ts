@@ -1,12 +1,12 @@
-import { Course } from "../entities/Course";
-import { CreateCourseInput } from "../inputs/CreateCourseInput";
-import { Resolver, Query, Mutation, Arg, FieldResolver, Root, Ctx } from "type-graphql";
-import { AddCommentInput } from "../inputs/AddCommentInput";
+import { UserInputError } from "apollo-server-errors";
+import { Arg, Ctx, FieldResolver, Mutation, Query, Resolver, Root } from "type-graphql";
 import { getConnection } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
-import { CourseInput } from "../inputs/CourseInput";
-import { UserInputError } from "apollo-server-errors";
+import { Course } from "../entities/Course";
 import { CourseComment } from "../entities/CourseComment";
+import { AddCommentInput } from "../inputs/AddCommentInput";
+import { CourseInput } from "../inputs/CourseInput";
+import { CreateCourseInput } from "../inputs/CreateCourseInput";
 import { AppContext } from "../types";
 import { verifyUserIsAuthenticated } from "../utils/verifyUserIsAuthenticated";
 

@@ -1,12 +1,12 @@
 import { DeleteIcon } from "@chakra-ui/icons";
 import { Badge, Stack } from "@chakra-ui/layout";
-import { Avatar, Box, Button, Center, Flex, Text, Textarea } from "@chakra-ui/react";
+import { Avatar, Box, Button, Center, Flex, Text } from "@chakra-ui/react";
+import { UpvoteSection } from "@components/comment/UpvoteSection";
+import { useAddCommentMutation, useDeleteCommentMutation } from "@generated/graphql";
+import { formatDate } from "@utils/formatDate";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import { useAddCommentMutation, useDeleteCommentMutation } from "@generated/graphql";
-import { formatDate } from "@utils/formatDate";
-import { UpvoteSection } from "@components/comment/UpvoteSection";
 import { ReplySection } from "./ReplySection";
 
 interface AuthorProp {
@@ -102,9 +102,9 @@ export const Comment: React.FC<CommentProps> = ({
       <Flex>
         <Avatar src={author.pictureUrl} />
         <Box ml="3">
-          <Flex>
+          <Center>
             <Text fontWeight="semibold">{author.name}</Text>
-            <Badge marginLeft="2" backgroundColor="main">
+            <Badge marginLeft="2" backgroundColor="main" paddingY="2px" paddingX="5px">
               {formatDate(new Date(parseInt(createdAt)))}
             </Badge>
             {isUserAuthor && (
@@ -112,7 +112,7 @@ export const Comment: React.FC<CommentProps> = ({
                 <DeleteIcon marginLeft="6px" _hover={{ cursor: "pointer" }} onClick={handleDeleteComment} />
               </Center>
             )}
-          </Flex>
+          </Center>
           <Text fontSize="sm" marginTop="8px" paddingRight="16px">
             {content}
           </Text>

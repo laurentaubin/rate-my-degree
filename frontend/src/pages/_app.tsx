@@ -1,10 +1,9 @@
 import { ChakraProvider } from "@chakra-ui/react";
-
-import theme from "theme";
-import { AppProps } from "next/app";
 import { createClient } from "@urql/core";
-import { Provider } from "urql";
 import { GoogleFonts } from "next-google-fonts";
+import { AppProps } from "next/app";
+import theme from "theme";
+import { Provider } from "urql";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const urqlClient = createClient({

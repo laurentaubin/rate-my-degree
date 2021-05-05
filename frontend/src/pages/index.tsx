@@ -1,7 +1,7 @@
-import { VStack, Text } from "@chakra-ui/layout";
-import React from "react";
+import { Text, VStack } from "@chakra-ui/layout";
 import { HomeHeader } from "@components/HomeHeader";
 import { SearchBar } from "@components/SearchBar";
+import React from "react";
 
 const Index = () => {
   return (

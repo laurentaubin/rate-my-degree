@@ -1,7 +1,7 @@
 import { ApolloServer } from "apollo-server-express";
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
-import cookieParser from "cookie-parser";
 import { buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";
 import { CommentResolver } from "./resolvers/CommentResolver";
