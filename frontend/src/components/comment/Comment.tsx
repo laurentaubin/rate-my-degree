@@ -24,7 +24,6 @@ interface CommentProps {
   author: AuthorProp;
   subComments: [CommentProps] | [] | any;
   userVote: number;
-  setCookie: (name: string, value: number) => void;
   nestingLevel: number;
 }
 
@@ -37,7 +36,6 @@ export const Comment: React.FC<CommentProps> = ({
   isUserAuthor,
   author,
   subComments,
-  setCookie,
   userVote,
   nestingLevel,
 }) => {
@@ -118,7 +116,7 @@ export const Comment: React.FC<CommentProps> = ({
           </Text>
         </Box>
         <Box marginLeft="auto" minWidth="12vh">
-          <UpvoteSection commentId={id} currentScore={score} initialUserVote={userVote} setCookie={setCookie} />
+          <UpvoteSection commentId={id} score={score} userVote={userVote} />
           {!replying && (
             <Button backgroundColor="white" border="2px" _hover={{ backgroundColor: "main" }} borderColor="main" onClick={handleReplyClick}>
               Répondre
@@ -156,8 +154,7 @@ export const Comment: React.FC<CommentProps> = ({
                   createdAt={subComment.createdAt}
                   author={subComment.author}
                   subComments={subComment.subComments}
-                  userVote={cookies[cookieName]}
-                  setCookie={setCookie}
+                  userVote={subComment.userVote}
                   nestingLevel={nestingLevel + 1}
                 />
               </Stack>

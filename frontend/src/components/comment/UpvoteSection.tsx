@@ -1,74 +1,52 @@
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import { Box, Center, Text } from "@chakra-ui/react";
 import { useVoteMutation } from "@generated/graphql";
-import React, { useState } from "react";
+import React from "react";
 
 interface UpvoteSectionProps {
   commentId: string;
-  currentScore: number;
-  initialUserVote: number;
-  setCookie: (name: string, value: number) => void;
+  score: number;
+  userVote: number;
 }
 
-export const UpvoteSection: React.FC<UpvoteSectionProps> = ({ commentId, currentScore, initialUserVote, setCookie }) => {
-  const [userVote, setUserVote] = useState(initialUserVote);
-  const [score, setScore] = useState(currentScore);
-
+export const UpvoteSection: React.FC<UpvoteSectionProps> = ({ commentId, score, userVote }) => {
   const [, vote] = useVoteMutation();
 
   const handleUpvote = async () => {
     if (userVote == 1) {
-      setScore(score - 1);
-      setUserVote(0);
       await vote({
         commentId: commentId,
         score: -1,
       });
-      setCookie(`user-vote-${commentId}`, 0);
     } else if (userVote == -1) {
-      setScore(score + 2);
-      setUserVote(1);
       await vote({
         commentId: commentId,
         score: 2,
       });
-      setCookie(`user-vote-${commentId}`, 1);
     } else {
-      setScore(score + 1);
-      setUserVote(1);
       await vote({
         commentId: commentId,
         score: 1,
       });
-      setCookie(`user-vote-${commentId}`, 1);
     }
   };
 
   const handleDownvote = async () => {
     if (userVote == 1) {
-      setScore(score - 2);
-      setUserVote(-1);
       await vote({
         commentId: commentId,
         score: -2,
       });
-      setCookie(`user-vote-${commentId}`, -1);
     } else if (userVote == -1) {
-      setScore(score + 1);
-      setUserVote(0);
       await vote({
         commentId: commentId,
         score: 1,
       });
-      setCookie(`user-vote-${commentId}`, 0);
     } else {
-      setScore(score - 1);
-      setUserVote(-1);
       await vote({
         commentId: commentId,
         score: -1,
       });
-      setCookie(`user-vote-${commentId}`, -1);
     }
   };
 

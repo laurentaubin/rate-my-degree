@@ -9,7 +9,7 @@ export class Vote extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: string;
 
-  @Column()
+  @Column({ default: 0 })
   score: number;
 
   @ManyToOne(() => CourseComment, (comment) => comment.votes, { onDelete: "CASCADE" })

@@ -8,7 +8,6 @@ import { useAddCommentMutation, useCourseQuery } from "generated/graphql";
 import { useGetCourseInitials } from "hooks/useGetCourseInitials";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { useCookies } from "react-cookie";
 
 const Course = () => {
   const [sortingAttribute, setSortingAttribute] = useState("score");
@@ -19,8 +18,6 @@ const Course = () => {
   const [_, addComment] = useAddCommentMutation();
 
   const courseInitials = useGetCourseInitials();
-
-  const [cookies, setCookie] = useCookies(["user-vote"]);
 
   const [{ data: courseData, fetching: courseFetching, error: courseError }] = useCourseQuery({
     variables: {
@@ -116,8 +113,7 @@ const Course = () => {
                   createdAt={comment.createdAt}
                   author={comment.author}
                   subComments={comment.subComments}
-                  userVote={cookies[cookieName]}
-                  setCookie={setCookie}
+                  userVote={comment.userVote}
                   nestingLevel={0}
                 />
               </Stack>

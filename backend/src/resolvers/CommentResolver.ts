@@ -1,9 +1,9 @@
 import { ForbiddenError } from "apollo-server-errors";
-import { Vote } from "src/entities/Vote";
 import { Arg, Ctx, FieldResolver, Mutation, Resolver, Root } from "type-graphql";
 import { getConnection } from "typeorm";
 import { CourseComment } from "../entities/CourseComment";
 import { User } from "../entities/User";
+import { Vote } from "../entities/Vote";
 import { VoteInput } from "../inputs/VoteInput";
 import { AppContext } from "../types";
 import { verifyUserIsAuthenticated } from "../utils/verifyUserIsAuthenticated";
@@ -54,17 +54,10 @@ export class CommentResolver {
       .where("course_comment.id = :id", { id: commentId })
       .execute();
 
-    await getConnection().transaction(async (tm) => {
-      await tm.query(
-        `
-        insert into vote ("comment_id", "vote", "user_id")
-        values ($1, $2, $3)
-    `,
-        [commentId, score, currentUser.id]
-      );
-    });
+    const comment = await CourseComment.findOne({ where: { id: commentId } });
+    await upsertVote(comment!, score, currentUser);
 
-    return CourseComment.findOne({ where: { id: commentId } });
+    return comment;
   }
 
   @Mutation(() => Boolean)
@@ -129,4 +122,22 @@ const findOrCreateDeletedUser = async () => {
     comments: [],
   });
   return await User.save(newUser);
+};
+const upsertVote = async (comment: CourseComment, score: number, currentUser: User) => {
+  const update = await getConnection()
+    .createQueryBuilder()
+    .update(Vote)
+    .set({ score: () => `score + ${score}` })
+    .where("comment_id = :commentId AND user_id = :userId", { commentId: comment.id, userId: currentUser.id })
+    .execute();
+
+  if (update.affected === 0) {
+    await getConnection()
+      .createQueryBuilder()
+      .insert()
+      .into(Vote)
+      .values({ comment: comment, score: score, user: currentUser })
+      .orUpdate({ conflict_target: ["id"], overwrite: ["score"] })
+      .execute();
+  }
 };

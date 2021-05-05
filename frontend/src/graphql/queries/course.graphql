@@ -37,6 +37,7 @@ fragment CommentFields on CourseComment {
   score
   createdAt
   isUserAuthor
+  userVote
   author {
     name
     pictureUrl

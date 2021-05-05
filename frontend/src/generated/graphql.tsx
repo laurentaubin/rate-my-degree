@@ -54,6 +54,7 @@ export type CourseComment = {
   content: Scalars['String'];
   score: Scalars['Float'];
   author: User;
+  userVote: Scalars['Float'];
   isUserAuthor: Scalars['Boolean'];
   createdAt: Scalars['String'];
 };
@@ -217,7 +218,7 @@ export type SubCommentsFragment = (
 
 export type CommentFieldsFragment = (
   { __typename?: 'CourseComment' }
-  & Pick<CourseComment, 'id' | 'content' | 'score' | 'createdAt' | 'isUserAuthor'>
+  & Pick<CourseComment, 'id' | 'content' | 'score' | 'createdAt' | 'isUserAuthor' | 'userVote'>
   & { author: (
     { __typename?: 'User' }
     & Pick<User, 'name' | 'pictureUrl'>
@@ -256,6 +257,7 @@ export const CommentFieldsFragmentDoc = gql`
   score
   createdAt
   isUserAuthor
+  userVote
   author {
     name
     pictureUrl
