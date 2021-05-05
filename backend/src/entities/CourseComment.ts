@@ -2,6 +2,7 @@ import { Field, ObjectType } from "type-graphql";
 import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import { Course } from "./Course";
 import { User } from "./User";
+import { Vote } from "./Vote";
 
 @ObjectType()
 @Entity()
@@ -34,6 +35,12 @@ export class CourseComment extends BaseEntity {
   @ManyToOne(() => User, (user) => user.comments, { eager: true })
   @JoinColumn({ name: "author_id" })
   author: User;
+
+  @ManyToOne(() => Vote, (vote) => vote.user)
+  votes: Vote[];
+
+  @Field()
+  userVote: number;
 
   @Field()
   isUserAuthor: boolean;

@@ -1,5 +1,6 @@
 import { Heading, Stack, Text } from "@chakra-ui/layout";
-import { Box } from "@chakra-ui/react";
+import { Box, useDisclosure } from "@chakra-ui/react";
+import { AuthenticationPopUp } from "@components/authentication/AuthenticationPopUp";
 import { Comment } from "@components/comment/Comment";
 import { ReplySection } from "@components/comment/ReplySection";
 import { Layout } from "@components/Layout";
@@ -8,7 +9,6 @@ import { useAddCommentMutation, useCourseQuery } from "generated/graphql";
 import { useGetCourseInitials } from "hooks/useGetCourseInitials";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { useCookies } from "react-cookie";
 
 const Course = () => {
   const [sortingAttribute, setSortingAttribute] = useState("score");
@@ -20,7 +20,7 @@ const Course = () => {
 
   const courseInitials = useGetCourseInitials();
 
-  const [cookies, setCookie] = useCookies(["user-vote"]);
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   const [{ data: courseData, fetching: courseFetching, error: courseError }] = useCourseQuery({
     variables: {
@@ -95,7 +95,6 @@ const Course = () => {
           </Heading>
           <SortingBar onSelectChange={handleSortingChange} />
           {courseData!.course.comments.map((comment) => {
-            const cookieName = `user-vote-${comment.id}`;
             return (
               <Stack
                 className="comment"
@@ -116,9 +115,9 @@ const Course = () => {
                   createdAt={comment.createdAt}
                   author={comment.author}
                   subComments={comment.subComments}
-                  userVote={cookies[cookieName]}
-                  setCookie={setCookie}
+                  userVote={comment.userVote}
                   nestingLevel={0}
+                  handleUpvoteAuthenticationError={onOpen}
                 />
               </Stack>
             );
@@ -126,6 +125,7 @@ const Course = () => {
           <ReplySection authenticationError={authenticationError} inputError={inputError} onFormSubmit={handleFormSubmit} />
         </Box>
       </Box>
+      <AuthenticationPopUp isOpen={isOpen} onClose={onClose} />
     </Layout>
   );
 };

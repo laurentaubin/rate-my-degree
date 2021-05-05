@@ -24,8 +24,8 @@ interface CommentProps {
   author: AuthorProp;
   subComments: [CommentProps] | [] | any;
   userVote: number;
-  setCookie: (name: string, value: number) => void;
   nestingLevel: number;
+  handleUpvoteAuthenticationError: any;
 }
 
 export const Comment: React.FC<CommentProps> = ({
@@ -37,9 +37,9 @@ export const Comment: React.FC<CommentProps> = ({
   isUserAuthor,
   author,
   subComments,
-  setCookie,
   userVote,
   nestingLevel,
+  handleUpvoteAuthenticationError,
 }) => {
   const [replying, setReplying] = useState(false);
   const [inputError, setInputError] = useState(false);
@@ -118,7 +118,7 @@ export const Comment: React.FC<CommentProps> = ({
           </Text>
         </Box>
         <Box marginLeft="auto" minWidth="12vh">
-          <UpvoteSection commentId={id} currentScore={score} initialUserVote={userVote} setCookie={setCookie} />
+          <UpvoteSection commentId={id} score={score} userVote={userVote} handleAuthenticationError={handleUpvoteAuthenticationError} />
           {!replying && (
             <Button backgroundColor="white" border="2px" _hover={{ backgroundColor: "main" }} borderColor="main" onClick={handleReplyClick}>
               Répondre
@@ -156,9 +156,9 @@ export const Comment: React.FC<CommentProps> = ({
                   createdAt={subComment.createdAt}
                   author={subComment.author}
                   subComments={subComment.subComments}
-                  userVote={cookies[cookieName]}
-                  setCookie={setCookie}
+                  userVote={subComment.userVote}
                   nestingLevel={nestingLevel + 1}
+                  handleUpvoteAuthenticationError={handleUpvoteAuthenticationError}
                 />
               </Stack>
             );

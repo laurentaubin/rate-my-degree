@@ -3,6 +3,7 @@ import { Arg, Ctx, FieldResolver, Mutation, Resolver, Root } from "type-graphql"
 import { getConnection } from "typeorm";
 import { CourseComment } from "../entities/CourseComment";
 import { User } from "../entities/User";
+import { Vote } from "../entities/Vote";
 import { VoteInput } from "../inputs/VoteInput";
 import { AppContext } from "../types";
 import { verifyUserIsAuthenticated } from "../utils/verifyUserIsAuthenticated";
@@ -23,8 +24,25 @@ export class CommentResolver {
     return currentUser.id === comment.author.id;
   }
 
+  @FieldResolver((_of) => CourseComment)
+  async userVote(@Ctx() { currentUser }: AppContext, @Root() comment: CourseComment): Promise<Number> {
+    if (!currentUser) {
+      return 0;
+    }
+
+    const vote = await Vote.findOne({ where: { comment: comment.id, user: currentUser.id } });
+
+    if (!vote) {
+      return 0;
+    }
+
+    return vote.score;
+  }
+
   @Mutation(() => CourseComment)
-  async vote(@Arg("data") data: VoteInput): Promise<CourseComment | undefined> {
+  async vote(@Ctx() { currentUser }: AppContext, @Arg("data") data: VoteInput): Promise<CourseComment | undefined> {
+    verifyUserIsAuthenticated(currentUser);
+
     const { score, commentId } = data;
 
     await getConnection()
@@ -36,7 +54,10 @@ export class CommentResolver {
       .where("course_comment.id = :id", { id: commentId })
       .execute();
 
-    return CourseComment.findOne({ where: { id: commentId } });
+    const comment = await CourseComment.findOne({ where: { id: commentId } });
+    await upsertVote(comment!, score, currentUser);
+
+    return comment;
   }
 
   @Mutation(() => Boolean)
@@ -101,4 +122,22 @@ const findOrCreateDeletedUser = async () => {
     comments: [],
   });
   return await User.save(newUser);
+};
+const upsertVote = async (comment: CourseComment, score: number, currentUser: User) => {
+  const update = await getConnection()
+    .createQueryBuilder()
+    .update(Vote)
+    .set({ score: () => `score + ${score}` })
+    .where("comment_id = :commentId AND user_id = :userId", { commentId: comment.id, userId: currentUser.id })
+    .execute();
+
+  if (update.affected === 0) {
+    await getConnection()
+      .createQueryBuilder()
+      .insert()
+      .into(Vote)
+      .values({ comment: comment, score: score, user: currentUser })
+      .orUpdate({ conflict_target: ["id"], overwrite: ["score"] })
+      .execute();
+  }
 };
