@@ -1,6 +1,6 @@
+import { HTMLChakraProps, Link as ChakraLink, ThemingProps } from "@chakra-ui/react";
 import NextLink, { LinkProps as NextLinkProps } from "next/link";
 import React from "react";
-import { HTMLChakraProps, Link as ChakraLink, ThemingProps } from "@chakra-ui/react";
 
 export interface NextChakraLinkProps extends HTMLChakraProps<"a">, ThemingProps<"Link"> {
   href: string;

@@ -1,9 +1,9 @@
 import { Flex, Text } from "@chakra-ui/layout";
-import { Box, Center, Link } from "@chakra-ui/react";
-import React from "react";
-import useWindowDimensions from "@hooks/useWindowDimensions";
+import { Box, Center } from "@chakra-ui/react";
 import { GoogleLogin } from "@components/GoogleLogin";
 import { SearchBar } from "@components/SearchBar";
+import useWindowDimensions from "@hooks/useWindowDimensions";
+import React from "react";
 import { NextChakraLink } from "./NextChakraLink";
 
 export const NavBar: React.FC<{}> = () => {

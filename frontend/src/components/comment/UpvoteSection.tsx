@@ -1,7 +1,7 @@
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import { Box, Center, Text } from "@chakra-ui/react";
-import React, { useState } from "react";
 import { useVoteMutation } from "@generated/graphql";
+import React, { useState } from "react";
 
 interface UpvoteSectionProps {
   commentId: string;

@@ -1,5 +1,5 @@
+import { Flex, Select, Text } from "@chakra-ui/react";
 import React from "react";
-import { Flex, Text, Select } from "@chakra-ui/react";
 
 interface SortingBarProps {
   onSelectChange: (event: any) => void;

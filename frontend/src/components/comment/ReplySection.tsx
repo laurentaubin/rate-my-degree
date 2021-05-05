@@ -1,4 +1,4 @@
-import { Stack, Textarea, Flex, Text, Button, HTMLChakraProps } from "@chakra-ui/react";
+import { Button, Flex, HTMLChakraProps, Stack, Text, Textarea } from "@chakra-ui/react";
 import React, { useState } from "react";
 
 interface ReplySectionProps extends HTMLChakraProps<"div"> {
