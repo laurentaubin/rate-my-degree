@@ -1,13 +1,13 @@
 import { ApolloServer } from "apollo-server-express";
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
-import cookieParser from "cookie-parser";
 import { buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";
 import { CommentResolver } from "./resolvers/CommentResolver";
 import { CourseResolver } from "./resolvers/CourseResolver";
-import { findOrCreateUser } from "./utils/findOrCreateUser";
 import { UserResolver } from "./resolvers/UserResolver";
+import { findOrCreateUser } from "./utils/findOrCreateUser";
 
 const main = async () => {
   await createConnection({

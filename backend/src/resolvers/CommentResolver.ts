@@ -1,11 +1,11 @@
-import { CourseComment } from "../entities/CourseComment";
-import { VoteInput } from "../inputs/VoteInput";
-import { Resolver, Mutation, Arg, FieldResolver, Root, Ctx } from "type-graphql";
+import { ForbiddenError } from "apollo-server-errors";
+import { Arg, Ctx, FieldResolver, Mutation, Resolver, Root } from "type-graphql";
 import { getConnection } from "typeorm";
+import { CourseComment } from "../entities/CourseComment";
+import { User } from "../entities/User";
+import { VoteInput } from "../inputs/VoteInput";
 import { AppContext } from "../types";
 import { verifyUserIsAuthenticated } from "../utils/verifyUserIsAuthenticated";
-import { User } from "../entities/User";
-import { ForbiddenError } from "apollo-server-errors";
 
 @Resolver((_of) => CourseComment)
 export class CommentResolver {
