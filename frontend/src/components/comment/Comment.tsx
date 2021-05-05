@@ -102,9 +102,9 @@ export const Comment: React.FC<CommentProps> = ({
       <Flex>
         <Avatar src={author.pictureUrl} />
         <Box ml="3">
-          <Flex>
+          <Center>
             <Text fontWeight="semibold">{author.name}</Text>
-            <Badge marginLeft="2" backgroundColor="main">
+            <Badge marginLeft="2" backgroundColor="main" paddingY="2px" paddingX="5px">
               {formatDate(new Date(parseInt(createdAt)))}
             </Badge>
             {isUserAuthor && (
@@ -112,7 +112,7 @@ export const Comment: React.FC<CommentProps> = ({
                 <DeleteIcon marginLeft="6px" _hover={{ cursor: "pointer" }} onClick={handleDeleteComment} />
               </Center>
             )}
-          </Flex>
+          </Center>
           <Text fontSize="sm" marginTop="8px" paddingRight="16px">
             {content}
           </Text>
