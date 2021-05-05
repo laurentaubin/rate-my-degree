@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/layout";
 import { Link } from "@chakra-ui/react";
-import { GoogleLogin } from "@components/GoogleLogin";
+import { GoogleLogin } from "@components/authentication/GoogleLogin";
 import FacebookIcon from "@components/icons/FacebookIcon";
 import WebsiteIcon from "@components/icons/WebsiteIcon";
 import React from "react";

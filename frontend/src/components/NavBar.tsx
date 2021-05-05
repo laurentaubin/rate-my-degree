@@ -1,6 +1,6 @@
 import { Flex, Text } from "@chakra-ui/layout";
 import { Box, Center } from "@chakra-ui/react";
-import { GoogleLogin } from "@components/GoogleLogin";
+import { GoogleLogin } from "@components/authentication/GoogleLogin";
 import { SearchBar } from "@components/SearchBar";
 import useWindowDimensions from "@hooks/useWindowDimensions";
 import React from "react";

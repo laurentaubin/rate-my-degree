@@ -1,5 +1,6 @@
 import { Heading, Stack, Text } from "@chakra-ui/layout";
-import { Box } from "@chakra-ui/react";
+import { Box, useDisclosure } from "@chakra-ui/react";
+import { AuthenticationPopUp } from "@components/authentication/AuthenticationPopUp";
 import { Comment } from "@components/comment/Comment";
 import { ReplySection } from "@components/comment/ReplySection";
 import { Layout } from "@components/Layout";
@@ -18,6 +19,8 @@ const Course = () => {
   const [_, addComment] = useAddCommentMutation();
 
   const courseInitials = useGetCourseInitials();
+
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   const [{ data: courseData, fetching: courseFetching, error: courseError }] = useCourseQuery({
     variables: {
@@ -92,7 +95,6 @@ const Course = () => {
           </Heading>
           <SortingBar onSelectChange={handleSortingChange} />
           {courseData!.course.comments.map((comment) => {
-            const cookieName = `user-vote-${comment.id}`;
             return (
               <Stack
                 className="comment"
@@ -115,6 +117,7 @@ const Course = () => {
                   subComments={comment.subComments}
                   userVote={comment.userVote}
                   nestingLevel={0}
+                  handleUpvoteAuthenticationError={onOpen}
                 />
               </Stack>
             );
@@ -122,6 +125,7 @@ const Course = () => {
           <ReplySection authenticationError={authenticationError} inputError={inputError} onFormSubmit={handleFormSubmit} />
         </Box>
       </Box>
+      <AuthenticationPopUp isOpen={isOpen} onClose={onClose} />
     </Layout>
   );
 };
