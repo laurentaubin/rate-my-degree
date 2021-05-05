@@ -12,14 +12,14 @@ export const AuthenticationPopUp: React.FC<AuthenticationPopUpProps> = ({ isOpen
     <Modal isOpen={isOpen} onClose={onClose} size="xl">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Erreur d'authentification</ModalHeader>
+        <ModalHeader fontSize="2xl">Erreur d'authentification</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Text>Vous devez être authentifié pour effectuer cette action.</Text>
+          <Text fontSize="lg">Vous devez être authentifié pour effectuer cette action.</Text>
         </ModalBody>
 
         <ModalFooter>
-          <GoogleLogin />
+          <GoogleLogin backgroundColor="black" color="white" _hover={{}} />
         </ModalFooter>
       </ModalContent>
     </Modal>
