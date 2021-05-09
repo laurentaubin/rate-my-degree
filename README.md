@@ -19,9 +19,9 @@ This application is aimed at Université Laval software engineering students and
 
 ✅ Allow users to search for a course using its initials, title or professor
 
-⏳ Allow users to authenticate (hopefully with Ulaval sign in, otherwhise probably Google)
+✅ Allow users to authenticate (hopefully with Ulaval sign in, otherwhise probably Google)
 
-❌ Have a fully responsive UI
+⏳ Have a fully responsive UI
 
 ❌ Implement api authorization (mostly for creating courses)
 
