@@ -17,7 +17,7 @@ export const HomeHeader: React.FC<HomeHeaderProps> = ({}) => {
       <Flex width="100%" zIndex={-1} position="absolute">
         <HomePageBlob marginLeft="auto" marginRight={[0, 0, 0, "15vw"]} size={windowWidth < 480 ? "small" : "default"} />
       </Flex>
-      <Flex height="20vh" paddingTop={["6vh", "4vh"]}>
+      <Flex height={["150px", "20vh"]} paddingTop={["8", "4vh"]}>
         <Link href="https://www.facebook.com/groups/aeglo" isExternal marginRight="16px" marginLeft="15vw" height="20px">
           <FacebookIcon boxSize={5} color="black" />
         </Link>

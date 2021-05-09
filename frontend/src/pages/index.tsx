@@ -12,7 +12,7 @@ const Index = () => {
         paddingTop="15vh"
         backgroundImage="url(https://i.ibb.co/7b3NqVJ/Background-1.png)"
         backgroundPosition="bottom"
-        backgroundSize="100vw 100vh"
+        backgroundSize="cover"
       >
         <Text fontWeight="bold" fontSize={["5xl", "7xl"]} color="white">
           Rate my GLO
