@@ -14,11 +14,11 @@ const Index = () => {
         backgroundPosition="bottom"
         backgroundSize="100vw 100vh"
       >
-        <Text fontWeight="bold" fontSize="7xl" color="white">
+        <Text fontWeight="bold" fontSize={["5xl", "7xl"]} color="white">
           Rate my GLO
         </Text>
-        <Text fontWeight="medium" fontSize="lg" color="white" marginBottom="4vh">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor{" "}
+        <Text fontWeight="medium" fontSize="lg" color="white" marginBottom="4vh" paddingLeft="5">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
         </Text>
         <SearchBar size={2} />
       </VStack>
