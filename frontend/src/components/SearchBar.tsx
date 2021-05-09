@@ -49,17 +49,17 @@ export const SearchBar: React.FC<SearchBarProps> = ({ size, ...props }) => {
         minWidth="35vw"
         backgroundColor="white"
         borderRadius="6px"
-        paddingBottom={query ? "0.5rem" : "0"}
+        paddingBottom={isFocused && query ? "0.5rem" : "0"}
         onBlur={handleChangeFocus}
         onFocus={handleChangeFocus}
       >
         <InputGroup>
-          <InputLeftElement minHeight={3 * size + "vh"} pointerEvents="none">
+          <InputLeftElement minHeight={1.25 * size + "rem"} pointerEvents="none">
             <SearchIcon marginTop="0 !important" />
           </InputLeftElement>
           <Input
             placeholder="Rechercher un cours"
-            minHeight={3 * size + "vh"}
+            minHeight={1.25 * size + "rem"}
             color="black"
             backgroundColor="white"
             onChange={handleInputChange}

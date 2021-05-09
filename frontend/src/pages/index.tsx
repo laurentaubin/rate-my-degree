@@ -20,7 +20,7 @@ const Index = () => {
         <Text fontWeight="medium" fontSize="lg" color="white" marginBottom="4vh" paddingLeft="5">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
         </Text>
-        <SearchBar size={2} />
+        <SearchBar size={2} width={["100%", "50%"]} />
       </VStack>
     </>
   );
