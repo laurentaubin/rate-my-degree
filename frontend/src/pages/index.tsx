@@ -12,15 +12,15 @@ const Index = () => {
         paddingTop="15vh"
         backgroundImage="url(https://i.ibb.co/7b3NqVJ/Background-1.png)"
         backgroundPosition="bottom"
-        backgroundSize="100vw 100vh"
+        backgroundSize="cover"
       >
-        <Text fontWeight="bold" fontSize="7xl" color="white">
+        <Text fontWeight="bold" fontSize={["5xl", "7xl"]} color="white">
           Rate my GLO
         </Text>
-        <Text fontWeight="medium" fontSize="lg" color="white" marginBottom="4vh">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor{" "}
+        <Text fontWeight="medium" fontSize="lg" color="white" marginBottom="4vh" paddingLeft="5">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
         </Text>
-        <SearchBar size={2} />
+        <SearchBar size={2} width={["100%", "50%"]} />
       </VStack>
     </>
   );
