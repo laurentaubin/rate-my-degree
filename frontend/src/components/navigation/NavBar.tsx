@@ -2,12 +2,17 @@ import { Flex, Text } from "@chakra-ui/layout";
 import { Box, Center } from "@chakra-ui/react";
 import { GoogleLogin } from "@components/authentication/GoogleLogin";
 import { SearchBar } from "@components/SearchBar";
-import useWindowDimensions from "@hooks/useWindowDimensions";
+import useWindowDimensions from "@hooks/useScreenSize";
 import React from "react";
+import { WindowSize } from "types";
 import { NextChakraLink } from "./NextChakraLink";
 
 export const NavBar: React.FC<{}> = () => {
-  const { width } = useWindowDimensions();
+  const screenSize = useWindowDimensions();
+
+  const isScreenLargeOrExtraLarge = (): boolean => {
+    return screenSize === WindowSize.lg || screenSize === WindowSize.xl;
+  };
 
   return (
     <Flex backgroundColor="black" minHeight="12vh">
@@ -16,8 +21,8 @@ export const NavBar: React.FC<{}> = () => {
           Rate my GLO
         </Text>
       </NextChakraLink>
-      {width > 600 && (
-        <Box marginTop="4vh" marginLeft={width > 950 ? "10vw" : "0"}>
+      {screenSize !== WindowSize.sm && (
+        <Box marginTop="4vh" marginLeft={isScreenLargeOrExtraLarge() ? "10vw" : "0"}>
           <SearchBar size={1.5} position="absolute" />
         </Box>
       )}

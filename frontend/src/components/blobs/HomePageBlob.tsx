@@ -1,14 +1,15 @@
 import { Flex, FlexOptions, HTMLChakraProps } from "@chakra-ui/react";
 import React from "react";
+import { WindowSize } from "types";
 
 interface HomePageBlobProps extends HTMLChakraProps<"div">, FlexOptions {
-  size?: "small" | "default";
+  size?: WindowSize;
 }
 
 export const HomePageBlob: React.FC<HomePageBlobProps> = ({ size, ...props }) => {
   let width, height, positionX, positionY;
   switch (size) {
-    case "small":
+    case WindowSize.sm:
       width = 280;
       height = 140;
       positionX = -95;

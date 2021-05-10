@@ -1,9 +1,35 @@
 import { Flex, FlexOptions, HTMLChakraProps } from "@chakra-ui/react";
 import React from "react";
+import { WindowSize } from "types";
 
-interface FourOFourPageBlobProps extends HTMLChakraProps<"div">, FlexOptions {}
+interface FourOFourPageBlobProps extends HTMLChakraProps<"div">, FlexOptions {
+  size?: WindowSize;
+}
 
-export const FourOFourPageBlob: React.FC<FourOFourPageBlobProps> = ({ ...props }) => {
+export const FourOFourPageBlob: React.FC<FourOFourPageBlobProps> = ({ size, ...props }) => {
+  let width, height, positionX, positionY;
+
+  switch (size) {
+    case WindowSize.sm:
+      width = 280;
+      height = 140;
+      positionX = -95;
+      positionY = 0;
+      break;
+    case WindowSize.md:
+      width = 655;
+      height = 860;
+      positionX = 0;
+      positionY = 0;
+      break;
+    default:
+      width = 655;
+      height = 860;
+      positionX = 0;
+      positionY = 0;
+      break;
+  }
+
   return (
     <Flex {...props}>
       <svg width="655" height="860" viewBox="0 0 655 860" fill="none" xmlns="http://www.w3.org/2000/svg">
