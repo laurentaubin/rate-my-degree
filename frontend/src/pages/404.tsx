@@ -1,8 +1,8 @@
 import { Text } from "@chakra-ui/layout";
 import { Button, Flex, Stack } from "@chakra-ui/react";
-import { FourOFourPageBlob } from "@components/blobs/FourOFourPageBlob";
-import { Layout } from "@components/Layout";
-import useScreenSize from "@hooks/useScreenSize";
+import { FourOFourPageBlob } from "components/blobs/FourOFourPageBlob";
+import { Layout } from "components/Layout";
+import useScreenSize from "hooks/useScreenSize";
 import { useRouter } from "next/router";
 import React from "react";
 

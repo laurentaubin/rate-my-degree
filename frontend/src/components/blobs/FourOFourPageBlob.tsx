@@ -9,8 +9,6 @@ interface FourOFourPageBlobProps extends HTMLChakraProps<"div">, FlexOptions {
 export const FourOFourPageBlob: React.FC<FourOFourPageBlobProps> = ({ size, ...props }) => {
   let width, height, positionX, positionY;
 
-  console.log(size);
-
   switch (size) {
     case WindowSize.sm:
       width = 150;

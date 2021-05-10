@@ -22,7 +22,6 @@ const getWindowDimensions = (): WindowDimensions => {
 };
 
 const findScreenSizeFromDimensions = (windowDimensions: WindowDimensions): WindowSize => {
-  console.log({ windowDimensions });
   if (windowDimensions.width < 640) return WindowSize.sm;
   if (windowDimensions.width < 832) return WindowSize.md;
   if (windowDimensions.width < 1024) return WindowSize.lg;

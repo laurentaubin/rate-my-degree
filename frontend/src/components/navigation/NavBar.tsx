@@ -1,11 +1,11 @@
 import { Flex, Text } from "@chakra-ui/layout";
 import { Box, Center } from "@chakra-ui/react";
-import { GoogleLogin } from "@components/authentication/GoogleLogin";
-import { SearchBar } from "@components/SearchBar";
-import useWindowDimensions from "@hooks/useScreenSize";
-import { isScreenLargeOrExtraLarge } from "@utils/screenSizeUtils";
+import { GoogleLogin } from "components/authentication/GoogleLogin";
+import { SearchBar } from "components/SearchBar";
+import useWindowDimensions from "hooks/useScreenSize";
 import React from "react";
 import { WindowSize } from "types";
+import { isScreenLargeOrExtraLarge } from "utils/screenSizeUtils";
 import { NextChakraLink } from "./NextChakraLink";
 
 export const NavBar: React.FC<{}> = () => {

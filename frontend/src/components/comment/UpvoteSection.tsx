@@ -1,6 +1,6 @@
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import { Box, Center, Text } from "@chakra-ui/react";
-import { useVoteMutation } from "@generated/graphql";
+import { useVoteMutation } from "generated/graphql";
 import React from "react";
 
 interface UpvoteSectionProps {

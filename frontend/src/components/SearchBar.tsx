@@ -1,8 +1,8 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import { Divider, Stack } from "@chakra-ui/layout";
 import { HTMLChakraProps, Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
-import { NextChakraLink } from "@components/navigation/NextChakraLink";
-import { useCoursesQuery } from "@generated/graphql";
+import { NextChakraLink } from "components/navigation/NextChakraLink";
+import { useCoursesQuery } from "generated/graphql";
 import React, { useState } from "react";
 
 interface SearchBarProps extends HTMLChakraProps<"div"> {

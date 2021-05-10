@@ -1,10 +1,10 @@
 import { Heading, Stack, Text } from "@chakra-ui/layout";
 import { Box, useDisclosure } from "@chakra-ui/react";
-import { AuthenticationPopUp } from "@components/authentication/AuthenticationPopUp";
-import { Comment } from "@components/comment/Comment";
-import { ReplySection } from "@components/comment/ReplySection";
-import { Layout } from "@components/Layout";
-import { SortingBar } from "@components/SortingBar";
+import { AuthenticationPopUp } from "components/authentication/AuthenticationPopUp";
+import { Comment } from "components/comment/Comment";
+import { ReplySection } from "components/comment/ReplySection";
+import { Layout } from "components/Layout";
+import { SortingBar } from "components/SortingBar";
 import { useAddCommentMutation, useCourseQuery } from "generated/graphql";
 import { useGetCourseInitials } from "hooks/useGetCourseInitials";
 import { useRouter } from "next/router";
@@ -99,7 +99,7 @@ const Course = () => {
               <Stack
                 className="comment"
                 key={comment.id}
-                maxWidth={{ sm: "100%", xl: "70vw" }}
+                maxWidth={{ sm: "95vw", xl: "70vw" }}
                 margin="6px"
                 border="1px"
                 borderRadius={12}
