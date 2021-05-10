@@ -1,21 +1,21 @@
 import { Flex } from "@chakra-ui/layout";
 import { Link } from "@chakra-ui/react";
 import { GoogleLogin } from "@components/authentication/GoogleLogin";
+import { HomePageBlob } from "@components/blobs/HomePageBlob";
 import FacebookIcon from "@components/icons/FacebookIcon";
 import WebsiteIcon from "@components/icons/WebsiteIcon";
-import useWindowDimensions from "@hooks/useWindowDimensions";
+import useScreenSize from "@hooks/useScreenSize";
 import React from "react";
-import { HomePageBlob } from "./blobs/HomePageBlob";
 
 interface HomeHeaderProps {}
 
 export const HomeHeader: React.FC<HomeHeaderProps> = ({}) => {
-  const { width: windowWidth } = useWindowDimensions();
+  const screenSize = useScreenSize();
 
   return (
     <>
       <Flex width="100%" zIndex={-1} position="absolute">
-        <HomePageBlob marginLeft="auto" marginRight={[0, 0, 0, "15vw"]} size={windowWidth < 480 ? "small" : "default"} />
+        <HomePageBlob marginLeft="auto" marginRight={[0, 0, 0, "15vw"]} size={screenSize} />
       </Flex>
       <Flex height={["150px", "20vh"]} paddingTop={["8", "4vh"]}>
         <Link href="https://www.facebook.com/groups/aeglo" isExternal marginRight="16px" marginLeft="15vw" height="20px">

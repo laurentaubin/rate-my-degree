@@ -1,7 +1,7 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import { Divider, Stack } from "@chakra-ui/layout";
 import { HTMLChakraProps, Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
-import { NextChakraLink } from "@components/NextChakraLink";
+import { NextChakraLink } from "@components/navigation/NextChakraLink";
 import { useCoursesQuery } from "@generated/graphql";
 import React, { useState } from "react";
 
@@ -54,12 +54,12 @@ export const SearchBar: React.FC<SearchBarProps> = ({ size, ...props }) => {
         onFocus={handleChangeFocus}
       >
         <InputGroup>
-          <InputLeftElement minHeight={1.25 * size + "rem"} pointerEvents="none">
+          <InputLeftElement minHeight={1.75 * size + "rem"} pointerEvents="none">
             <SearchIcon marginTop="0 !important" />
           </InputLeftElement>
           <Input
             placeholder="Rechercher un cours"
-            minHeight={1.25 * size + "rem"}
+            minHeight={1.75 * size + "rem"}
             color="black"
             backgroundColor="white"
             onChange={handleInputChange}
