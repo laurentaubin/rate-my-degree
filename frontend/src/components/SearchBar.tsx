@@ -59,7 +59,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ size, ...props }) => {
           </InputLeftElement>
           <Input
             placeholder="Rechercher un cours"
-            minHeight={1.25 * size + "rem"}
+            minHeight={1.75 * size + "rem"}
             color="black"
             backgroundColor="white"
             onChange={handleInputChange}
