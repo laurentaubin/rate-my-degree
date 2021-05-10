@@ -22,7 +22,8 @@
       "@components/*": ["components/*"],
       "@utils/*": ["utils/*"],
       "@generated/*": ["generated/*"],
-      "@hooks/*": ["hooks/*"]
+      "@hooks/*": ["hooks/*"],
+      "@blobs/*": ["blobs/*"]
     }
   },
   "exclude": ["node_modules"],

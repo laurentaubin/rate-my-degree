@@ -1,5 +1,5 @@
 import { Text, VStack } from "@chakra-ui/layout";
-import { HomeHeader } from "@components/HomeHeader";
+import { HomeHeader } from "@components/navigation/HomeHeader";
 import { SearchBar } from "@components/SearchBar";
 import React from "react";
 

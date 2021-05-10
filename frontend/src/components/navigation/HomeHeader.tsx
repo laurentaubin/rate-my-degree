@@ -1,11 +1,11 @@
 import { Flex } from "@chakra-ui/layout";
 import { Link } from "@chakra-ui/react";
 import { GoogleLogin } from "@components/authentication/GoogleLogin";
+import { HomePageBlob } from "@components/blobs/HomePageBlob";
 import FacebookIcon from "@components/icons/FacebookIcon";
 import WebsiteIcon from "@components/icons/WebsiteIcon";
 import useWindowDimensions from "@hooks/useWindowDimensions";
 import React from "react";
-import { HomePageBlob } from "./blobs/HomePageBlob";
 
 interface HomeHeaderProps {}
 

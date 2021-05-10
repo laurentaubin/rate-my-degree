@@ -1,7 +1,7 @@
 import { Text } from "@chakra-ui/layout";
 import { Button, Flex, Stack } from "@chakra-ui/react";
 import { FourOFourPageBlob } from "@components/blobs/FourOFourPageBlob";
-import { NavBar } from "@components/NavBar";
+import { Layout } from "@components/Layout";
 import { useRouter } from "next/router";
 import React from "react";
 
@@ -13,8 +13,7 @@ const Index = () => {
   };
 
   return (
-    <>
-      <NavBar />
+    <Layout>
       <Flex width="100%" zIndex={-1} position="absolute">
         <FourOFourPageBlob marginLeft="auto" />
       </Flex>
@@ -40,7 +39,7 @@ const Index = () => {
           Retourner à l'acceuil
         </Button>
       </Stack>
-    </>
+    </Layout>
   );
 };
 
