@@ -54,7 +54,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ size, ...props }) => {
         onFocus={handleChangeFocus}
       >
         <InputGroup>
-          <InputLeftElement minHeight={1.25 * size + "rem"} pointerEvents="none">
+          <InputLeftElement minHeight={1.75 * size + "rem"} pointerEvents="none">
             <SearchIcon marginTop="0 !important" />
           </InputLeftElement>
           <Input
