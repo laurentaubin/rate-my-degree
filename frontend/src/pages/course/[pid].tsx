@@ -81,10 +81,10 @@ const Course = () => {
   return (
     <Layout>
       <Box paddingLeft="2vw" marginTop="4vh">
-        <Heading as="h1" fontSize="4xl" fontWeight="black">
+        <Heading as="h1" fontSize={["2xl", "4xl"]} fontWeight="black">
           {courseData!.course.initials.toUpperCase()} - {courseData!.course.title}
         </Heading>
-        <Text as="h2" fontSize="2xl" fontWeight="medium">
+        <Text as="h2" fontSize={["lg", "2xl"]} fontWeight="medium">
           Professeur: {courseData!.course.professor}
         </Text>
         <Text paddingTop="2vh">{courseData!.course.description}</Text>
@@ -99,7 +99,7 @@ const Course = () => {
               <Stack
                 className="comment"
                 key={comment.id}
-                maxWidth={{ sm: "95vw", xl: "70vw" }}
+                maxWidth={["100%", "70vw"]}
                 margin="6px"
                 border="1px"
                 borderRadius={12}

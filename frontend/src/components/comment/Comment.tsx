@@ -1,6 +1,6 @@
 import { DeleteIcon } from "@chakra-ui/icons";
 import { Badge, Stack } from "@chakra-ui/layout";
-import { Avatar, Box, Button, Center, Flex, Text } from "@chakra-ui/react";
+import { Avatar, Box, Button, Flex, Text } from "@chakra-ui/react";
 import { ReplySection } from "components/comment/ReplySection";
 import { UpvoteSection } from "components/comment/UpvoteSection";
 import { useAddCommentMutation, useDeleteCommentMutation } from "generated/graphql";
@@ -97,43 +97,56 @@ export const Comment: React.FC<CommentProps> = ({
     router.reload();
   };
 
+  const calculateNestingMargin = () => {
+    if (nestingLevel < 6) {
+      return ["0px", "25px !important"];
+    }
+    return "0px";
+  };
+
   return (
     <Stack width="100%" direction="column">
       <Flex>
         <Avatar src={author.pictureUrl} />
-        <Box ml="3">
-          <Center>
+        <Box marginLeft="3">
+          <Flex>
             <Text fontWeight="semibold">{author.name}</Text>
-            <Badge marginLeft="2" backgroundColor="main" paddingY="2px" paddingX="5px">
-              {formatDate(new Date(parseInt(createdAt)))}
-            </Badge>
-            {isUserAuthor && (
-              <Center>
-                <DeleteIcon marginLeft="6px" _hover={{ cursor: "pointer" }} onClick={handleDeleteComment} />
-              </Center>
-            )}
-          </Center>
-          <Text fontSize="sm" marginTop="8px" paddingRight="16px">
-            {content}
-          </Text>
+            {isUserAuthor && <DeleteIcon marginLeft="6px" _hover={{ cursor: "pointer" }} onClick={handleDeleteComment} marginTop="4px" />}
+          </Flex>
+          <Badge backgroundColor="main" paddingY="2px" paddingX="5px">
+            {formatDate(new Date(parseInt(createdAt)))}
+          </Badge>
         </Box>
-        <Box marginLeft="auto" minWidth="12vh">
+        <Box marginLeft="auto">
           <UpvoteSection commentId={id} score={score} userVote={userVote} handleAuthenticationError={handleUpvoteAuthenticationError} />
-          {!replying && (
-            <Button backgroundColor="white" border="2px" _hover={{ backgroundColor: "main" }} borderColor="main" onClick={handleReplyClick}>
-              Répondre
-            </Button>
-          )}
         </Box>
       </Flex>
-      {replying && (
-        <ReplySection
-          authenticationError={authenticationError}
-          inputError={inputError}
-          onCancel={handleCancelClick}
-          onFormSubmit={handleFormSubmit}
-        />
-      )}
+      <Text fontSize="sm" marginTop="8px" paddingLeft="8px">
+        {content}
+      </Text>
+      <Box marginBottom="12px">
+        {!replying && (
+          <Button
+            backgroundColor="white"
+            border="2px"
+            _hover={{ backgroundColor: "main" }}
+            borderColor="main"
+            onClick={handleReplyClick}
+            width="125px"
+            float="right"
+          >
+            Répondre
+          </Button>
+        )}
+        {replying && (
+          <ReplySection
+            authenticationError={authenticationError}
+            inputError={inputError}
+            onCancel={handleCancelClick}
+            onFormSubmit={handleFormSubmit}
+          />
+        )}
+      </Box>
       <Stack direction="column">
         {subComments.length != 0 &&
           subComments.map((subComment: CommentProps) => {
@@ -141,7 +154,7 @@ export const Comment: React.FC<CommentProps> = ({
             return (
               <Stack
                 key={subComment.id}
-                marginLeft={nestingLevel < 6 ? "25px !important" : "0px"}
+                marginLeft={calculateNestingMargin()}
                 direction="row"
                 border="1px"
                 borderRadius={12}

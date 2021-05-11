@@ -41,7 +41,7 @@ export const ReplySection: React.FC<ReplySectionProps> = ({ inputError, authenti
         )}
         <Flex>
           {onCancel && (
-            <Button backgroundColor="white" border="1px" borderColor="black" onClick={onCancel}>
+            <Button backgroundColor="white" border="1px" borderColor="black" onClick={onCancel} marginLeft="auto">
               Annuler
             </Button>
           )}
