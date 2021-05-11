@@ -23,7 +23,7 @@ export const NavBar: React.FC<{}> = () => {
           <SearchBar size={1.5} position="absolute" />
         </Box>
       )}
-      <Center marginLeft="auto" marginRight="32px">
+      <Center marginLeft="auto" marginRight={["12px", "32px", "32px"]}>
         <GoogleLogin backgroundColor="black" color="white" borderColor="white" border="1px" _hover={{}} />
       </Center>
     </Flex>

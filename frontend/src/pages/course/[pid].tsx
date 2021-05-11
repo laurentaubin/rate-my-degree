@@ -99,7 +99,7 @@ const Course = () => {
               <Stack
                 className="comment"
                 key={comment.id}
-                maxWidth={["100%", "70vw"]}
+                maxWidth={["95vw", "95vw", "70vw"]}
                 margin="6px"
                 border="1px"
                 borderRadius={12}
