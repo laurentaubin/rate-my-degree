@@ -1,11 +1,11 @@
 import { Flex, Text } from "@chakra-ui/layout";
 import { Box, Center } from "@chakra-ui/react";
-import { GoogleLogin } from "@components/authentication/GoogleLogin";
-import { SearchBar } from "@components/SearchBar";
-import useWindowDimensions from "@hooks/useScreenSize";
-import { isScreenLargeOrExtraLarge } from "@utils/screenSizeUtils";
+import { GoogleLogin } from "components/authentication/GoogleLogin";
+import { SearchBar } from "components/SearchBar";
+import useWindowDimensions from "hooks/useScreenSize";
 import React from "react";
 import { WindowSize } from "types";
+import { isScreenLargeOrExtraLarge } from "utils/screenSizeUtils";
 import { NextChakraLink } from "./NextChakraLink";
 
 export const NavBar: React.FC<{}> = () => {
@@ -23,7 +23,7 @@ export const NavBar: React.FC<{}> = () => {
           <SearchBar size={1.5} position="absolute" />
         </Box>
       )}
-      <Center marginLeft="auto" marginRight="32px">
+      <Center marginLeft="auto" marginRight={["12px", "32px", "32px"]}>
         <GoogleLogin backgroundColor="black" color="white" borderColor="white" border="1px" _hover={{}} />
       </Center>
     </Flex>

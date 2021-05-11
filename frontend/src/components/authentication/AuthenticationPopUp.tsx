@@ -1,5 +1,5 @@
 import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text } from "@chakra-ui/react";
-import { GoogleLogin } from "@components/authentication/GoogleLogin";
+import { GoogleLogin } from "components/authentication/GoogleLogin";
 import React from "react";
 
 interface AuthenticationPopUpProps {

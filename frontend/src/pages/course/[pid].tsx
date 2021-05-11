@@ -1,10 +1,10 @@
 import { Heading, Stack, Text } from "@chakra-ui/layout";
 import { Box, useDisclosure } from "@chakra-ui/react";
-import { AuthenticationPopUp } from "@components/authentication/AuthenticationPopUp";
-import { Comment } from "@components/comment/Comment";
-import { ReplySection } from "@components/comment/ReplySection";
-import { Layout } from "@components/Layout";
-import { SortingBar } from "@components/SortingBar";
+import { AuthenticationPopUp } from "components/authentication/AuthenticationPopUp";
+import { Comment } from "components/comment/Comment";
+import { ReplySection } from "components/comment/ReplySection";
+import { Layout } from "components/Layout";
+import { SortingBar } from "components/SortingBar";
 import { useAddCommentMutation, useCourseQuery } from "generated/graphql";
 import { useGetCourseInitials } from "hooks/useGetCourseInitials";
 import { useRouter } from "next/router";
@@ -81,10 +81,10 @@ const Course = () => {
   return (
     <Layout>
       <Box paddingLeft="2vw" marginTop="4vh">
-        <Heading as="h1" fontSize="4xl" fontWeight="black">
+        <Heading as="h1" fontSize={["2xl", "4xl"]} fontWeight="black">
           {courseData!.course.initials.toUpperCase()} - {courseData!.course.title}
         </Heading>
-        <Text as="h2" fontSize="2xl" fontWeight="medium">
+        <Text as="h2" fontSize={["lg", "2xl"]} fontWeight="medium">
           Professeur: {courseData!.course.professor}
         </Text>
         <Text paddingTop="2vh">{courseData!.course.description}</Text>
@@ -99,7 +99,7 @@ const Course = () => {
               <Stack
                 className="comment"
                 key={comment.id}
-                maxWidth={{ sm: "100%", xl: "70vw" }}
+                maxWidth={["95vw", "95vw", "70vw"]}
                 margin="6px"
                 border="1px"
                 borderRadius={12}

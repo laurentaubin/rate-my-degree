@@ -24,7 +24,7 @@ export const ReplySection: React.FC<ReplySectionProps> = ({ inputError, authenti
           value={newComment}
           backgroundColor="gray.100"
           placeholder="Ajouter un commentaire"
-          maxWidth="70vw"
+          maxWidth={["95vw", "95vw", "70vw"]}
           marginLeft="1"
           onChange={handleCommentInputChange}
           isInvalid={inputError || authenticationError}
@@ -41,7 +41,7 @@ export const ReplySection: React.FC<ReplySectionProps> = ({ inputError, authenti
         )}
         <Flex>
           {onCancel && (
-            <Button backgroundColor="white" border="1px" borderColor="black" onClick={onCancel}>
+            <Button backgroundColor="white" border="1px" borderColor="black" onClick={onCancel} marginLeft="auto">
               Annuler
             </Button>
           )}
